@@ -63,4 +63,5 @@ export type ReviewingIndividual = {
   is_tagged: boolean
   has_ring: boolean
   ring_number: string | null
+  deleted: boolean
 }

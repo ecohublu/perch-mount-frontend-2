@@ -31,7 +31,7 @@
   <Drawer v-model:visible="mediumEditorVisible" header="影像資訊" position="full">
     <MediumEditor
       :medium="data[editingIndex]"
-      :reviewing-medium="reviewingMedia[editingIndex]"
+      v-model:reviewing-medium="reviewingMedia[editingIndex]"
     ></MediumEditor>
   </Drawer>
   <Dialog

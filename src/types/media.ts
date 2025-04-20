@@ -111,6 +111,7 @@ export function convertToReviewingMedia(media: Medium[]): ReviewingMedium[] {
       is_tagged: false,
       has_ring: false,
       ring_number: null,
+      deleted: false,
     }))
 
     return {

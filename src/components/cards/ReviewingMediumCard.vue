@@ -29,40 +29,50 @@
         <div class="grid grid-cols-12 gap-1 mb-3">
           <div class="col-span-3 font-bold">AI 物種</div>
           <div class="col-span-5 font-bold">更正物種</div>
-          <div class="col-span-2 font-bold">Prey</div>
+          <div class="col-span-2 font-bold">獵物</div>
           <div class="col-span-2 font-bold">Tag</div>
         </div>
-        <div v-for="(individual, index) in medium.individuals" class="grid grid-cols-12 gap-3 mb-3">
-          <div class="col-span-3">
-            {{ individual.unreviewed_contents?.species_by_ai.chinese_common_name }}
-          </div>
-          <div class="col-span-5">
-            <SpeciesSelector
-              @species-selected="(selected: SearchResult) => handleSpeciesSelected(index, selected)"
-            ></SpeciesSelector>
-          </div>
-          <div class="col-span-2">
-            <Checkbox v-model="reviewingMedium.individuals[index].has_prey" binary></Checkbox>
-          </div>
-          <div class="col-span-2">
-            <TaggedRingPopup
-              v-model:has_ring="reviewingMedium.individuals[index].has_ring"
-              v-model:is_tagged="reviewingMedium.individuals[index].is_tagged"
-              v-model:ring_number="reviewingMedium.individuals[index].ring_number"
-            ></TaggedRingPopup>
+        <div v-for="(individual, index) in medium.individuals">
+          <div
+            :class="[
+              {
+                'line-through': localReviewingMedium.individuals[index].deleted,
+                'font-thin': localReviewingMedium.individuals[index].deleted,
+                italic: localReviewingMedium.individuals[index].deleted,
+              },
+            ]"
+            class="grid grid-cols-12 gap-3 mb-3"
+          >
+            <div class="col-span-3">
+              {{ individual.unreviewed_contents?.species_by_ai.chinese_common_name }}
+            </div>
+            <div class="col-span-5">
+              <SpeciesSelector
+                v-model:selected="localReviewingMedium.individuals[index].selected_species"
+              ></SpeciesSelector>
+            </div>
+            <div class="col-span-2">
+              <Checkbox
+                v-model="localReviewingMedium.individuals[index].has_prey"
+                binary
+              ></Checkbox>
+            </div>
+            <div class="col-span-2">
+              <TaggedRingPopup
+                v-model:has_ring="localReviewingMedium.individuals[index].has_ring"
+                v-model:is_tagged="localReviewingMedium.individuals[index].is_tagged"
+                v-model:ring_number="localReviewingMedium.individuals[index].ring_number"
+              ></TaggedRingPopup>
+            </div>
           </div>
         </div>
         <div
           class="mt-6 grid grid-cols-12 gap-3 mb-3"
-          v-for="(individual, index) in reviewingMedium.ai_missed_individuals"
+          v-for="(individual, index) in localReviewingMedium.ai_missed_individuals"
         >
           <div class="col-span-3"></div>
           <div class="col-span-5">
-            <SpeciesSelector
-              @species-selected="
-                (selected: SearchResult) => handleAiMissSpeciesSelected(index, selected)
-              "
-            ></SpeciesSelector>
+            <SpeciesSelector v-model:selected="individual.selected_species"></SpeciesSelector>
           </div>
           <div class="col-span-2">
             <Checkbox v-model="individual.has_prey" binary></Checkbox>

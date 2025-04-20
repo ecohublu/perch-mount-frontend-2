@@ -1,56 +1,51 @@
 <template>
   <Select
-    editable
-    v-model="selectedSpecies"
-    :options="speciesOptions"
+    class="w-full"
+    filter
+    v-model="localSelected"
+    :options="speciesOptionsStore.options"
     optionLabel="chinese_common_name"
     size="small"
     :invalid="!isValidSpecies"
-    @input="search"
-    @blur="handleBlur"
+    showClear
   ></Select>
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useSearchOptions } from '@/composables/species/useSearchOptions'
-import { shouldISearch } from '@/utils/species'
+import { computed, watch } from 'vue'
+import { useSpeciesOptionsStore } from '@/stores/speciesOptions'
 import { isSearchResult } from '@/types/species'
 import type { SearchResult } from '@/types/species'
 
-const selectedSpecies = ref<SearchResult | null>(null)
-const { data: speciesOptions, isLoading, error, fetch } = useSearchOptions()
+const speciesOptionsStore = useSpeciesOptionsStore()
 
-const isValidSpecies = computed(() => {
-  return selectedSpecies.value === null || isSearchResult(selectedSpecies.value)
-})
-
-const species = computed<SearchResult | null>(() => {
-  return isSearchResult(selectedSpecies.value) ? selectedSpecies.value : null
-})
+const props = defineProps<{
+  selected: SearchResult | null
+}>()
 
 const emit = defineEmits<{
   (e: 'species-selected', value: SearchResult): void
+  (e: 'update:selected', value: SearchResult | null): void
 }>()
 
-const search = async (event: any) => {
-  const phrase = event.srcElement.value as string
-  if (phrase.length == 0) {
-    speciesOptions.value = []
-    return
-  }
-  if (!shouldISearch(event)) {
-    return
-  }
+const isValidSpecies = computed(() => {
+  return localSelected.value === null || isSearchResult(localSelected.value)
+})
 
-  fetch(event.srcElement.value)
-}
+const localSelected = computed({
+  get: () => props.selected,
+  set: (val: SearchResult | null) => {
+    if (isSearchResult(val)) {
+      emit('update:selected', val)
+    } else {
+      emit('update:selected', null)
+    }
+  },
+})
 
-const handleBlur = () => {
-  if (!isSearchResult(selectedSpecies.value)) {
-    selectedSpecies.value = null
-  }
-  if (species.value !== null) {
-    emit('species-selected', species.value)
-  }
-}
+watch(
+  () => props.selected,
+  (newVal) => {
+    localSelected.value = newVal
+  },
+)
 </script>
