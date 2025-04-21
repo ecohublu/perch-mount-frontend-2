@@ -1,7 +1,12 @@
 <template>
   <div class="grid grid-cols-2 gap-8">
     <div>
-      <BoxCanvas :id="medium.id" :is-image="medium.medium_type == 'image'"></BoxCanvas>
+      <BoxCanvas
+        v-if="medium.medium_type == 'image'"
+        :medium="medium"
+        :reviewing-medium="localReviewingMedium"
+      ></BoxCanvas>
+      <S3Medium v-else :id="medium.id" :is-image="false"></S3Medium>
     </div>
     <div>
       <div class="grid grid-cols-12 gap-4">
@@ -122,6 +127,7 @@ import { createEmptyAIMissedReviewingIndividual } from '@/types/individuals'
 import BoxCanvas from '@/components/BoxCanvas/BoxCanvas.vue'
 import TaggedRingPopup from '@/components/forms/TaggedRingPopup.vue'
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
+import S3Medium from '../S3Medium.vue'
 
 const props = defineProps<{
   medium: Medium
