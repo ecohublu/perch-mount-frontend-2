@@ -5,7 +5,7 @@
         <Checkbox v-model="localChecked" binary />
         <div class="flex">
           <Button
-            icon="pi pi-heart"
+            :icon="`pi ${localReviewingMedium.selected_behavior ? 'pi-heart-fill' : 'pi-heart'}`"
             variant="text"
             rounded
             size="small"
@@ -97,7 +97,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Medium, ReviewingMedium } from '@/types/media'
-import type { SearchResult } from '@/types/species'
 import S3Medium from '@/components/S3Medium.vue'
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
 import TaggedRingPopup from '@/components/forms/TaggedRingPopup.vue'
@@ -123,13 +122,6 @@ const localReviewingMedium = computed({
   get: () => props.reviewingMedium,
   set: (val: ReviewingMedium) => emit('update:reviewingMedium', val),
 })
-
-const handleSpeciesSelected = (index: number, selected: SearchResult) => {
-  localReviewingMedium.value.individuals[index].selected_species = selected
-}
-const handleAiMissSpeciesSelected = (index: number, selected: SearchResult) => {
-  localReviewingMedium.value.ai_missed_individuals[index].selected_species = selected
-}
 
 const handleMediumEditorClicked = () => {
   emit('medium-editor-clicked')
