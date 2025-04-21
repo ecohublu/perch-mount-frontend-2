@@ -54,7 +54,6 @@ export type Individual = {
 export type ReviewingIndividual = {
   id: string
   selected_species: SearchResult | null
-  selected_behavior: SearchResult | null
   box_xmin: number | null
   box_xmax: number | null
   box_ymin: number | null
@@ -64,4 +63,30 @@ export type ReviewingIndividual = {
   has_ring: boolean
   ring_number: string | null
   deleted: boolean
+}
+
+export type AIMissedReviewingIndividual = Omit<ReviewingIndividual, 'id'>
+
+export type BoundingBox = {
+  box_xmin: number
+  box_xmax: number
+  box_ymin: number
+  box_ymax: number
+}
+
+export function createEmptyAIMissedReviewingIndividual(
+  boundingBox: BoundingBox | null = null,
+): AIMissedReviewingIndividual {
+  return {
+    selected_species: null,
+    box_xmin: boundingBox?.box_xmin ?? null,
+    box_xmax: boundingBox?.box_xmax ?? null,
+    box_ymin: boundingBox?.box_ymin ?? null,
+    box_ymax: boundingBox?.box_ymax ?? null,
+    has_prey: false,
+    is_tagged: false,
+    has_ring: false,
+    ring_number: null,
+    deleted: false,
+  }
 }

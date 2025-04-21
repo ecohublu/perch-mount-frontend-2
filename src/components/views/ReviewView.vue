@@ -40,14 +40,19 @@
     header="精選資訊"
     :style="{ width: '25rem' }"
   >
-    <FeatureEditor :reviewing-medium="reviewingMedia[editingIndex]"></FeatureEditor>
+    <FeatureEditor
+      v-model:selected-behavior="reviewingMedia[featrueingIndex].selected_behavior"
+      :options="behaviorOptions"
+    ></FeatureEditor>
   </Dialog>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { convertToReviewingMedia } from '@/types/media'
+import { convertBehaviorsToSelectedOptions, type SelectedOption } from '@/types/options'
 import { type ReviewingMedium, type UncheckedMediaQuery } from '@/types/media'
 import { useReviewingMediaBySectionIDsAndPerchMountIDs } from '@/composables/media/useReviewingMediaSectionIDAndPerchMountID'
-import { convertToReviewingMedia } from '@/types/media'
+import { useBehaviors } from '@/composables/options/useBehaviors'
 import ReviewingMediumCard from '@/components/cards/ReviewingMediumCard.vue'
 import MediumEditor from '@/components/forms/MediumEditor.vue'
 import FeatureEditor from '@/components/forms/FeatureEditor.vue'
@@ -58,6 +63,7 @@ const props = defineProps<{
 }>()
 const mediaChecks = ref<Array<boolean>>([])
 const reviewingMedia = ref<Array<ReviewingMedium>>([])
+const behaviorOptions = ref<Array<SelectedOption>>([])
 
 const { data, isLoading, error, fetch } = useReviewingMediaBySectionIDsAndPerchMountIDs(
   'unreviewed',
@@ -65,10 +71,19 @@ const { data, isLoading, error, fetch } = useReviewingMediaBySectionIDsAndPerchM
   props.query.perch_mount_ids ? props.query.section_ids! : [],
 )
 
+const {
+  data: behaviors,
+  isLoading: isBehaviorsLoading,
+  error: behaviorErrors,
+  fetch: fetchBehaviors,
+} = useBehaviors()
+
 onMounted(async () => {
   await fetch()
+  await fetchBehaviors()
   reviewingMedia.value = convertToReviewingMedia(data.value)
   mediaChecks.value = Array(data.value.length).fill(false)
+  behaviorOptions.value = convertBehaviorsToSelectedOptions(behaviors.value)
 })
 
 const selectCounts = ref(0)

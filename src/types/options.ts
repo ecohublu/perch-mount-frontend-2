@@ -22,3 +22,14 @@ export interface SelectedOption {
   code: string
   name: string
 }
+
+export function convertBehaviorsToSelectedOptions(behaviors: Behavior[]): SelectedOption[] {
+  const options = [] as SelectedOption[]
+  for (const behavior of behaviors) {
+    options.push({
+      code: behavior.id,
+      name: behavior.name,
+    })
+  }
+  return options
+}

@@ -1,4 +1,8 @@
-import type { Individual, ReviewingIndividual } from '@/types/individuals'
+import type {
+  Individual,
+  ReviewingIndividual,
+  AIMissedReviewingIndividual,
+} from '@/types/individuals'
 import type { Behavior, Event } from '@/types/options'
 import type { SelectedOption } from '@/types/options'
 
@@ -74,10 +78,11 @@ export type ReviewedMediaContents = {
 
 export type ReviewingMedium = {
   id: string
-  behavior_id: SelectedOption | null
-  event_id: SelectedOption | null
+  selected_behavior: SelectedOption | null
+  selected_event: SelectedOption | null
   individuals: ReviewingIndividual[]
-  ai_missed_individuals: ReviewingIndividual[]
+  ai_missed_individuals: AIMissedReviewingIndividual[]
+  note: string | null
 }
 
 export function createMediaQuery(params: Partial<MediaQuery> & { status: string }): MediaQuery {
@@ -102,7 +107,6 @@ export function convertToReviewingMedia(media: Medium[]): ReviewingMedium[] {
     const individuals: ReviewingIndividual[] = medium.individuals.map((individual) => ({
       id: individual.id,
       selected_species: null,
-      selected_behavior: null,
       box_xmin: null,
       box_xmax: null,
       box_ymin: null,
@@ -116,10 +120,11 @@ export function convertToReviewingMedia(media: Medium[]): ReviewingMedium[] {
 
     return {
       id: medium.id,
-      behavior_id: null,
-      event_id: null,
+      selected_behavior: null,
+      selected_event: null,
       individuals,
       ai_missed_individuals: [],
+      note: null,
     }
   })
 }

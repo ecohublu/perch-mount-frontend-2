@@ -18,13 +18,11 @@
       </div>
       <div v-for="(individual, index) in medium.individuals">
         <div
-          :class="[
-            {
-              'line-through': localReviewingMedium.individuals[index].deleted,
-              'font-thin': localReviewingMedium.individuals[index].deleted,
-              italic: localReviewingMedium.individuals[index].deleted,
-            },
-          ]"
+          :class="{
+            'opacity-50': localReviewingMedium.individuals[index].deleted,
+            'font-thin': localReviewingMedium.individuals[index].deleted,
+            italic: localReviewingMedium.individuals[index].deleted,
+          }"
           class="grid grid-cols-12 gap-4 mt-6"
         >
           <div>{{ index }}</div>
@@ -62,35 +60,57 @@
         </div>
       </div>
       <Divider />
-      <div
-        v-for="(individual, index) in localReviewingMedium.ai_missed_individuals"
-        class="grid grid-cols-12 gap-4 mt-6"
-      >
-        <div>{{ index }}</div>
-        <div class="col-span-2"></div>
-        <div class="col-span-2">
-          <SpeciesSelector v-model:selected="individual.selected_species"></SpeciesSelector>
-        </div>
-        <div>{{ individual.box_xmin }}</div>
-        <div>{{ individual.box_xmax }}</div>
-        <div>{{ individual.box_ymin }}</div>
-        <div>{{ individual.box_ymax }}</div>
-        <div>
-          <Checkbox v-model="individual.has_prey" binary></Checkbox>
-        </div>
-        <div>
-          <TaggedRingPopup
-            v-model:has_ring="individual.has_ring"
-            v-model:is_tagged="individual.is_tagged"
-            v-model:ring_number="individual.ring_number"
-          ></TaggedRingPopup>
-        </div>
-        <div>
-          <Button icon="pi pi-trash" severity="secondary" variant="text" size="small" rounded />
+      <div v-for="(individual, index) in localReviewingMedium.ai_missed_individuals">
+        <div
+          :class="{
+            'opacity-50': individual.deleted,
+            'font-thin': individual.deleted,
+            italic: individual.deleted,
+          }"
+          class="grid grid-cols-12 gap-4 mt-6"
+        >
+          <div>{{ index }}</div>
+          <div class="col-span-2"></div>
+          <div class="col-span-2">
+            <SpeciesSelector v-model:selected="individual.selected_species"></SpeciesSelector>
+          </div>
+          <div>{{ individual.box_xmin }}</div>
+          <div>{{ individual.box_xmax }}</div>
+          <div>{{ individual.box_ymin }}</div>
+          <div>{{ individual.box_ymax }}</div>
+          <div>
+            <Checkbox v-model="individual.has_prey" binary></Checkbox>
+          </div>
+          <div>
+            <TaggedRingPopup
+              v-model:has_ring="individual.has_ring"
+              v-model:is_tagged="individual.is_tagged"
+              v-model:ring_number="individual.ring_number"
+            ></TaggedRingPopup>
+          </div>
+          <div>
+            <ToggleButton
+              v-model="individual.deleted"
+              onIcon="pi pi-trash"
+              offIcon="pi pi-face-smile"
+              :invalid="individual.deleted"
+              size="small"
+            />
+          </div>
         </div>
       </div>
       <div class="flex justify-center">
-        <Button icon="pi pi-plus" variant="text" raised rounded />
+        <Button
+          icon="pi pi-plus"
+          variant="text"
+          raised
+          rounded
+          @click="handleAddSpeciesButtonClicked"
+        />
+      </div>
+      <div class="mt-6">
+        <p class="font-bold mb-2">影像備註</p>
+        <Textarea v-model="localReviewingMedium.note" rows="5" class="w-full" />
       </div>
     </div>
   </div>
@@ -98,11 +118,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Medium, ReviewingMedium } from '@/types/media'
-import type { SearchResult } from '@/types/species'
+import { createEmptyAIMissedReviewingIndividual } from '@/types/individuals'
 import BoxCanvas from '@/components/BoxCanvas/BoxCanvas.vue'
 import TaggedRingPopup from '@/components/forms/TaggedRingPopup.vue'
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
-import { handle } from '@primeuix/themes/aura/imagecompare'
+
 const props = defineProps<{
   medium: Medium
   reviewingMedium: ReviewingMedium
@@ -116,4 +136,9 @@ const localReviewingMedium = computed({
   get: () => props.reviewingMedium,
   set: (val: ReviewingMedium) => emit('update:reviewingMedium', val),
 })
+
+const handleAddSpeciesButtonClicked = () => {
+  const individual = createEmptyAIMissedReviewingIndividual()
+  localReviewingMedium.value.ai_missed_individuals.push(individual)
+}
 </script>
