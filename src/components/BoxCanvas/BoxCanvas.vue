@@ -2,7 +2,7 @@
   <div class="relative">
     <div
       class="absolute cursor-crosshair z-5"
-      :style="canvasStyle"
+      :style="canvas.style"
       @mousemove="handleMouseMove"
       @mouseup="handleMouseUp"
       @mousedown="handleMouseDown"
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import type { Medium, ReviewingMedium } from '@/types/media'
+import type { BoundingBox } from '@/types/boundingBox'
 import { convertIDToS3Link } from '@/composables/media/s3'
 import { useCanvas } from '@/composables/canvas/useCanvas'
 
@@ -36,15 +37,20 @@ const image = ref<HTMLElement | null>(null)
 const {
   insertingBox,
   mousePosition,
-  canvasStyle,
-  isMouseDown,
+  canvas,
+  isDraging,
   error,
   initCanvas,
   updateMousePosition,
   drag,
-  MouseUp,
-  MouseDown,
+  dragStop,
+  dragStart,
+  getNewBox,
 } = useCanvas()
+
+const emit = defineEmits<{
+  (e: 'box-created', value: BoundingBox): void
+}>()
 
 onMounted(() => {
   if (image.value) {
@@ -54,14 +60,15 @@ onMounted(() => {
 
 const handleMouseMove = (event: any) => {
   updateMousePosition(event.offsetX, event.offsetY)
-  if (isMouseDown) {
+  if (isDraging) {
     drag(event.offsetX, event.offsetY)
   }
 }
 const handleMouseUp = () => {
-  MouseUp()
+  dragStop(event.offsetX, event.offsetY)
+  emit('box-created', getNewBox())
 }
 const handleMouseDown = (event: any) => {
-  MouseDown(event.offsetX, event.offsetY)
+  dragStart(event.offsetX, event.offsetY)
 }
 </script>

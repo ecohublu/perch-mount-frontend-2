@@ -5,6 +5,7 @@
         v-if="medium.medium_type == 'image'"
         :medium="medium"
         :reviewing-medium="localReviewingMedium"
+        @box-created="handleBoxCreated"
       ></BoxCanvas>
       <S3Medium v-else :id="medium.id" :is-image="false"></S3Medium>
     </div>
@@ -123,7 +124,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Medium, ReviewingMedium } from '@/types/media'
-import { createEmptyAIMissedReviewingIndividual } from '@/types/individuals'
+import { createEmptyAIMissedReviewingIndividual, type BoundingBox } from '@/types/individuals'
 import BoxCanvas from '@/components/BoxCanvas/BoxCanvas.vue'
 import TaggedRingPopup from '@/components/forms/TaggedRingPopup.vue'
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
@@ -145,6 +146,11 @@ const localReviewingMedium = computed({
 
 const handleAddSpeciesButtonClicked = () => {
   const individual = createEmptyAIMissedReviewingIndividual()
+  localReviewingMedium.value.ai_missed_individuals.push(individual)
+}
+
+const handleBoxCreated = (box: BoundingBox) => {
+  const individual = createEmptyAIMissedReviewingIndividual(box)
   localReviewingMedium.value.ai_missed_individuals.push(individual)
 }
 </script>
