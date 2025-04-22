@@ -1,5 +1,5 @@
-import { ref, watch } from 'vue'
-import type { CanvasBox, Position, CanvasStyle, Canvas } from '@/types/boundingBox'
+import { ref, watch, watchEffect } from 'vue'
+import type { CanvasBox, Position, Canvas, PositionIndicator } from '@/types/boundingBox'
 import type { BoundingBox } from '@/types/individuals'
 import { roundToDecimalPlaces } from '@/utils/boundingBox'
 
@@ -19,10 +19,7 @@ export function useCanvas() {
       height: '0px',
     },
   })
-  const mousePosition = ref<Position>({
-    x: 0,
-    y: 0,
-  })
+  const mousePosition = ref<Position>({ x: 0, y: 0 })
   const canvas = ref<Canvas>({
     height: 0,
     width: 0,
@@ -118,4 +115,58 @@ export function useCanvas() {
     dragStart,
     getNewBox,
   }
+}
+
+export function usePostionIndicator() {
+  const position = ref<Position>({ x: 0, y: 0 })
+  const horizontal = ref<PositionIndicator>({
+    height: 0,
+    width: 0,
+    style: {
+      height: '0px',
+      width: '0px',
+    },
+  })
+  const vertical = ref<PositionIndicator>({
+    height: 0,
+    width: 0,
+    style: {
+      height: '0px',
+      width: '0px',
+    },
+  })
+
+  watchEffect(() => {
+    const hHeight = horizontal.value.height
+    horizontal.value.style.height = `${hHeight}px`
+  })
+
+  watchEffect(() => {
+    const vWidth = vertical.value.width
+    vertical.value.style.width = `${vWidth}px`
+  })
+
+  watch(vertical, (val) => {
+    vertical.value.style.width = `${val.width}px`
+  })
+  watch(
+    () => [position.value.x, position.value.y],
+    ([newX, newY]) => {
+      horizontal.value.height = newY
+      vertical.value.width = newX
+    },
+  )
+
+  const initIndicators = (offsetWidth: number, offsetHeight: number) => {
+    horizontal.value.width = offsetWidth
+    horizontal.value.style.width = `${offsetWidth}px`
+    vertical.value.height = offsetHeight
+    vertical.value.style.height = `${offsetHeight}px`
+  }
+  const moving = (offsetX: number, offsetY: number) => {
+    position.value.x = offsetX
+    position.value.y = offsetY
+  }
+
+  return { horizontal, vertical, initIndicators, moving }
 }

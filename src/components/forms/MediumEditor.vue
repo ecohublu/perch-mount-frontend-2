@@ -107,6 +107,7 @@
       </div>
       <div class="flex justify-center">
         <Button
+          v-if="medium.medium_type == 'video'"
           icon="pi pi-plus"
           variant="text"
           raised

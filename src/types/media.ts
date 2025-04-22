@@ -107,10 +107,15 @@ export function convertToReviewingMedia(media: Medium[]): ReviewingMedium[] {
     const individuals: ReviewingIndividual[] = medium.individuals.map((individual) => ({
       id: individual.id,
       selected_species: null,
-      box_xmin: null,
-      box_xmax: null,
-      box_ymin: null,
-      box_ymax: null,
+      box_xmin:
+        individual.unreviewed_contents !== null ? individual.unreviewed_contents.box_xmin! : null,
+      box_xmax:
+        individual.unreviewed_contents !== null ? individual.unreviewed_contents.box_xmax! : null,
+      box_ymin:
+        individual.unreviewed_contents !== null ? individual.unreviewed_contents.box_ymin! : null,
+      box_ymax:
+        individual.unreviewed_contents !== null ? individual.unreviewed_contents.box_ymax! : null,
+
       has_prey: false,
       is_tagged: false,
       has_ring: false,

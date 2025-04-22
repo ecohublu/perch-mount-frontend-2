@@ -1,3 +1,14 @@
+export type BasicBoxStyle = {
+  height: string
+  width: string
+}
+
+export type BasicBox = {
+  width: number
+  height: number
+  style: BasicBoxStyle
+}
+
 export type BoxStyle = {
   left: string
   top: string
@@ -16,18 +27,16 @@ export type CanvasBox = {
   style: BoxStyle
 }
 
-export type Canvas = {
-  width: number
-  height: number
-  style: CanvasStyle
-}
-
-export type CanvasStyle = {
-  height: string
-  width: string
-}
+export type Canvas = BasicBox
 
 export type Position = {
   x: number
   y: number
+}
+
+export type PositionIndicator = BasicBox
+
+export type IndividualBox = BasicBox & {
+  left: number
+  right: number
 }
