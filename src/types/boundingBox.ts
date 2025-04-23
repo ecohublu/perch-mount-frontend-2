@@ -16,6 +16,10 @@ export type BoxStyle = {
   height: string
 }
 
+export type IndividualBoxStyle = BoxStyle & {
+  borderColorClass: string
+}
+
 export type CanvasBox = {
   visible: boolean
   startX: number

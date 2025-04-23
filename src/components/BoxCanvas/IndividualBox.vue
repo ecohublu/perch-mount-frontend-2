@@ -1,18 +1,30 @@
 <template>
   <div
     v-show="visible"
-    class="absolute border-round border-3 border-primary-500 z-0"
+    class="absolute rounded border-3 z-0"
+    :class="borderColorClass"
     :style="box"
-  ></div>
+  >
+    <span class="absolute px-1 rounded-br-lg" :class="getBGColorClassByIndex(index)">{{
+      index
+    }}</span>
+  </div>
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useColorLibraryStore } from '@/stores/colorLibrary'
 import type { BoxStyle } from '@/types/boundingBox'
-import type {
-  AIMissedReviewingIndividual,
-  ReviewingIndividual,
-  UnreviewedIndividualsContents,
-} from '@/types/individuals'
+import type { AIMissedReviewingIndividual, ReviewingIndividual } from '@/types/individuals'
+
+const { getBorderColorClassByIndex, getBGColorClassByIndex } = useColorLibraryStore()
+
+const props = defineProps<{
+  visible: boolean
+  index: number
+  individual: ReviewingIndividual | AIMissedReviewingIndividual
+  canvasWidth: number
+  canvasHeight: number
+}>()
 
 const box = ref<BoxStyle>({
   left: '0px',
@@ -21,12 +33,8 @@ const box = ref<BoxStyle>({
   height: '0px',
 })
 
-const props = defineProps<{
-  visible: boolean
-  individual: ReviewingIndividual | AIMissedReviewingIndividual
-  canvasWidth: number
-  canvasHeight: number
-}>()
+const borderColorClass = ref<Record<string, boolean>>({})
+borderColorClass.value[getBorderColorClassByIndex(props.index)] = true
 
 const updateBoxStyle = () => {
   const { box_xmin, box_xmax, box_ymin, box_ymax } = props.individual

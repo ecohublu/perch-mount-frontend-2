@@ -31,7 +31,12 @@
           }"
           class="grid grid-cols-12 gap-4 mt-6"
         >
-          <div>{{ index }}</div>
+          <div>
+            <CustomColorBadge
+              :value="index"
+              :custom-color="getColorByIndex(index)"
+            ></CustomColorBadge>
+          </div>
           <div class="col-span-2">
             {{ individual.unreviewed_contents?.species_by_ai.chinese_common_name }}
           </div>
@@ -75,7 +80,12 @@
           }"
           class="grid grid-cols-12 gap-4 mt-6"
         >
-          <div>{{ index }}</div>
+          <div>
+            <CustomColorBadge
+              :value="index + localReviewingMedium.individuals.length"
+              :custom-color="getColorByIndex(index + localReviewingMedium.individuals.length)"
+            ></CustomColorBadge>
+          </div>
           <div class="col-span-2"></div>
           <div class="col-span-2">
             <SpeciesSelector v-model:selected="individual.selected_species"></SpeciesSelector>
@@ -124,12 +134,16 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useColorLibraryStore } from '@/stores/colorLibrary'
 import type { Medium, ReviewingMedium } from '@/types/media'
 import { createEmptyAIMissedReviewingIndividual, type BoundingBox } from '@/types/individuals'
 import BoxCanvas from '@/components/BoxCanvas/BoxCanvas.vue'
 import TaggedRingPopup from '@/components/forms/TaggedRingPopup.vue'
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
 import S3Medium from '../S3Medium.vue'
+import CustomColorBadge from '@/components/CustomColorBadge.vue'
+
+const { getColorByIndex } = useColorLibraryStore()
 
 const props = defineProps<{
   medium: Medium

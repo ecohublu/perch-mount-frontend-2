@@ -11,15 +11,17 @@
     <IndicatorLine type="horizontal" :style="horizontal.style"></IndicatorLine>
     <IndicatorLine type="vertical" :style="vertical.style"></IndicatorLine>
     <IndividualBox
-      v-for="individual in reviewingMedium.individuals"
+      v-for="(individual, index) in reviewingMedium.individuals"
       :visible="!individual.deleted"
+      :index="index"
       :individual="individual"
       :canvas-height="canvas.height"
       :canvas-width="canvas.width"
     ></IndividualBox>
     <IndividualBox
-      v-for="individual in reviewingMedium.ai_missed_individuals"
+      v-for="(individual, index) in reviewingMedium.ai_missed_individuals"
       :visible="!individual.deleted"
+      :index="index + reviewingMedium.individuals.length"
       :individual="individual"
       :canvas-height="canvas.height"
       :canvas-width="canvas.width"
