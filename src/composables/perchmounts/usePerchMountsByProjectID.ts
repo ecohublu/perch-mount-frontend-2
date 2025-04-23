@@ -1,8 +1,8 @@
 import { ref } from 'vue'
-import { getPerchMounts } from '@/services/perchAI/perchMounts'
-import type { PerchMount } from '@/types/perchMount'
+import { getPerchMountsByQuery } from '@/services/perchAI/perchMounts'
+import type { PerchMount, GetPerchMountsParams } from '@/types/perchMount'
 
-export function usePerchMounts() {
+export function usePerchMountsByQuery(query: GetPerchMountsParams) {
   const perchMounts = ref<Array<PerchMount>>([])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
@@ -10,7 +10,7 @@ export function usePerchMounts() {
     isLoading.value = true
     error.value = null
     try {
-      perchMounts.value = await getPerchMounts()
+      perchMounts.value = await getPerchMountsByQuery(query)
     } catch (err) {
       error.value = err as Error
       perchMounts.value = []

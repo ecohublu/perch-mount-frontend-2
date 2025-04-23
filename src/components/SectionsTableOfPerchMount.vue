@@ -2,7 +2,10 @@
   <div class="card">
     <Panel toggleable>
       <template #header>
-        <span class="font-bold text-2xl">Sections</span>
+        <div class="flex">
+          <span class="font-bold text-2xl mr-6">Sections</span>
+          <Button label="新增" size="small" variant="text" rounded icon="pi pi-plus" />
+        </div>
       </template>
       <DataTable
         v-model:expandedRows="expandedRows"

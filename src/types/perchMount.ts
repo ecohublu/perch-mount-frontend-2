@@ -1,6 +1,13 @@
 import type { Project } from '@/types/project'
 import type { Member } from '@/types/member'
 
+export interface GetPerchMountsParams {
+  project_ids?: string[] // UUID[]
+  claim_by_ids?: string[] // UUID[]
+  habitats?: string[]
+  terminated?: boolean
+}
+
 export type Habitat = 'artificial' | 'natural' | 'solar_panel'
 
 export interface PerchMount {
