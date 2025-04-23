@@ -25,9 +25,25 @@
             </div>
           </template>
         </Column>
-        <Column field="undetected_count" header="未辨識影像"></Column>
-        <Column field="unchecked_count" header="待空拍檢查影像"></Column>
-        <Column field="unreviewed_count" header="待物種檢視影像"></Column>
+        <Column field="undetected_count" header="未辨識影像"> </Column>
+        <Column field="unchecked_count" header="待空拍檢查影像">
+          <template #body="slotProps">
+            <GoMediaOperationByCountTag
+              :value="slotProps.data.unchecked_count"
+              operation="emptycheck"
+              :sectionID="slotProps.data.id"
+            ></GoMediaOperationByCountTag>
+          </template>
+        </Column>
+        <Column field="unreviewed_count" header="待物種檢視影像">
+          <template #body="slotProps">
+            <GoMediaOperationByCountTag
+              :value="slotProps.data.unreviewed_count"
+              operation="review"
+              :sectionID="slotProps.data.id"
+            ></GoMediaOperationByCountTag>
+          </template>
+        </Column>
         <Column field="reviewed_count" header="已辨識"></Column>
         <template #expansion="slotProps">
           <div class="grid grid-cols-12 grid-rows-2 gap-4">
@@ -78,10 +94,11 @@
 import { useSectionsByFilter } from '@/composables/sections/useSectionsByQuery'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import type { SectionsQuery } from '@/types/sections'
 
 import InfoItemCard from './cards/InfoItemCard.vue'
 import SectionSpan from './nameSpans/SectionSpan.vue'
-import type { SectionsQuery } from '@/types/sections'
+import GoMediaOperationByCountTag from './GoMediaOperationByCountTag.vue'
 
 const route = useRoute()
 const expandedRows = ref({})
