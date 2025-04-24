@@ -74,6 +74,19 @@ export type BoundingBox = {
   box_ymax: number
 }
 
+export interface ReviewedIndividual {
+  id?: string // optional 因為不是 required
+  taxon_order_by_human: number
+  box_xmin?: number | null
+  box_xmax?: number | null
+  box_ymin?: number | null
+  box_ymax?: number | null
+  has_prey: boolean
+  is_tagged: boolean
+  has_ring: boolean
+  ring_number?: boolean | null // 注意這裡是 Boolean，不是 string
+}
+
 export function createEmptyAIMissedReviewingIndividual(
   boundingBox: BoundingBox | null = null,
 ): AIMissedReviewingIndividual {

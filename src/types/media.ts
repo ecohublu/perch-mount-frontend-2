@@ -2,6 +2,7 @@ import type {
   Individual,
   ReviewingIndividual,
   AIMissedReviewingIndividual,
+  ReviewedIndividual,
 } from '@/types/individuals'
 import type { Behavior, Event } from '@/types/options'
 import type { SelectedOption } from '@/types/options'
@@ -83,6 +84,23 @@ export type ReviewingMedium = {
   individuals: ReviewingIndividual[]
   ai_missed_individuals: AIMissedReviewingIndividual[]
   note: string | null
+}
+
+export interface ReviewedMedium {
+  id: string
+  reviewed_at: string // ISO 格式的字串，例如 "2025-04-19T12:34:56Z"
+  reviewer_id: string
+  featured_by_id?: string | null
+  event_id?: string | null
+  behavior_id?: string | null
+  individuals: ReviewedIndividual[]
+}
+
+export interface CheckedMedium {
+  id: string // UUID
+  empty_checked_at: string // ISO DateTime string (e.g., "2025-04-24T13:45:00.000Z")
+  empty_checker_id: string // UUID
+  has_individual: boolean
 }
 
 export function createMediaQuery(params: Partial<MediaQuery> & { status: string }): MediaQuery {

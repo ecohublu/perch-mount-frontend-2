@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="test">
+  <div class="card">
     <div v-if="!isLoading && data.length && reviewingMedia.length" class="grid grid-cols-4 gap-4">
       <ReviewingMediumCard
         v-for="(medium, index) of data"
@@ -105,9 +105,5 @@ const handleMediumEditorClicked = (mediumIndex: number) => {
 const handleFeatureEditorClicked = (mediumIndex: number) => {
   featureEditorVisible.value = true
   featrueingIndex.value = mediumIndex
-}
-
-const test = () => {
-  console.log(reviewingMedia.value)
 }
 </script>
