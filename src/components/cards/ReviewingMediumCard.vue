@@ -2,7 +2,7 @@
   <Card>
     <template #title>
       <div class="flex justify-between">
-        <Checkbox v-model="localChecked" binary />
+        <Checkbox v-model="localChecked" binary @click.shift="handleShiftClicked" />
         <div class="flex">
           <Button
             :icon="`pi ${localReviewingMedium.selected_behavior ? 'pi-heart-fill' : 'pi-heart'}`"
@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { Medium, ReviewingMedium } from '@/types/media'
 import S3Medium from '@/components/S3Medium.vue'
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
@@ -111,6 +111,8 @@ const emit = defineEmits<{
   (e: 'update:reviewingMedium', value: ReviewingMedium): void
   (e: 'medium-editor-clicked'): void
   (e: 'feature-editor-clicked'): void
+  (e: 'selected'): void
+  (e: 'shift-selected'): void
 }>()
 
 const localChecked = computed({
@@ -128,5 +130,17 @@ const handleMediumEditorClicked = () => {
 }
 const handleFeatureEditorClicked = () => {
   emit('feature-editor-clicked')
+}
+
+watch(localChecked, (newVal, oldVal) => {
+  if (newVal) {
+    emit('selected')
+  }
+})
+
+const handleShiftClicked = (event: MouseEvent) => {
+  if (!localChecked.value) {
+    emit('shift-selected')
+  }
 }
 </script>

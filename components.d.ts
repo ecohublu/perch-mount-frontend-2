@@ -75,6 +75,7 @@ declare module 'vue' {
     ProjectCard: typeof import('./src/components/cards/ProjectCard.vue')['default']
     ProjectSpan: typeof import('./src/components/nameSpans/ProjectSpan.vue')['default']
     ProjectView: typeof import('./src/components/views/ProjectView.vue')['default']
+    ReviewBatchUpdatorPanel: typeof import('./src/components/forms/ReviewBatchUpdatorPanel.vue')['default']
     ReviewingIndividualsTable: typeof import('./src/components/tables/ReviewingIndividualsTable.vue')['default']
     ReviewingMediumCard: typeof import('./src/components/cards/ReviewingMediumCard.vue')['default']
     ReviewView: typeof import('./src/components/views/ReviewView.vue')['default']

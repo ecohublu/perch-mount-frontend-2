@@ -4,10 +4,12 @@
       <ReviewingMediumCard
         v-for="(medium, index) of data"
         :medium="medium"
-        v-model:checked="mediaChecks[index]"
+        v-model:checked="selects[index]"
         v-model:reviewing-medium="reviewingMedia[index]"
         @medium-editor-clicked="handleMediumEditorClicked(index)"
         @feature-editor-clicked="handleFeatureEditorClicked(index)"
+        @selected="handleSelected(index)"
+        @shift-selected="handleShiftSelected(index)"
       ></ReviewingMediumCard>
     </div>
 
@@ -17,7 +19,6 @@
   <Button class="mt-6" label="送出" @click="handleSubmitClicked()" />
 
   <Dialog v-model:visible="submitVisible" modal header="確認要送出嗎?" :style="{ width: '25rem' }">
-    <span>你選擇了 {{ selectCounts }} 個不是空拍的影像</span>
     <div class="flex justify-end gap-2">
       <Button
         type="button"
@@ -45,6 +46,18 @@
       :options="behaviorOptions"
     ></FeatureEditor>
   </Dialog>
+  <div class="fixed bottom-4 right-4 z-50">
+    <Button icon="pi pi-pencil" @click="batchUpdatorVisible = true" rounded />
+  </div>
+
+  <Drawer
+    v-model:visible="batchUpdatorVisible"
+    header="批次編輯"
+    position="right"
+    class="!w-full md:!w-80 lg:!w-[25rem]"
+  >
+    <ReviewBatchUpdatorPanel></ReviewBatchUpdatorPanel>
+  </Drawer>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
@@ -53,15 +66,17 @@ import { convertBehaviorsToSelectedOptions, type SelectedOption } from '@/types/
 import { type ReviewingMedium, type UncheckedMediaQuery } from '@/types/media'
 import { useReviewingMediaBySectionIDsAndPerchMountIDs } from '@/composables/media/useReviewingMediaSectionIDAndPerchMountID'
 import { useBehaviors } from '@/composables/options/useBehaviors'
+import { useBooleansSelector } from '@/composables/useABooleansSelector'
+
 import ReviewingMediumCard from '@/components/cards/ReviewingMediumCard.vue'
 import MediumEditor from '@/components/forms/MediumEditor.vue'
 import FeatureEditor from '@/components/forms/FeatureEditor.vue'
 import Loading from '@/components/Loading.vue'
+import ReviewBatchUpdatorPanel from '@/components/forms/ReviewBatchUpdatorPanel.vue'
 
 const props = defineProps<{
   query: UncheckedMediaQuery
 }>()
-const mediaChecks = ref<Array<boolean>>([])
 const reviewingMedia = ref<Array<ReviewingMedium>>([])
 const behaviorOptions = ref<Array<SelectedOption>>([])
 
@@ -70,6 +85,8 @@ const { data, isLoading, error, fetch } = useReviewingMediaBySectionIDsAndPerchM
   props.query.section_ids ? props.query.section_ids! : [],
   props.query.perch_mount_ids ? props.query.section_ids! : [],
 )
+
+const { selects, updatelast, selectFromLast, cancelAll } = useBooleansSelector()
 
 const {
   data: behaviors,
@@ -82,19 +99,17 @@ onMounted(async () => {
   await fetch()
   await fetchBehaviors()
   reviewingMedia.value = convertToReviewingMedia(data.value)
-  mediaChecks.value = Array(data.value.length).fill(false)
+  selects.value = Array(data.value.length).fill(false)
   behaviorOptions.value = convertBehaviorsToSelectedOptions(behaviors.value)
 })
 
-const selectCounts = ref(0)
-const submitVisible = ref(false)
-const mediumEditorVisible = ref(false)
-const featureEditorVisible = ref(false)
-const editingIndex = ref(0)
-const featrueingIndex = ref(0)
+const submitVisible = ref<boolean>(false)
+const mediumEditorVisible = ref<boolean>(false)
+const featureEditorVisible = ref<boolean>(false)
+const editingIndex = ref<number>(0)
+const featrueingIndex = ref<number>(0)
 
 const handleSubmitClicked = () => {
-  selectCounts.value = mediaChecks.value.filter((val) => val).length
   submitVisible.value = true
 }
 
@@ -106,4 +121,13 @@ const handleFeatureEditorClicked = (mediumIndex: number) => {
   featureEditorVisible.value = true
   featrueingIndex.value = mediumIndex
 }
+
+const handleSelected = (mediumIndex: number) => {
+  updatelast(mediumIndex)
+}
+const handleShiftSelected = (mediumIndex: number) => {
+  selectFromLast(mediumIndex)
+}
+
+const batchUpdatorVisible = ref<boolean>(false)
 </script>
