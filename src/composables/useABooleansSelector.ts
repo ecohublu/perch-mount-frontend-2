@@ -26,6 +26,12 @@ export function useBooleansSelector() {
       selects.value[i] = true
     }
   }
+  const useTrueIndexes = (): number[] => {
+    return selects.value.reduce((acc, value, index) => {
+      if (value) acc.push(index)
+      return acc
+    }, [] as number[])
+  }
   const cancelAll = () => {
     selects.value.forEach((selected, index) => {
       selects.value[index] = false
@@ -39,6 +45,7 @@ export function useBooleansSelector() {
     select,
     updatelast,
     selectFromLast,
+    useTrueIndexes,
     cancelAll,
   }
 }

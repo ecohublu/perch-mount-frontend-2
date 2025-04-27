@@ -81,6 +81,9 @@
       <Button label="變更環號" size="small" @click="handleRingNumberUpdateClicked"></Button>
     </div>
   </div>
+  <Divider />
+
+  <Button label="取消所有選取" severity="secondary" @click="handleCancelClicked"></Button>
 </template>
 <script setup lang="ts">
 import SpeciesSelector from '@/components/forms/SpeciesSelector.vue'
@@ -100,6 +103,7 @@ const emit = defineEmits<{
   (e: 'ring-requested', value: boolean): void
   (e: 'tag-requested', value: boolean): void
   (e: 'ring-number-requested', value: string | null): void
+  (e: 'cancel-requested'): void
 }>()
 
 const handleSpeciesUpdateClicked = () => {
@@ -117,5 +121,9 @@ const handleTagUpdateClicked = () => {
 }
 const handleRingNumberUpdateClicked = () => {
   emit('ring-number-requested', ringNumber.value)
+}
+
+const handleCancelClicked = () => {
+  emit('cancel-requested')
 }
 </script>

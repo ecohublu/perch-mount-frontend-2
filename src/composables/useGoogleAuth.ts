@@ -15,19 +15,8 @@ export function useGoogleAuth() {
         body: { id_token: idToken },
       })
 
-      const data = await res.json()
+      localStorage.setItem('token', res.token)
 
-      if (!res.ok) {
-        throw new Error(data.message || '登入失敗')
-      }
-
-      // 儲存 JWT
-      localStorage.setItem('token', data.token)
-
-      // 更新 Pinia 狀態
-      authStore.setUser(data.user)
-
-      // 導向首頁
       router.push('/')
     } catch (err) {
       console.error('Google login failed', err)

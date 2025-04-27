@@ -62,6 +62,7 @@
       @ring-requested="handleRingRequested"
       @tag-requested="handleTagRequested"
       @ring-number-requested="handleRingNumberRequested"
+      @cancel-requested="handleCancelRequested"
     ></ReviewBatchUpdatorPanel>
   </Drawer>
 </template>
@@ -79,6 +80,7 @@ import MediumEditor from '@/components/forms/MediumEditor.vue'
 import FeatureEditor from '@/components/forms/FeatureEditor.vue'
 import Loading from '@/components/Loading.vue'
 import ReviewBatchUpdatorPanel from '@/components/forms/ReviewBatchUpdatorPanel.vue'
+import type { SearchResult } from '@/types/species'
 
 const props = defineProps<{
   query: UncheckedMediaQuery
@@ -92,7 +94,7 @@ const { data, isLoading, error, fetch } = useReviewingMediaBySectionIDsAndPerchM
   props.query.perch_mount_ids ? props.query.section_ids! : [],
 )
 
-const { selects, updatelast, selectFromLast, cancelAll } = useBooleansSelector()
+const { selects, updatelast, selectFromLast, useTrueIndexes, cancelAll } = useBooleansSelector()
 
 const {
   data: behaviors,
@@ -136,9 +138,57 @@ const handleShiftSelected = (mediumIndex: number) => {
 }
 
 const batchUpdatorVisible = ref<boolean>(false)
-const handleSpeciesRequested = () => {}
-const handlePreyRequested = () => {}
-const handleRingRequested = () => {}
-const handleTagRequested = () => {}
-const handleRingNumberRequested = () => {}
+const handleSpeciesRequested = (selection: SearchResult | null) => {
+  for (const i of useTrueIndexes()) {
+    for (const individual of reviewingMedia.value[i].individuals) {
+      individual.selected_species = selection
+    }
+    for (const individual of reviewingMedia.value[i].ai_missed_individuals) {
+      individual.selected_species = selection
+    }
+  }
+}
+const handlePreyRequested = (hasPrey: boolean) => {
+  for (const i of useTrueIndexes()) {
+    for (const individual of reviewingMedia.value[i].individuals) {
+      individual.has_prey = hasPrey
+    }
+    for (const individual of reviewingMedia.value[i].ai_missed_individuals) {
+      individual.has_prey = hasPrey
+    }
+  }
+}
+const handleRingRequested = (hasRing: boolean) => {
+  for (const i of useTrueIndexes()) {
+    for (const individual of reviewingMedia.value[i].individuals) {
+      individual.has_ring = hasRing
+    }
+    for (const individual of reviewingMedia.value[i].ai_missed_individuals) {
+      individual.has_ring = hasRing
+    }
+  }
+}
+const handleTagRequested = (tagged: boolean) => {
+  for (const i of useTrueIndexes()) {
+    for (const individual of reviewingMedia.value[i].individuals) {
+      individual.is_tagged = tagged
+    }
+    for (const individual of reviewingMedia.value[i].ai_missed_individuals) {
+      individual.is_tagged = tagged
+    }
+  }
+}
+const handleRingNumberRequested = (ringNumber: string | null) => {
+  for (const i of useTrueIndexes()) {
+    for (const individual of reviewingMedia.value[i].individuals) {
+      individual.ring_number = ringNumber
+    }
+    for (const individual of reviewingMedia.value[i].ai_missed_individuals) {
+      individual.ring_number = ringNumber
+    }
+  }
+}
+const handleCancelRequested = () => {
+  cancelAll()
+}
 </script>
