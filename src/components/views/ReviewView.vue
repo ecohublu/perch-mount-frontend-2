@@ -10,15 +10,31 @@
         @feature-editor-clicked="handleFeatureEditorClicked(index)"
         @selected="handleSelected(index)"
         @shift-selected="handleShiftSelected(index)"
+        :class="{
+          'border-rose-300': failedMarks[index],
+          'border-2': failedMarks[index],
+        }"
       ></ReviewingMediumCard>
     </div>
 
     <div v-else><Loading></Loading></div>
   </div>
 
-  <Button class="mt-6" label="送出" @click="handleSubmitClicked()" />
+  <Button class="my-8" label="送出" @click="handleSubmitClicked()" />
 
   <Dialog v-model:visible="submitVisible" modal header="確認要送出嗎?" :style="{ width: '25rem' }">
+    <div class="my-8">
+      <div v-if="validatetionError"></div>
+      <div v-else-if="anyUnvalidated">Review 尚未完成，請繼續努力。</div>
+      <div v-else-if="submitted"></div>
+      <div v-else-if="submitting"></div>
+      <div v-else>
+        <span>你選了：</span>
+        <ul>
+          <li v-for="name in selectingSpecies" class="list-disc">{{ name }}</li>
+        </ul>
+      </div>
+    </div>
     <div class="flex justify-end gap-2">
       <Button
         type="button"
@@ -26,9 +42,15 @@
         severity="secondary"
         @click="submitVisible = false"
       ></Button>
-      <Button type="button" label="確認" @click="submitVisible = false"></Button>
+      <Button
+        v-if="!anyUnvalidated"
+        type="button"
+        label="確認"
+        @click="submitVisible = false"
+      ></Button>
     </div>
   </Dialog>
+
   <Drawer v-model:visible="mediumEditorVisible" header="影像資訊" position="full">
     <MediumEditor
       :medium="data[editingIndex]"
@@ -74,6 +96,7 @@ import { type ReviewingMedium, type UncheckedMediaQuery } from '@/types/media'
 import { useReviewingMediaBySectionIDsAndPerchMountIDs } from '@/composables/media/useReviewingMediaSectionIDAndPerchMountID'
 import { useBehaviors } from '@/composables/options/useBehaviors'
 import { useBooleansSelector } from '@/composables/useABooleansSelector'
+import { useReviewValidation } from '@/composables/media/useReviewValidation'
 
 import ReviewingMediumCard from '@/components/cards/ReviewingMediumCard.vue'
 import MediumEditor from '@/components/forms/MediumEditor.vue'
@@ -97,6 +120,19 @@ const { data, isLoading, error, fetch } = useReviewingMediaBySectionIDsAndPerchM
 const { selects, updatelast, selectFromLast, useTrueIndexes, cancelAll } = useBooleansSelector()
 
 const {
+  failedMarks,
+  anyUnvalidated,
+  submitted,
+  submitting,
+  selectingSpecies,
+  error: validatetionError,
+  initfailMarks,
+  refreshSelectingSpecies,
+  validateReviewingMedia,
+  submit,
+} = useReviewValidation()
+
+const {
   data: behaviors,
   isLoading: isBehaviorsLoading,
   error: behaviorErrors,
@@ -109,6 +145,7 @@ onMounted(async () => {
   reviewingMedia.value = convertToReviewingMedia(data.value)
   selects.value = Array(data.value.length).fill(false)
   behaviorOptions.value = convertBehaviorsToSelectedOptions(behaviors.value)
+  initfailMarks(data.value.length)
 })
 
 const submitVisible = ref<boolean>(false)
@@ -118,6 +155,8 @@ const editingIndex = ref<number>(0)
 const featrueingIndex = ref<number>(0)
 
 const handleSubmitClicked = () => {
+  validateReviewingMedia(reviewingMedia.value)
+  refreshSelectingSpecies(reviewingMedia.value)
   submitVisible.value = true
 }
 

@@ -33,6 +33,7 @@
     <div class="bg-violet-300 border-violet-300"></div>
     <div class="bg-fuchsia-300 border-fuchsia-300"></div>
     <div class="bg-rose-300 border-rose-300"></div>
+    <div class="border-red-500"></div>
   </div>
 </template>
 
