@@ -56,7 +56,13 @@
     position="right"
     class="!w-full md:!w-80 lg:!w-[25rem]"
   >
-    <ReviewBatchUpdatorPanel></ReviewBatchUpdatorPanel>
+    <ReviewBatchUpdatorPanel
+      @species-requested="handleSpeciesRequested"
+      @prey-requested="handlePreyRequested"
+      @ring-requested="handleRingRequested"
+      @tag-requested="handleTagRequested"
+      @ring-number-requested="handleRingNumberRequested"
+    ></ReviewBatchUpdatorPanel>
   </Drawer>
 </template>
 <script setup lang="ts">
@@ -130,4 +136,9 @@ const handleShiftSelected = (mediumIndex: number) => {
 }
 
 const batchUpdatorVisible = ref<boolean>(false)
+const handleSpeciesRequested = () => {}
+const handlePreyRequested = () => {}
+const handleRingRequested = () => {}
+const handleTagRequested = () => {}
+const handleRingNumberRequested = () => {}
 </script>
