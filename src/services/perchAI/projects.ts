@@ -6,3 +6,7 @@ const ROOT_PROJECTS_PATH = '/api/perchai/projects/'
 export const getProjects = async (): Promise<Array<Project>> => {
   return await perchAIApi.get<Array<Project>>(ROOT_PROJECTS_PATH)
 }
+
+export const getProjectByID = async (id: String): Promise<Project> => {
+  return await perchAIApi.get<Project>(`${ROOT_PROJECTS_PATH}${id}/`)
+}

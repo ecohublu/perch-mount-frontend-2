@@ -1,12 +1,11 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { getSectionsByID } from '@/services/perchAI/sections'
 import type { Section } from '@/types/sections'
 
-const section = ref<Section | null>(null)
-const isLoading = ref(false)
-const error = ref<Error | null>(null)
-
 export function useSectionsByID(id: string) {
+  const section = ref<Section | null>(null)
+  const isLoading = ref(false)
+  const error = ref<Error | null>(null)
   const fetch = async () => {
     isLoading.value = true
     error.value = null
@@ -20,8 +19,20 @@ export function useSectionsByID(id: string) {
     }
   }
 
+  const hasAnyMedia = computed(() => {
+    if (!section.value) return false
+    return (
+      section.value.accidental_count > 0 ||
+      section.value.unchecked_count > 0 ||
+      section.value.unreviewed_count > 0 ||
+      section.value.reviewed_count > 0 ||
+      section.value.undetected_count > 0
+    )
+  })
+
   return {
     data: section,
+    hasAnyMedia,
     isLoading,
     error,
     fetch,

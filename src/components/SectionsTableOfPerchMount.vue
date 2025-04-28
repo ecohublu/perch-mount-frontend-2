@@ -4,7 +4,14 @@
       <template #header>
         <div class="flex">
           <span class="font-bold text-2xl mr-6">Sections</span>
-          <Button label="新增" size="small" variant="text" rounded icon="pi pi-plus" />
+          <Button
+            label="新增"
+            size="small"
+            variant="text"
+            rounded
+            icon="pi pi-plus"
+            @click="AddSectionVisible = !AddSectionVisible"
+          />
         </div>
       </template>
       <DataTable
@@ -16,7 +23,13 @@
         <Column expander style="width: 5rem" />
         <Column field="swapped_date" header="回收日期">
           <template #body="slotProps">
-            <SectionSpan :id="slotProps.data.id" :name="slotProps.data.swapped_date"></SectionSpan>
+            <div class="flex gap-4">
+              <Tag v-if="!hasAnyMedia[slotProps.index]" value="New" severity="success"></Tag>
+              <SectionSpan
+                :id="slotProps.data.id"
+                :name="slotProps.data.swapped_date"
+              ></SectionSpan>
+            </div>
           </template>
         </Column>
         <Column header="回收人員">
@@ -91,6 +104,14 @@
       </DataTable>
     </Panel>
   </div>
+  <Dialog
+    v-model:visible="AddSectionVisible"
+    modal
+    header="新增 Section"
+    :style="{ width: '40rem' }"
+  >
+    <AddSectionForm :perch-mount-id="id"></AddSectionForm>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -99,14 +120,16 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { SectionsQuery } from '@/types/sections'
 
-import InfoItemCard from './cards/InfoItemCard.vue'
-import SectionSpan from './nameSpans/SectionSpan.vue'
-import GoMediaOperationByCountTag from './GoMediaOperationByCountTag.vue'
+import AddSectionForm from '@/components/forms/AddSectionForm.vue'
+import InfoItemCard from '@/components/cards/InfoItemCard.vue'
+import SectionSpan from '@/components/nameSpans/SectionSpan.vue'
+import GoMediaOperationByCountTag from '@/components/GoMediaOperationByCountTag.vue'
 
 const route = useRoute()
 const expandedRows = ref({})
+const AddSectionVisible = ref<boolean>(false)
 const props = defineProps<{
-  id: String
+  id: string
 }>()
 
 const filter: SectionsQuery = {
@@ -116,6 +139,6 @@ const filter: SectionsQuery = {
   swapped_date_to: null,
 }
 
-const { data: sections, isLoading, error, fetch } = useSectionsByFilter(filter)
+const { data: sections, hasAnyMedia, isLoading, error, fetch } = useSectionsByFilter(filter)
 onMounted(fetch)
 </script>

@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddSectionForm: typeof import('./src/components/forms/AddSectionForm.vue')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
@@ -22,6 +23,7 @@ declare module 'vue' {
     copy: typeof import('./src/components/nameSpans/PerchMountSpan copy.vue')['default']
     CustomColorBadge: typeof import('./src/components/CustomColorBadge.vue')['default']
     DataTable: typeof import('primevue/datatable')['default']
+    DeveloperIsWorking: typeof import('./src/components/DeveloperIsWorking.vue')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']
     Drawer: typeof import('primevue/drawer')['default']
@@ -61,6 +63,7 @@ declare module 'vue' {
     Menu: typeof import('primevue/menu')['default']
     Message: typeof import('primevue/message')['default']
     MeterGroup: typeof import('primevue/metergroup')['default']
+    MultiSelect: typeof import('primevue/multiselect')['default']
     Panel: typeof import('primevue/panel')['default']
     PendingPerchMountsView: typeof import('./src/components/views/PendingPerchMountsView.vue')['default']
     PerchMountCard: typeof import('./src/components/cards/PerchMountCard.vue')['default']
@@ -102,6 +105,7 @@ declare module 'vue' {
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     Toast: typeof import('primevue/toast')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
+    ToggleSwitch: typeof import('primevue/toggleswitch')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
   export interface ComponentCustomProperties {

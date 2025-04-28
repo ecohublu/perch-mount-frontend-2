@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { getPerchMountsByQuery } from '@/services/perchAI/perchMounts'
 import type { PerchMount, GetPerchMountsParams } from '@/types/perchMount'
 
@@ -18,8 +18,17 @@ export function usePerchMountsByQuery(query: GetPerchMountsParams) {
       isLoading.value = false
     }
   }
+
+  const workingCount = computed(
+    () => perchMounts.value.filter((m) => m.terminated === false).length,
+  )
+  const terminatedCount = computed(
+    () => perchMounts.value.filter((m) => m.terminated === true).length,
+  )
   return {
     data: perchMounts,
+    workingCount,
+    terminatedCount,
     isLoading,
     error,
     fetch,

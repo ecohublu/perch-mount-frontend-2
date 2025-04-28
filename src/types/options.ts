@@ -1,3 +1,9 @@
+export interface Option {
+  name?: string
+  model_name?: string
+  id: string
+}
+
 export interface Camera {
   model_name: string
   id: string
@@ -23,13 +29,13 @@ export interface SelectedOption {
   name: string
 }
 
-export function convertBehaviorsToSelectedOptions(behaviors: Behavior[]): SelectedOption[] {
-  const options = [] as SelectedOption[]
-  for (const behavior of behaviors) {
-    options.push({
-      code: behavior.id,
-      name: behavior.name,
+export function convertOptionsToSelectedOptions(options: Option[]): SelectedOption[] {
+  const selectedOptions = [] as SelectedOption[]
+  for (const option of options) {
+    selectedOptions.push({
+      code: option.id,
+      name: option.name ? option.name! : option.model_name!,
     })
   }
-  return options
+  return selectedOptions
 }

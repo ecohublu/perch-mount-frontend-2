@@ -1,25 +1,26 @@
 import { ref } from 'vue'
-import { getProjects } from '@/services/perchAI/projects'
-import type { Project } from '@/types/project'
+import { getMembers } from '@/services/perchAI/members'
+import type { Member } from '@/types/member'
 
-export function useProjects() {
-  const projects = ref<Array<Project>>([])
+export function useMembers() {
+  const members = ref<Member[]>([])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
   const fetch = async () => {
     isLoading.value = true
     error.value = null
     try {
-      projects.value = await getProjects()
+      members.value = await getMembers()
     } catch (err) {
       error.value = err as Error
-      projects.value = []
+      members.value = []
     } finally {
       isLoading.value = false
     }
   }
+
   return {
-    data: projects,
+    data: members,
     isLoading,
     error,
     fetch,

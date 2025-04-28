@@ -1,25 +1,26 @@
 import { ref } from 'vue'
-import { getProjects } from '@/services/perchAI/projects'
-import type { Project } from '@/types/project'
+import { getMountTypes } from '@/services/perchAI/options'
+import type { MountType } from '@/types/options'
 
-export function useProjects() {
-  const projects = ref<Array<Project>>([])
+export function useMountTypes() {
+  const mountTypes = ref<MountType[]>([])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
   const fetch = async () => {
     isLoading.value = true
     error.value = null
     try {
-      projects.value = await getProjects()
+      mountTypes.value = await getMountTypes()
     } catch (err) {
       error.value = err as Error
-      projects.value = []
+      mountTypes.value = []
     } finally {
       isLoading.value = false
     }
   }
+
   return {
-    data: projects,
+    data: mountTypes,
     isLoading,
     error,
     fetch,

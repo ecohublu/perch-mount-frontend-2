@@ -1,3 +1,5 @@
+import type { SelectedOption } from './options'
+
 export interface Member {
   id: string
   user_name: string | null
@@ -12,4 +14,14 @@ export interface Member {
   is_super_admin: boolean
   activated: boolean
   blocked: boolean
+}
+
+export function convertMembersToSelectedOptions(members: Member[]): SelectedOption[] {
+  const selectedOptions = [] as SelectedOption[]
+  for (const member of members)
+    selectedOptions.push({
+      code: member.id,
+      name: member.display_name ? member.display_name : `${member.last_name} ${member.first_name}`,
+    })
+  return selectedOptions
 }

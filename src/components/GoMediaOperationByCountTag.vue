@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.value != 0 && (sectionID || perchMountID)">
+  <div v-if="props.value && (sectionID || perchMountID)">
     <router-link :to="getRouterTo()">
       <Tag :value="value" severity="warn" rounded />
     </router-link>

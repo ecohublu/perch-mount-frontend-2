@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { convertToReviewingMedia } from '@/types/media'
-import { convertBehaviorsToSelectedOptions, type SelectedOption } from '@/types/options'
+import { convertOptionsToSelectedOptions, type SelectedOption } from '@/types/options'
 import { type ReviewingMedium, type UncheckedMediaQuery } from '@/types/media'
 import { useReviewingMediaBySectionIDsAndPerchMountIDs } from '@/composables/media/useReviewingMediaSectionIDAndPerchMountID'
 import { useBehaviors } from '@/composables/options/useBehaviors'
@@ -144,7 +144,7 @@ onMounted(async () => {
   await fetchBehaviors()
   reviewingMedia.value = convertToReviewingMedia(data.value)
   selects.value = Array(data.value.length).fill(false)
-  behaviorOptions.value = convertBehaviorsToSelectedOptions(behaviors.value)
+  behaviorOptions.value = convertOptionsToSelectedOptions(behaviors.value)
   initfailMarks(data.value.length)
 })
 

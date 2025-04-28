@@ -142,7 +142,6 @@ import MemberNameWithPhoto from '@/components/MemberNameWithPhoto.vue'
 import ClaimButton from '@/components/ClaimButton.vue'
 import GoMediaOperationSpan from '@/components/nameSpans/GoMediaOperationTag.vue'
 
-const route = useRoute()
 const props = defineProps<{ id: String }>()
 
 const auth = useAuth()
