@@ -23,6 +23,7 @@ declare module 'vue' {
     copy: typeof import('./src/components/nameSpans/PerchMountSpan copy.vue')['default']
     CustomColorBadge: typeof import('./src/components/CustomColorBadge.vue')['default']
     DataTable: typeof import('primevue/datatable')['default']
+    DatePicker: typeof import('primevue/datepicker')['default']
     DeveloperIsWorking: typeof import('./src/components/DeveloperIsWorking.vue')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']

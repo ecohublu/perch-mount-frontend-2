@@ -19,20 +19,15 @@ export function useSectionsByID(id: string) {
     }
   }
 
-  const hasAnyMedia = computed(() => {
+  const isNew = computed(() => {
     if (!section.value) return false
-    return (
-      section.value.accidental_count > 0 ||
-      section.value.unchecked_count > 0 ||
-      section.value.unreviewed_count > 0 ||
-      section.value.reviewed_count > 0 ||
-      section.value.undetected_count > 0
-    )
+
+    return section.value.start_time === null && section.value.end_time === null
   })
 
   return {
     data: section,
-    hasAnyMedia,
+    isNew,
     isLoading,
     error,
     fetch,

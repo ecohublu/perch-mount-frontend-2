@@ -1,6 +1,25 @@
 import type { Member } from '@/types/member'
-import type { MountType } from '@/types/options'
+import type { MountType, SelectedOption } from '@/types/options'
 import type { Camera } from '@/types/options'
+
+export interface NewSection {
+  perch_mount_id: string
+  mount_type_id: string
+  camera_id: string
+  swapped_date: string // e.g. "2025-01-14"
+  note?: string
+  valid: boolean
+}
+
+export interface AddingSection {
+  perch_mount_id: string | null
+  swapped_date: Date | null // e.g. "2025-01-14"
+  selectedCamera: SelectedOption | null
+  selectedMountType: SelectedOption | null
+  selectedMembers: SelectedOption[]
+  note: string | null
+  valid: boolean
+}
 
 export interface Section {
   id: string

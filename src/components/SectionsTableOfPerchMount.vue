@@ -24,7 +24,7 @@
         <Column field="swapped_date" header="回收日期">
           <template #body="slotProps">
             <div class="flex gap-4">
-              <Tag v-if="!hasAnyMedia[slotProps.index]" value="New" severity="success"></Tag>
+              <Tag v-if="areNew[slotProps.index]" value="New" severity="success"></Tag>
               <SectionSpan
                 :id="slotProps.data.id"
                 :name="slotProps.data.swapped_date"
@@ -108,7 +108,7 @@
     v-model:visible="AddSectionVisible"
     modal
     header="新增 Section"
-    :style="{ width: '40rem' }"
+    :style="{ width: '30rem' }"
   >
     <AddSectionForm :perch-mount-id="id"></AddSectionForm>
   </Dialog>
@@ -139,6 +139,6 @@ const filter: SectionsQuery = {
   swapped_date_to: null,
 }
 
-const { data: sections, hasAnyMedia, isLoading, error, fetch } = useSectionsByFilter(filter)
+const { data: sections, areNew, isLoading, error, fetch } = useSectionsByFilter(filter)
 onMounted(fetch)
 </script>

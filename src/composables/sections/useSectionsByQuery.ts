@@ -21,23 +21,17 @@ export function useSectionsByFilter(initialFilter: SectionsQuery = {}) {
     }
   }
 
-  const hasAnyMedia = computed(() => {
+  const areNew = computed(() => {
     const results = []
     for (const section of sections.value) {
-      results.push(
-        section.accidental_count > 0 ||
-          section.unchecked_count > 0 ||
-          section.unreviewed_count > 0 ||
-          section.reviewed_count > 0 ||
-          section.undetected_count > 0,
-      )
+      results.push(!section.start_time && !section.end_time)
     }
     return results
   })
 
   return {
     data: sections,
-    hasAnyMedia,
+    areNew,
     isLoading,
     error,
     fetch,

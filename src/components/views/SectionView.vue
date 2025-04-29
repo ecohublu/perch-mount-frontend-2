@@ -3,12 +3,12 @@
     <Panel toggleable>
       <template #header>
         <div class="flex items-center gap-4">
-          <Tag v-if="!hasAnyMedia" value="New" severity="success"></Tag>
+          <Tag v-if="!isNew" value="New" severity="success"></Tag>
           <span class="font-bold text-2xl">
             {{ perchMount?.perch_mount_name }} {{ section?.swapped_date }}
           </span>
           <Button
-            v-if="!hasAnyMedia"
+            v-if="isNew"
             icon="pi pi-download"
             label="下載上傳資料檔"
             severity="success"
@@ -117,7 +117,7 @@ const props = defineProps<{
 
 const {
   data: section,
-  hasAnyMedia,
+  isNew,
   isLoading: isSectionLoading,
   error: sectionError,
   fetch: fetchSection,
