@@ -7,7 +7,8 @@ export interface NewSection {
   mount_type_id: string
   camera_id: string
   swapped_date: string // e.g. "2025-01-14"
-  note?: string
+  swapper_ids: string[]
+  note: string | null
   valid: boolean
 }
 
@@ -49,4 +50,16 @@ export interface SectionsQuery {
   swapped_date_from?: string | null // ISO 字串
   swapped_date_to?: string | null // ISO 字串
   swapper_ids?: string[] // 多個 UUID，用逗號分隔
+}
+
+export function convertAddingToNewSection(section: AddingSection): NewSection {
+  return {
+    perch_mount_id: section.perch_mount_id!,
+    mount_type_id: section.selectedMountType?.code!,
+    camera_id: section.selectedCamera?.code!,
+    swapped_date: section.swapped_date!.toISOString().split('T')[0],
+    swapper_ids: section.selectedMembers.map((member) => member.code),
+    note: section.note,
+    valid: section.valid,
+  }
 }

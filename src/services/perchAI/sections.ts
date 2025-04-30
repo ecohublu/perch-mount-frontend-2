@@ -1,4 +1,4 @@
-import type { Section, SectionsQuery } from '@/types/sections'
+import type { NewSection, Section, SectionsQuery } from '@/types/sections'
 import { perchAIApi } from '@/services/perchAI/api'
 
 const ROOT_SECTIONS_PATH = '/api/perchai/sections/'
@@ -27,4 +27,8 @@ export async function getSectionsByFilter(params: SectionsQuery): Promise<any> {
 
 export async function getSectionsByID(id: string): Promise<Section> {
   return await perchAIApi.get<Section>(`${ROOT_SECTIONS_PATH}${id}/`)
+}
+
+export async function addSection(section: NewSection) {
+  return await perchAIApi.post<Section>(`${ROOT_SECTIONS_PATH}`, { body: section })
 }

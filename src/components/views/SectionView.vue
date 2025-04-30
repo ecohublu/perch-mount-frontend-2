@@ -3,7 +3,7 @@
     <Panel toggleable>
       <template #header>
         <div class="flex items-center gap-4">
-          <Tag v-if="!isNew" value="New" severity="success"></Tag>
+          <Tag v-if="isNew" value="New" severity="success"></Tag>
           <span class="font-bold text-2xl">
             {{ perchMount?.perch_mount_name }} {{ section?.swapped_date }}
           </span>

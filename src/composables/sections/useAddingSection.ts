@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 
-import type { AddingSection } from '@/types/sections'
+import { convertAddingToNewSection, type AddingSection, type Section } from '@/types/sections'
+import { addSection } from '@/services/perchAI/sections'
 
 export function useAddingSection() {
   const section = ref<AddingSection>({
@@ -14,15 +15,29 @@ export function useAddingSection() {
   })
   const valid = ref<boolean>(false)
   const validate = () => {
-    return (
-      section.value &&
-      section.value.perch_mount_id &&
-      section.value.swapped_date &&
-      section.value.selectedCamera &&
-      section.value.selectedMembers &&
-      section.value.selectedMountType
-    )
+    valid.value =
+      section.value !== null &&
+      section.value.perch_mount_id !== null &&
+      section.value.swapped_date !== null &&
+      section.value.selectedCamera !== null &&
+      section.value.selectedMembers !== null &&
+      section.value.selectedMountType !== null
+  }
+  const submitting = ref<boolean>(false)
+  const addedSection = ref<Section | null>(null)
+  const submitError = ref<Error | null>(null)
+  const submit = async () => {
+    submitting.value = true
+    const newSection = convertAddingToNewSection(section.value)
+    console.log(newSection)
+    try {
+      addedSection.value = await addSection(newSection)
+      submitting.value = false
+    } catch (err) {
+      submitError.value = err as Error
+      submitting.value = false
+    }
   }
 
-  return { section, valid, validate }
+  return { section, valid, validate, submitting, addedSection, submitError, submit }
 }
