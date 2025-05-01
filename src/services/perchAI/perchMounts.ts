@@ -50,3 +50,18 @@ export const getPerchMountsCounts = async (): Promise<Array<PerchMountCount>> =>
 export const getPerchMountCountByID = async (id: String): Promise<PerchMountCount> => {
   return await perchAIApi.get<PerchMountCount>(`${ROOT_PERCH_MOUNT_PATH}${id}/pending_counts/`)
 }
+
+export const prioritizePerchMountByID = async (id: String) => {
+  await perchAIApi.post(`${ROOT_PERCH_MOUNT_PATH}${id}/priority/`)
+}
+
+export const deprioritizePerchMountByID = async (id: String) => {
+  await perchAIApi.del(`${ROOT_PERCH_MOUNT_PATH}${id}/priority/`)
+}
+export const activatePerchMountByID = async (id: String) => {
+  await perchAIApi.post(`${ROOT_PERCH_MOUNT_PATH}${id}/activation/`)
+}
+
+export const deactivatePerchMountByID = async (id: String) => {
+  await perchAIApi.del(`${ROOT_PERCH_MOUNT_PATH}${id}/activation/`)
+}

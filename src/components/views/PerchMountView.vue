@@ -104,21 +104,39 @@
                 severity="secondary"
                 rounded
                 text
+                @click="handlePriorityClicked"
               ></Button>
               <Button
-                v-else="!perchMount?.is_priority"
+                v-else
                 icon="pi pi-bookmark"
                 label="取消優先"
                 severity="secondary"
                 rounded
                 text
+                @click="handlePriorityClicked"
               ></Button>
             </div>
-            <div v-if="auth.currentUser?.is_super_admin">
-              <Button icon="pi pi-trash" label="撤銷" severity="secondary" rounded text></Button>
+            <div v-if="auth.currentUser?.is_super_admin && !perchMount?.terminated">
+              <Button
+                icon="pi pi-trash"
+                label="撤銷"
+                severity="secondary"
+                rounded
+                text
+                @click="handleActivationClicked"
+              ></Button>
             </div>
           </div>
-          <span class="text-surface-500 dark:text-surface-400">Updated 2 hours ago</span>
+        </div>
+        <div v-if="auth.currentUser?.is_super_admin && perchMount?.terminated">
+          <Button
+            icon="pi pi-replay"
+            label="恢復撤銷"
+            severity="secondary"
+            rounded
+            text
+            @click="handleActivationClicked"
+          ></Button>
         </div>
       </template>
     </Panel>
@@ -141,6 +159,11 @@ import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import MemberNameWithPhoto from '@/components/MemberNameWithPhoto.vue'
 import ClaimButton from '@/components/ClaimButton.vue'
 import GoMediaOperationSpan from '@/components/nameSpans/GoMediaOperationTag.vue'
+import {
+  deprioritizePerchMountByID,
+  prioritizePerchMountByID,
+} from '@/services/perchAI/perchMounts'
+import { usePerchMountStatus } from '@/composables/perchmounts/usePerchMountStatus'
 
 const props = defineProps<{ id: String }>()
 
@@ -159,6 +182,14 @@ const {
   error: perchMountCountError,
   fetch: fetchPerchMountCount,
 } = usePerchMountCountByID(props.id)
+
+const {
+  error: statusError,
+  prioritize,
+  deprioritize,
+  activate,
+  deactivate,
+} = usePerchMountStatus(props.id)
 
 onMounted(fetchPerchMount)
 onMounted(fetchPerchMountCount)
@@ -185,4 +216,22 @@ watch(perchMountCount, (updatedData) => {
     progressValues.value = defaultProgressValues
   }
 })
+
+const handlePriorityClicked = async () => {
+  if (perchMount.value?.is_priority) {
+    await deprioritize()
+  } else {
+    await prioritize()
+  }
+  await fetchPerchMount()
+}
+
+const handleActivationClicked = async () => {
+  if (perchMount.value?.terminated) {
+    await activate()
+  } else {
+    await deactivate()
+  }
+  await fetchPerchMount()
+}
 </script>
