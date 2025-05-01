@@ -127,7 +127,7 @@
       <div v-if="isDeleting">section deleting...</div>
       <div v-else-if="deleted">
         <Message severity="success">
-          <span>刪除成功</span>
+          <span>刪除成功，</span>
           <span
             >回到
             <Tag severity="success">

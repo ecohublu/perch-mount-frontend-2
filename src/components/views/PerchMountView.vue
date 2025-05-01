@@ -78,7 +78,25 @@
             <router-link v-if="perchMount?.claimer" :to="`/app/members/${perchMount?.claimer?.id}`">
               <MemberNameWithPhoto :member="perchMount?.claimer"></MemberNameWithPhoto>
             </router-link>
-            <ClaimButton v-else label="我要認領~"></ClaimButton>
+
+            <Button
+              v-else
+              icon="pi pi-check-circle"
+              label="我要認領~"
+              severity="secondary"
+              size="small"
+              rounded
+              @click="handleClaimClicked"
+            />
+            <Button
+              v-if="auth.currentUser?.id == perchMount?.claimer?.id"
+              icon="pi pi-times"
+              label="取消認領"
+              severity="secondary"
+              size="small"
+              rounded
+              @click="handleUnclaimClicked"
+            />
           </InfoItemCard>
         </div>
         <div class="col-span-1">
@@ -145,9 +163,9 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { usePerchMountByID } from '@/composables/perchmounts/usePerchMount'
 import { usePerchMountCountByID } from '@/composables/perchmounts/usePengingCount'
+import { usePerchMountStatus } from '@/composables/perchmounts/usePerchMountStatus'
 import { useAuth } from '@/composables/useAuth'
 import { onMounted } from 'vue'
 import { convertToProportion } from '@/types/perchMount'
@@ -157,13 +175,7 @@ import Point from '@/components/Point.vue'
 import MediaCountCard from '@/components/cards/MediaCountCard.vue'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import MemberNameWithPhoto from '@/components/MemberNameWithPhoto.vue'
-import ClaimButton from '@/components/ClaimButton.vue'
 import GoMediaOperationSpan from '@/components/nameSpans/GoMediaOperationTag.vue'
-import {
-  deprioritizePerchMountByID,
-  prioritizePerchMountByID,
-} from '@/services/perchAI/perchMounts'
-import { usePerchMountStatus } from '@/composables/perchmounts/usePerchMountStatus'
 
 const props = defineProps<{ id: String }>()
 
@@ -189,6 +201,8 @@ const {
   deprioritize,
   activate,
   deactivate,
+  claim,
+  unclaim,
 } = usePerchMountStatus(props.id)
 
 onMounted(fetchPerchMount)
@@ -232,6 +246,15 @@ const handleActivationClicked = async () => {
   } else {
     await deactivate()
   }
+  await fetchPerchMount()
+}
+
+const handleClaimClicked = async () => {
+  await claim()
+  await fetchPerchMount()
+}
+const handleUnclaimClicked = async () => {
+  await unclaim()
   await fetchPerchMount()
 }
 </script>

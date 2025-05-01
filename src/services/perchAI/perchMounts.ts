@@ -65,3 +65,11 @@ export const activatePerchMountByID = async (id: String) => {
 export const deactivatePerchMountByID = async (id: String) => {
   await perchAIApi.del(`${ROOT_PERCH_MOUNT_PATH}${id}/activation/`)
 }
+
+export const claimPerchMountByID = async (id: String) => {
+  await perchAIApi.post(`${ROOT_PERCH_MOUNT_PATH}${id}/claimby/me/`)
+}
+
+export const unclaimPerchMountByID = async (id: String) => {
+  await perchAIApi.del(`${ROOT_PERCH_MOUNT_PATH}${id}/claimby/me/`)
+}
