@@ -32,3 +32,7 @@ export async function getSectionsByID(id: string): Promise<Section> {
 export async function addSection(section: NewSection) {
   return await perchAIApi.post<Section>(`${ROOT_SECTIONS_PATH}`, { body: section })
 }
+
+export async function deleteSectionByID(id: string) {
+  return await perchAIApi.del(`${ROOT_SECTIONS_PATH}${id}/`)
+}

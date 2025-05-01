@@ -97,19 +97,75 @@
           <InfoItemCard title="Note">{{ section?.note }}</InfoItemCard>
         </div>
       </div>
+      <template #footer>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <div v-if="isNew">
+              <Button
+                icon="pi pi-trash"
+                label="刪除"
+                severity="secondary"
+                rounded
+                text
+                @click="deleteVisible = true"
+              ></Button>
+            </div>
+          </div>
+          <span v-if="durationDay" class="text-surface-500 dark:text-surface-400"
+            >運作了 {{ durationDay }} 天</span
+          >
+          <span v-else class="text-surface-500 dark:text-surface-400">運作了 - 天</span>
+        </div>
+      </template>
     </Panel>
+    <Dialog
+      v-model:visible="deleteVisible"
+      modal
+      header="確定要刪除 Section 嗎？"
+      :style="{ width: '25rem' }"
+    >
+      <div v-if="isDeleting">section deleting...</div>
+      <div v-else-if="deleted">
+        <Message severity="success">
+          <span>刪除成功</span>
+          <span
+            >回到
+            <Tag severity="success">
+              <PerchMountSpan
+                :id="perchMount?.id!"
+                :name="perchMount?.perch_mount_name!"
+              ></PerchMountSpan>
+            </Tag>
+          </span>
+        </Message>
+      </div>
+      <div v-else-if="deleteError">
+        <Message severity="error">{{ deleteError }}</Message>
+      </div>
+      <div v-if="!deleted" class="flex justify-end gap-2 mt-6">
+        <Button
+          type="button"
+          label="取消"
+          severity="secondary"
+          @click="deleteVisible = false"
+        ></Button>
+        <Button type="button" label="確定" @click="deleteClicked"></Button></div
+    ></Dialog>
   </div>
 </template>
 <script setup lang="ts">
+import { onMounted, ref, watch } from 'vue'
 import { usePerchMountByID } from '@/composables/perchmounts/usePerchMount'
 import { useSectionsByID } from '@/composables/sections/useSectionsByID'
-import { onMounted, ref, watch } from 'vue'
+import { useSectionDeleteByID } from '@/composables/sections/useSectionDelete'
 import type { PerchMount } from '@/types/perchMount'
 
 import PerchMountSpan from '@/components/nameSpans/PerchMountSpan.vue'
 import GoMediaOperationTag from '@/components/nameSpans/GoMediaOperationTag.vue'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import MediaCountCard from '@/components/cards/MediaCountCard.vue'
+
+const deleteVisible = ref<boolean>(false)
 
 const props = defineProps<{
   id: string
@@ -118,10 +174,18 @@ const props = defineProps<{
 const {
   data: section,
   isNew,
+  durationDay,
   isLoading: isSectionLoading,
   error: sectionError,
   fetch: fetchSection,
 } = useSectionsByID(props.id)
+
+const {
+  deleted,
+  isDeleting,
+  error: deleteError,
+  fetch: deleteFetch,
+} = useSectionDeleteByID(props.id)
 
 const perchMount = ref<PerchMount | null>(null)
 const isPerchMountLoading = ref<boolean | null>(false)
@@ -143,4 +207,8 @@ watch(section, async (updatedSection) => {
 })
 
 onMounted(fetchSection)
+
+const deleteClicked = () => {
+  deleteFetch()
+}
 </script>

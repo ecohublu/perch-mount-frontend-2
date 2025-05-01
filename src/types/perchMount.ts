@@ -1,5 +1,6 @@
 import type { Project } from '@/types/project'
 import type { Member } from '@/types/member'
+import type { SelectedOption } from './options'
 
 export interface GetPerchMountsParams {
   project_ids?: string[] // UUID[]
@@ -89,4 +90,15 @@ export function convertToProportion(input: PerchMountCount): PerchMountCountProp
     unreviewed: Math.floor((unreviewed_count / total) * 100),
     reviewed: Math.floor((reviewed_count / total) * 100),
   }
+}
+
+export function convertPerchMountsToSelectedOptions(perchMounts: PerchMount[]): SelectedOption[] {
+  const selectedOptions = [] as SelectedOption[]
+  for (const perchMount of perchMounts) {
+    selectedOptions.push({
+      code: perchMount.id,
+      name: perchMount.perch_mount_name,
+    })
+  }
+  return selectedOptions
 }

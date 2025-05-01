@@ -15,11 +15,17 @@
   <div v-else>
     <div class="flex flex-col gap-2 my-6">
       <label>棲架 ID *</label>
-      <InputText
-        v-model="addingSection.perch_mount_id"
-        :invalid="!addingSection.perch_mount_id"
-        disabled
-      />
+      <Select
+        v-model="addingSection.selectedPerchMount"
+        :options="perchMountOptions"
+        :invalid="!addingSection.selectedPerchMount"
+        optionLabel="name"
+        placeholder="選擇一個棲架"
+        class="w-full"
+        filter
+        :disabled="perchMountId !== null"
+      >
+      </Select>
     </div>
     <div class="grid grid-cols-2 gap-4 my-6">
       <div class="flex flex-col gap-2">
@@ -85,12 +91,25 @@ import { convertOptionsToSelectedOptions, type SelectedOption } from '@/types/op
 import { onMounted, ref } from 'vue'
 
 import SectionSpan from '@/components/nameSpans/SectionSpan.vue'
+import { usePerchMounts } from '@/composables/perchmounts/usePerchMounts'
+import { convertPerchMountsToSelectedOptions } from '@/types/perchMount'
+import { selectOptionWithCode } from '@/utils/options'
 
-const props = defineProps<{ perchMountId: string }>()
+const props = withDefaults(defineProps<{ perchMountId?: string | null }>(), {
+  perchMountId: null,
+})
 
+const perchMountOptions = ref<Array<SelectedOption>>([])
 const cemeraOptions = ref<Array<SelectedOption>>([])
 const mountTypeOptions = ref<Array<SelectedOption>>([])
 const memberOptions = ref<Array<SelectedOption>>([])
+
+const {
+  data: perchMounts,
+  isLoading: isPerchMountsLoading,
+  error: perchMountsError,
+  fetch: fetchPerchMounts,
+} = usePerchMounts()
 
 const {
   data: mountTypes,
@@ -127,10 +146,17 @@ onMounted(async () => {
   await fetchMountTypes()
   await fetchCameras()
   await fetchMembers()
+  await fetchPerchMounts()
   mountTypeOptions.value = convertOptionsToSelectedOptions(mountTypes.value)
   cemeraOptions.value = convertOptionsToSelectedOptions(cameras.value)
   memberOptions.value = convertMembersToSelectedOptions(members.value)
-  addingSection.value.perch_mount_id = props.perchMountId
+  perchMountOptions.value = convertPerchMountsToSelectedOptions(perchMounts.value)
+  if (props.perchMountId) {
+    addingSection.value.selectedPerchMount = selectOptionWithCode(
+      props.perchMountId,
+      perchMountOptions.value,
+    )
+  }
 })
 
 const handleAddClicked = () => {

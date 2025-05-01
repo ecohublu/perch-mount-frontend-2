@@ -5,7 +5,7 @@ import { addSection } from '@/services/perchAI/sections'
 
 export function useAddingSection() {
   const section = ref<AddingSection>({
-    perch_mount_id: null,
+    selectedPerchMount: null,
     swapped_date: null,
     selectedCamera: null,
     selectedMountType: null,
@@ -17,7 +17,7 @@ export function useAddingSection() {
   const validate = () => {
     valid.value =
       section.value !== null &&
-      section.value.perch_mount_id !== null &&
+      section.value.selectedPerchMount !== null &&
       section.value.swapped_date !== null &&
       section.value.selectedCamera !== null &&
       section.value.selectedMembers !== null &&

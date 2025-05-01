@@ -13,7 +13,7 @@ export interface NewSection {
 }
 
 export interface AddingSection {
-  perch_mount_id: string | null
+  selectedPerchMount: SelectedOption | null
   swapped_date: Date | null // e.g. "2025-01-14"
   selectedCamera: SelectedOption | null
   selectedMountType: SelectedOption | null
@@ -54,7 +54,7 @@ export interface SectionsQuery {
 
 export function convertAddingToNewSection(section: AddingSection): NewSection {
   return {
-    perch_mount_id: section.perch_mount_id!,
+    perch_mount_id: section.selectedPerchMount?.code!,
     mount_type_id: section.selectedMountType?.code!,
     camera_id: section.selectedCamera?.code!,
     swapped_date: section.swapped_date!.toISOString().split('T')[0],

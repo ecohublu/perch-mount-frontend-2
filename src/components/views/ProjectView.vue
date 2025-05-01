@@ -10,13 +10,22 @@
       </div>
     </Panel>
   </div>
-  <div v-if="isPerchMountLoading" class="flex items-center justify-center h-screen">Loading...</div>
-  <div v-else-if="perchMountError">
-    <Message severity="error">{{ perchMountError }}</Message>
-  </div>
-  <div v-else-if="perchMounts" class="grid grid-cols-4 gap-4">
-    <PerchMountCard v-for="perchMount in perchMounts" :info="perchMount"></PerchMountCard>
-  </div>
+  <Card>
+    <template #title>
+      <Button label="新增棲架" size="small" variant="text" rounded icon="pi pi-plus" />
+    </template>
+    <template #content>
+      <div v-if="isPerchMountLoading" class="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+      <div v-else-if="perchMountError">
+        <Message severity="error">{{ perchMountError }}</Message>
+      </div>
+      <div v-else-if="perchMounts" class="grid grid-cols-4 gap-4">
+        <PerchMountCard v-for="perchMount in perchMounts" :info="perchMount"></PerchMountCard>
+      </div>
+    </template>
+  </Card>
 </template>
 <script setup lang="ts">
 import { useProjectByID } from '@/composables/projects/useProjectByID'
