@@ -1,4 +1,4 @@
-import type { Project } from '@/types/project'
+import type { NewProject, Project } from '@/types/project'
 import { perchAIApi } from '@/services/perchAI/api'
 
 const ROOT_PROJECTS_PATH = '/api/perchai/projects/'
@@ -9,4 +9,7 @@ export const getProjects = async (): Promise<Array<Project>> => {
 
 export const getProjectByID = async (id: String): Promise<Project> => {
   return await perchAIApi.get<Project>(`${ROOT_PROJECTS_PATH}${id}/`)
+}
+export const addProject = async (newProject: NewProject): Promise<Project> => {
+  return await perchAIApi.post<Project>(ROOT_PROJECTS_PATH, { body: newProject })
 }

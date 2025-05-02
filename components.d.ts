@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddProjectForm: typeof import('./src/components/forms/AddProjectForm.vue')['default']
     AddSectionForm: typeof import('./src/components/forms/AddSectionForm.vue')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
     Avatar: typeof import('primevue/avatar')['default']
@@ -77,6 +78,7 @@ declare module 'vue' {
     Popover: typeof import('primevue/popover')['default']
     PositionIndicator: typeof import('./src/components/BoxCanvas/PositionIndicator.vue')['default']
     ProjectCard: typeof import('./src/components/cards/ProjectCard.vue')['default']
+    ProjectForm: typeof import('./src/components/forms/ProjectForm.vue')['default']
     ProjectSpan: typeof import('./src/components/nameSpans/ProjectSpan.vue')['default']
     ProjectView: typeof import('./src/components/views/ProjectView.vue')['default']
     ReviewBatchUpdatorPanel: typeof import('./src/components/forms/ReviewBatchUpdatorPanel.vue')['default']
