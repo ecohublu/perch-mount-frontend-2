@@ -12,16 +12,16 @@ export interface GetPerchMountsParams {
 export type Habitat = 'artificial' | 'natural' | 'solar_panel'
 
 export interface PerchMount {
+  id: string
   longitude: number
   perch_mount_name: string
-  id: string
   habitat: Habitat
   latitude: number
   project_id: string
   claim_by_id: string | null
   claimer: Member | null
   terminated: boolean
-  mount_layer: StringConstructor
+  mount_layer: string
   is_priority: boolean
   note: string | null
   project: Project
@@ -58,6 +58,20 @@ export interface PerchMountCountProportion {
   unreviewed: number
   reviewed: number
 }
+
+export interface AddingPerchMount {
+  perch_mount_name: string | null
+  latitude: number | null
+  longitude: number | null
+  selectedHabitat: SelectedOption | null
+  selectedProject: SelectedOption | null
+  selectedMountLayer: SelectedOption | null
+  note: string | null
+}
+export type NewPerchMount = Omit<
+  PerchMount,
+  'id' | 'claimer' | 'claim_by_id' | 'is_priority' | 'project' | 'terminated'
+>
 
 export function convertToProportion(input: PerchMountCount): PerchMountCountProportion {
   const {
@@ -101,4 +115,16 @@ export function convertPerchMountsToSelectedOptions(perchMounts: PerchMount[]): 
     })
   }
   return selectedOptions
+}
+
+export function convertAddingToNewPerchMount(perchMount: AddingPerchMount): NewPerchMount {
+  return {
+    perch_mount_name: perchMount.perch_mount_name!,
+    latitude: perchMount.latitude!,
+    longitude: perchMount.longitude!,
+    mount_layer: perchMount.selectedMountLayer!.name,
+    habitat: perchMount.selectedHabitat!.name as Habitat,
+    project_id: perchMount.selectedProject!.code,
+    note: perchMount.note,
+  }
 }

@@ -29,7 +29,6 @@ export function useAddingSection() {
   const submit = async () => {
     submitting.value = true
     const newSection = convertAddingToNewSection(section.value)
-    console.log(newSection)
     try {
       addedSection.value = await addSection(newSection)
       submitting.value = false

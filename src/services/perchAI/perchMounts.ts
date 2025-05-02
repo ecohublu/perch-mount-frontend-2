@@ -1,4 +1,4 @@
-import type { PerchMount, PerchMountCount } from '@/types/perchMount'
+import type { NewPerchMount, PerchMount, PerchMountCount } from '@/types/perchMount'
 import type { GetPerchMountsParams } from '@/types/perchMount'
 import { perchAIApi } from '@/services/perchAI/api'
 
@@ -72,4 +72,8 @@ export const claimPerchMountByID = async (id: String) => {
 
 export const unclaimPerchMountByID = async (id: String) => {
   await perchAIApi.del(`${ROOT_PERCH_MOUNT_PATH}${id}/claimby/me/`)
+}
+
+export async function addPerchMount(perchMount: NewPerchMount) {
+  return await perchAIApi.post<PerchMount>(`${ROOT_PERCH_MOUNT_PATH}`, { body: perchMount })
 }
