@@ -29,10 +29,7 @@ export const sidebarData: SidebarGroup[] = [
     ],
   },
   {
-    name: 'SETTING',
-    items: [
-      { name: 'Members', icon: 'pi pi-users', to: '/app/members' },
-      { name: 'Options', icon: 'pi pi-bars', to: '/app/options' },
-    ],
+    name: 'ADMIN',
+    items: [{ name: 'Admin Area', icon: 'pi pi-graduation-cap', to: '/admin' }],
   },
 ]

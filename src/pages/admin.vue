@@ -9,7 +9,4 @@
 
 <script setup lang="ts">
 import SideBar from '@/components/dashboard/SideBar.vue'
-import { useAuth } from '@/composables/useAuth'
-
-const auth = useAuth()
 </script>

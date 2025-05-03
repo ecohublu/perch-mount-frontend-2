@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddProjectForm: typeof import('./src/components/forms/AddProjectForm.vue')['default']
     AddSectionForm: typeof import('./src/components/forms/AddSectionForm.vue')['default']
+    AdminView: typeof import('./src/components/views/AdminView.vue')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Badge: typeof import('primevue/badge')['default']
@@ -109,6 +110,7 @@ declare module 'vue' {
     Toast: typeof import('primevue/toast')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
+    Tree: typeof import('primevue/tree')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
   export interface ComponentCustomProperties {
