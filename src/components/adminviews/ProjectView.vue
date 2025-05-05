@@ -1,21 +1,7 @@
 <template>
   <Splitter>
     <SplitterPanel class="flex justify-center p-8" :size="25" :minSize="10">
-      <div class="card">
-        <div class="grid grid-cols-1 gap-6 items-center">
-          <div>
-            <span class="text-xl font-bold">{{ project?.name }}</span>
-          </div>
-          <div>
-            <InfoItemCard title="計畫 ID">{{ project?.id }}</InfoItemCard>
-          </div>
-          <div>
-            <InfoItemCard title="計畫名稱">
-              <InputText class="w-full" variant="filled" :default-value="project?.name" />
-            </InfoItemCard>
-          </div>
-        </div>
-      </div>
+      <ProjectEditor :id="id"></ProjectEditor>
     </SplitterPanel>
     <SplitterPanel class="flex items-center justify-center" :size="75">
       <div class="card">
@@ -70,25 +56,17 @@
   </Splitter>
 </template>
 <script setup lang="ts">
-import { useProjectByID } from '@/composables/projects/useProjectByID'
 import { usePerchMountsByQuery } from '@/composables/perchmounts/usePerchMountsByProjectID'
 import { onMounted } from 'vue'
 
 import { useMembers } from '@/composables/members/useMembers'
-import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import MemberNameWithPhoto from '@/components/MemberNameWithPhoto.vue'
 import PerchMountSpan from '@/components/nameSpans/PerchMountSpan.vue'
+import ProjectEditor from '@/components/adminviews/editor/ProjectEditor.vue'
 
 const props = defineProps<{
   id: string
 }>()
-
-const {
-  data: project,
-  isLoading: isProjectLoading,
-  error: projectError,
-  fetch: fetchProjects,
-} = useProjectByID(props.id)
 
 const {
   data: perchMounts,
@@ -107,7 +85,6 @@ const {
 } = useMembers()
 
 onMounted(async () => {
-  await fetchProjects()
   await fetchPerchMounts()
   await fetchMembers()
 })
