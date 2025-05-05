@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddProjectForm: typeof import('./src/components/forms/AddProjectForm.vue')['default']
     AddSectionForm: typeof import('./src/components/forms/AddSectionForm.vue')['default']
+    AdminMediaTableWithStatus: typeof import('./src/components/adminviews/tables/AdminMediaTableWithStatus.vue')['default']
     AdminView: typeof import('./src/components/views/AdminView.vue')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
     Avatar: typeof import('primevue/avatar')['default']
@@ -64,6 +65,7 @@ declare module 'vue' {
     MediaTableOfSection: typeof import('./src/components/MediaTableOfSection.vue')['default']
     MediaTablesOfSection: typeof import('./src/components/MediaTablesOfSection.vue')['default']
     MediaTableSOfSection: typeof import('./src/components/MediaTableSOfSection.vue')['default']
+    MediaTableWithStatus: typeof import('./src/components/adminviews/tables/MediaTableWithStatus.vue')['default']
     MediumEditor: typeof import('./src/components/forms/MediumEditor.vue')['default']
     MediumIDSpan: typeof import('./src/components/nameSpans/MediumIDSpan.vue')['default']
     MediumView: typeof import('./src/components/adminviews/MediumView.vue')['default']
