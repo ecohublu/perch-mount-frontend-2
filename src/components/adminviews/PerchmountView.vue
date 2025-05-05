@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useSectionsByFilter } from '@/composables/sections/useSectionsByQuery'
-import PerchMountEditor from '@/components/adminviews/editor/PerchMountEditor.vue'
+import PerchMountEditor from '@/components/adminviews/editors/PerchMountEditor.vue'
 const props = defineProps<{ id: string }>()
 
 const {

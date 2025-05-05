@@ -7,7 +7,7 @@
   </Splitter>
 </template>
 <script setup lang="ts">
-import SectionEditor from '@/components/adminviews/editor/SectionEditor.vue'
+import SectionEditor from '@/components/adminviews/editors/SectionEditor.vue'
 const props = defineProps<{
   id: string
 }>()

@@ -62,7 +62,7 @@ import { onMounted } from 'vue'
 import { useMembers } from '@/composables/members/useMembers'
 import MemberNameWithPhoto from '@/components/MemberNameWithPhoto.vue'
 import PerchMountSpan from '@/components/nameSpans/PerchMountSpan.vue'
-import ProjectEditor from '@/components/adminviews/editor/ProjectEditor.vue'
+import ProjectEditor from '@/components/adminviews/editors/ProjectEditor.vue'
 
 const props = defineProps<{
   id: string
