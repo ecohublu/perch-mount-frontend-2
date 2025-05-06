@@ -35,6 +35,7 @@
     <div class="bg-rose-300 border-rose-300"></div>
     <div class="border-red-500"></div>
   </div>
+  <Toast></Toast>
 </template>
 
 <script setup lang="ts">

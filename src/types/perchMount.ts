@@ -73,6 +73,30 @@ export type NewPerchMount = Omit<
   'id' | 'claimer' | 'claim_by_id' | 'is_priority' | 'project' | 'terminated'
 >
 
+export interface EditingPerchMount {
+  perch_mount_name: string | null
+  latitude: number | null
+  longitude: number | null
+  selectedClaimer: SelectedOption | null
+  selectedHabitat: SelectedOption | null
+  selectedMountLayer: SelectedOption | null
+  terminated: boolean | null
+  isPriority: boolean | null
+  note: string | null
+}
+
+export interface PerchMountPatchPayload {
+  perch_mount_name?: string
+  longitude?: number
+  latitude?: number
+  habitat?: string
+  claim_by_id?: string // 通常 ID 類型會保持為 string (UUID)
+  mount_layer?: string
+  terminated?: boolean
+  is_priority?: boolean
+  note?: string
+}
+
 export function convertToProportion(input: PerchMountCount): PerchMountCountProportion {
   const {
     id,

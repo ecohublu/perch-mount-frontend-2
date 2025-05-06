@@ -11,6 +11,10 @@ export interface NewProject {
   name: string
 }
 
+export interface ProjectPatchPayload {
+  name?: string
+}
+
 export function convertAddingtoNewProject(project: AddingProject): NewProject {
   return { name: project.name! }
 }

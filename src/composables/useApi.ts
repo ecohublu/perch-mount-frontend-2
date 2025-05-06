@@ -60,6 +60,7 @@ export function useApi() {
     post: <T>(endpoint: string, options?: ApiOptions) => apiFetch<T>(endpoint, 'POST', options),
     put: <T>(endpoint: string, options?: ApiOptions) => apiFetch<T>(endpoint, 'PUT', options),
     del: <T>(endpoint: string, options?: ApiOptions) => apiFetch<T>(endpoint, 'DELETE', options),
+    patch: <T>(endpoint: string, options?: ApiOptions) => apiFetch<T>(endpoint, 'PATCH', options),
   }
 }
 
@@ -73,5 +74,7 @@ export function createApiWithBaseUrl(baseUrl: string) {
       apiFetch<T>(`${baseUrl}${path}`, 'PUT', options),
     del: <T>(path: string, options?: ApiOptions) =>
       apiFetch<T>(`${baseUrl}${path}`, 'DELETE', options),
+    patch: <T>(path: string, options?: ApiOptions) =>
+      apiFetch<T>(`${baseUrl}${path}`, 'PATCH', options),
   }
 }

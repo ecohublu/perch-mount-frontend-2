@@ -63,3 +63,10 @@ export function convertAddingToNewSection(section: AddingSection): NewSection {
     valid: section.valid,
   }
 }
+
+export interface SectionPatchPayload {
+  swapped_date?: string
+  mount_type_id?: string
+  camera_id?: string
+  note?: string
+}

@@ -9,17 +9,27 @@
       </div>
       <div>
         <InfoItemCard title="計畫名稱">
-          <InputText class="w-full" variant="filled" :default-value="project?.name" />
+          <InputText
+            v-model="editingName"
+            class="w-full"
+            variant="filled"
+            :default-value="project?.name"
+            @blur="handleNameBlur"
+          />
         </InfoItemCard>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useProjectByID } from '@/composables/projects/useProjectByID'
+import { useProjectEdit } from '@/composables/projects/useProjectEdit'
+import { useToast } from 'primevue'
 
+const toast = useToast()
 const props = defineProps<{ id: string }>()
+const editingName = ref<string | null>(null)
 
 const {
   data: project,
@@ -28,7 +38,15 @@ const {
   fetch: fetchProject,
 } = useProjectByID(props.id)
 
+const { error, isUpdating, updateByID } = useProjectEdit(toast)
+
 onMounted(async () => {
   await fetchProject()
+  editingName.value = project.value?.name!
 })
+
+const handleNameBlur = async () => {
+  await updateByID(props.id, { name: editingName.value! })
+  fetchProject()
+}
 </script>

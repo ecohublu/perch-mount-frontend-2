@@ -9,18 +9,19 @@
       </div>
       <div>
         <InfoItemCard title="棲架名稱">
-          <InputText
-            class="w-full"
-            variant="filled"
-            :default-value="perchMount?.perch_mount_name"
-          />
+          <InputText class="w-full" variant="filled" v-model="editingPerchMount.perch_mount_name" />
         </InfoItemCard>
       </div>
       <div>
         <div class="grid grid-cols-4">
           <div class="col-span-3">
             <InfoItemCard title="認領人">
-              <Select :options="memberOptions" optionLabel="name" class="w-full" />
+              <Select
+                v-model="editingPerchMount.selectedClaimer"
+                :options="memberOptions"
+                optionLabel="name"
+                class="w-full"
+              />
             </InfoItemCard>
           </div>
           <div class="col-span-1">
@@ -35,6 +36,7 @@
           <div>
             <InfoItemCard title="優先處裡">
               <ToggleButton
+                v-model="editingPerchMount.isPriority!"
                 class="w-full"
                 onLabel="優先處裡中"
                 offLabel="無"
@@ -47,6 +49,7 @@
           <div>
             <InfoItemCard title="撤銷">
               <ToggleButton
+                v-model="editingPerchMount.terminated!"
                 class="w-full"
                 onLabel="已撤銷"
                 offLabel="運作中"
@@ -61,7 +64,7 @@
 
       <div>
         <InfoItemCard title="Note">
-          <Textarea class="w-full" rows="5" />
+          <Textarea v-model="editingPerchMount.note" class="w-full" rows="5" />
         </InfoItemCard>
       </div>
       <div>
@@ -69,7 +72,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <InputNumber
-                v-model="location[0]"
+                v-model="editingPerchMount.latitude"
                 inputId="integeronly"
                 :maxFractionDigits="6"
                 fluid
@@ -77,7 +80,7 @@
             </div>
             <div>
               <InputNumber
-                v-model="location[1]"
+                v-model="editingPerchMount.longitude"
                 inputId="integeronly"
                 :maxFractionDigits="6"
                 fluid
@@ -101,12 +104,13 @@
 </template>
 <script setup lang="ts">
 import { usePerchMountByID } from '@/composables/perchmounts/usePerchMount'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { useMembers } from '@/composables/members/useMembers'
 import { convertMembersToSelectedOptions } from '@/types/member'
 import { parseGoogleMapPointURL } from '@/utils/googleMap'
 import type { SelectedOption } from '@/types/options'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
+import { usePerchMountEdit } from '@/composables/perchmounts/usePerchMountEdit'
 
 const props = defineProps<{ id: string }>()
 
@@ -127,10 +131,19 @@ const {
   fetch: fetchMembers,
 } = useMembers()
 
+const {
+  error: updateError,
+  isUpdating,
+  editingPerchMount,
+  initEditingPerchMount,
+  updateByID,
+} = usePerchMountEdit()
+
 onMounted(async () => {
   await fetchPerchMount()
-
+  await fetchMembers()
   memberOptions.value = convertMembersToSelectedOptions(members.value)
+  initEditingPerchMount(perchMount.value!)
   location.value = [perchMount.value?.latitude!, perchMount.value?.longitude!]
 })
 </script>

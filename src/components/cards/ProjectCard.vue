@@ -10,14 +10,13 @@
       <template #icons>
         <Button label="新增棲架" icon="pi pi-plus" rounded text />
       </template>
-      <p class="m-0">
+      <div class="m-0">
         <div class="grid grid-cols-2 gap-4">
-            <PerchMountCard  v-for="perchMount in perchMounts" :info="perchMount"></PerchMountCard>
+          <PerchMountCard v-for="perchMount in perchMounts" :info="perchMount"></PerchMountCard>
         </div>
-      </p>
+      </div>
     </Panel>
   </div>
-  
 </template>
 <script setup lang="ts">
 import type { Project } from '@/types/project'

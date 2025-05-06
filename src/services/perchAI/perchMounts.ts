@@ -1,4 +1,9 @@
-import type { NewPerchMount, PerchMount, PerchMountCount } from '@/types/perchMount'
+import type {
+  NewPerchMount,
+  PerchMount,
+  PerchMountCount,
+  PerchMountPatchPayload,
+} from '@/types/perchMount'
 import type { GetPerchMountsParams } from '@/types/perchMount'
 import { perchAIApi } from '@/services/perchAI/api'
 
@@ -76,4 +81,8 @@ export const unclaimPerchMountByID = async (id: String) => {
 
 export async function addPerchMount(perchMount: NewPerchMount) {
   return await perchAIApi.post<PerchMount>(`${ROOT_PERCH_MOUNT_PATH}`, { body: perchMount })
+}
+
+export const updatePerchMountByID = async (id: string, payload: PerchMountPatchPayload) => {
+  return await perchAIApi.patch<PerchMount>(`${ROOT_PERCH_MOUNT_PATH}${id}/`, { body: payload })
 }

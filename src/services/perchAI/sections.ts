@@ -1,4 +1,4 @@
-import type { NewSection, Section, SectionsQuery } from '@/types/sections'
+import type { NewSection, Section, SectionPatchPayload, SectionsQuery } from '@/types/sections'
 import { perchAIApi } from '@/services/perchAI/api'
 
 const ROOT_SECTIONS_PATH = '/api/perchai/sections/'
@@ -35,4 +35,8 @@ export async function addSection(section: NewSection) {
 
 export async function deleteSectionByID(id: string) {
   return await perchAIApi.del(`${ROOT_SECTIONS_PATH}${id}/`)
+}
+
+export async function updateSectionByID(id: string, payload: SectionPatchPayload) {
+  return await perchAIApi.patch(`${ROOT_SECTIONS_PATH}${id}/`, { body: payload })
 }

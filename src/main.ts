@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice'
+import { ToastService } from 'primevue'
 import Material from '@primeuix/themes/material'
 import googleAuth from 'vue3-google-login'
 import OpenLayersMap from 'vue3-openlayers'
@@ -34,6 +35,7 @@ app.use(PrimeVue, {
   },
 })
 app.use(ConfirmationService)
+app.use(ToastService)
 app.use(googleAuth, {
   // clientId: '1003682943383-bauokm6jh77cq8l23qgf9fj5js0mgh0h.apps.googleusercontent.com',
   clientId: env.GOOGLE_CLIENT_ID,
