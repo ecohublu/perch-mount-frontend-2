@@ -1,9 +1,9 @@
 <template>
   <Splitter class="mb-8">
-    <SplitterPanel class="flex justify-center p-8" :size="25">
+    <SplitterPanel class="flex justify-center p-8" :size="30">
       <SectionEditor :id="id"></SectionEditor>
     </SplitterPanel>
-    <SplitterPanel class="flex justify-center p-8" :size="75">
+    <SplitterPanel class="flex justify-center p-8" :size="70">
       <MediaOfSectionTable :sectionId="id"></MediaOfSectionTable>
     </SplitterPanel>
   </Splitter>

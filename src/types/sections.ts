@@ -70,3 +70,13 @@ export interface SectionPatchPayload {
   camera_id?: string
   note?: string
 }
+
+export interface EditingSection {
+  swappedDate: Date | null
+  startTime: Date | null
+  endTime: Date | null
+  selectedMountType: SelectedOption | null
+  selectedCamera: SelectedOption | null
+  selectedSwappers: SelectedOption[]
+  note: string | null
+}

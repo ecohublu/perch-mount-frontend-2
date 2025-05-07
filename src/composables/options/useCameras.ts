@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { getCameras } from '@/services/perchAI/options'
-import type { Camera } from '@/types/options'
+import { convertOptionsToSelectedOptions, type Camera, type SelectedOption } from '@/types/options'
 
 export function useCameras() {
   const cameras = ref<Camera[]>([])
@@ -21,6 +21,32 @@ export function useCameras() {
 
   return {
     data: cameras,
+    isLoading,
+    error,
+    fetch,
+  }
+}
+
+export function useCameraOptions() {
+  const cameraOptions = ref<Array<SelectedOption>>([])
+  const isLoading = ref(false)
+  const error = ref<Error | null>(null)
+  const fetch = async () => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const cameras = await getCameras()
+      cameraOptions.value = convertOptionsToSelectedOptions(cameras)
+    } catch (err) {
+      error.value = err as Error
+      cameraOptions.value = []
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  return {
+    data: cameraOptions,
     isLoading,
     error,
     fetch,

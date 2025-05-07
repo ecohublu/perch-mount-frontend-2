@@ -40,3 +40,9 @@ export async function deleteSectionByID(id: string) {
 export async function updateSectionByID(id: string, payload: SectionPatchPayload) {
   return await perchAIApi.patch(`${ROOT_SECTIONS_PATH}${id}/`, { body: payload })
 }
+
+export async function shiftSectionTime(id: string, start_time: string) {
+  return await perchAIApi.patch(`${ROOT_SECTIONS_PATH}${id}/time`, {
+    body: { start_time: start_time },
+  })
+}
