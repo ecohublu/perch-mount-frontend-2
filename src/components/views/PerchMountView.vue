@@ -46,7 +46,10 @@
         </div>
 
         <div class="col-span-4 row-span-3">
-          <Point :point="[perchMount?.latitude!, perchMount?.longitude!]"></Point>
+          <Point
+            :point="[perchMount?.latitude!, perchMount?.longitude!]"
+            :center="[perchMount?.latitude!, perchMount?.longitude!]"
+          ></Point>
         </div>
 
         <div class="col-span-1">

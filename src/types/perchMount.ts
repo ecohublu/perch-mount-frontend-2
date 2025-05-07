@@ -90,11 +90,11 @@ export interface PerchMountPatchPayload {
   longitude?: number
   latitude?: number
   habitat?: string
-  claim_by_id?: string // 通常 ID 類型會保持為 string (UUID)
+  claim_by_id?: string | null // 通常 ID 類型會保持為 string (UUID)
   mount_layer?: string
   terminated?: boolean
   is_priority?: boolean
-  note?: string
+  note?: string | null
 }
 
 export function convertToProportion(input: PerchMountCount): PerchMountCountProportion {

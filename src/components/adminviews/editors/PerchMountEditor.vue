@@ -9,27 +9,24 @@
       </div>
       <div>
         <InfoItemCard title="棲架名稱">
-          <InputText class="w-full" variant="filled" v-model="editingPerchMount.perch_mount_name" />
+          <InputText
+            class="w-full"
+            v-model="editingPerchMount.perch_mount_name"
+            @blur="handlePerchMountNameBlur"
+          />
         </InfoItemCard>
       </div>
       <div>
-        <div class="grid grid-cols-4">
-          <div class="col-span-3">
-            <InfoItemCard title="認領人">
-              <Select
-                v-model="editingPerchMount.selectedClaimer"
-                :options="memberOptions"
-                optionLabel="name"
-                class="w-full"
-              />
-            </InfoItemCard>
-          </div>
-          <div class="col-span-1">
-            <InfoItemCard title="">
-              <Button label="清除認領" size="small"></Button>
-            </InfoItemCard>
-          </div>
-        </div>
+        <InfoItemCard title="認領人">
+          <Select
+            v-model="editingPerchMount.selectedClaimer"
+            class="w-full"
+            :options="memberOptions"
+            optionLabel="name"
+            showClear
+            @update:model-value="handleClaimerChange"
+          />
+        </InfoItemCard>
       </div>
       <div>
         <div class="grid grid-cols-2 gap-4">
@@ -43,6 +40,7 @@
                 onIcon="pi pi-bookmark-fill"
                 offIcon="pi pi-bookmark"
                 aria-label="Do you confirm"
+                @click="handlePrioritySwitch"
               />
             </InfoItemCard>
           </div>
@@ -56,6 +54,7 @@
                 onIcon="pi pi-flag"
                 offIcon="pi pi-flag-fill"
                 aria-label="Do you confirm"
+                @click="handleTerminatedSwitch"
               />
             </InfoItemCard>
           </div>
@@ -64,7 +63,12 @@
 
       <div>
         <InfoItemCard title="Note">
-          <Textarea v-model="editingPerchMount.note" class="w-full" rows="5" />
+          <Textarea
+            v-model="editingPerchMount.note"
+            class="w-full"
+            rows="5"
+            @blur="handleNoteBlur"
+          />
         </InfoItemCard>
       </div>
       <div>
@@ -87,14 +91,19 @@
               />
             </div>
             <div>
-              <a :href="parseGoogleMapPointURL(location[0], location[1])" target="_blank">
+              <a
+                :href="
+                  parseGoogleMapPointURL(editingPerchMount.latitude!, editingPerchMount.longitude!)
+                "
+                target="_blank"
+              >
                 <i class="pi pi-map-marker"></i>
-                {{ location[0] }}, {{ location[1] }}
+                {{ editingPerchMount.latitude! }}, {{ editingPerchMount.longitude! }}
               </a>
               <p class="text-xs opacity-50">建議你先確認看看有沒有打對</p>
             </div>
             <div>
-              <Button label="確認變更座標" size="small"></Button>
+              <Button label="確認變更座標" size="small" @click="handleLocationClick"></Button>
             </div>
           </div>
         </InfoItemCard>
@@ -104,17 +113,18 @@
 </template>
 <script setup lang="ts">
 import { usePerchMountByID } from '@/composables/perchmounts/usePerchMount'
-import { onMounted, ref, type Ref } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import { useMembers } from '@/composables/members/useMembers'
 import { convertMembersToSelectedOptions } from '@/types/member'
 import { parseGoogleMapPointURL } from '@/utils/googleMap'
 import type { SelectedOption } from '@/types/options'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import { usePerchMountEdit } from '@/composables/perchmounts/usePerchMountEdit'
+import { useToast } from 'primevue'
+
+const toast = useToast()
 
 const props = defineProps<{ id: string }>()
-
-const location = ref<Array<number>>([0, 0])
 
 const memberOptions = ref<Array<SelectedOption>>([])
 const {
@@ -137,13 +147,51 @@ const {
   editingPerchMount,
   initEditingPerchMount,
   updateByID,
-} = usePerchMountEdit()
+} = usePerchMountEdit(toast)
 
 onMounted(async () => {
   await fetchPerchMount()
   await fetchMembers()
   memberOptions.value = convertMembersToSelectedOptions(members.value)
   initEditingPerchMount(perchMount.value!)
-  location.value = [perchMount.value?.latitude!, perchMount.value?.longitude!]
 })
+
+const handlePerchMountNameBlur = async () => {
+  await updateByID(perchMount.value?.id!, {
+    perch_mount_name: editingPerchMount.value.perch_mount_name!,
+  })
+  fetchPerchMount()
+}
+const handleClaimerChange = async () => {
+  const selectedClaimer = editingPerchMount.value.selectedClaimer
+  await updateByID(perchMount.value?.id!, {
+    claim_by_id: selectedClaimer ? selectedClaimer.code : null,
+  })
+  fetchPerchMount()
+}
+const handlePrioritySwitch = async () => {
+  await updateByID(perchMount.value?.id!, {
+    is_priority: editingPerchMount.value.isPriority!,
+  })
+  fetchPerchMount()
+}
+const handleTerminatedSwitch = async () => {
+  await updateByID(perchMount.value?.id!, {
+    terminated: editingPerchMount.value.terminated!,
+  })
+  fetchPerchMount()
+}
+const handleNoteBlur = async () => {
+  await updateByID(perchMount.value?.id!, {
+    note: editingPerchMount.value.note! ? editingPerchMount.value.note! : null,
+  })
+  fetchPerchMount()
+}
+const handleLocationClick = async () => {
+  await updateByID(perchMount.value?.id!, {
+    latitude: editingPerchMount.value.latitude!,
+    longitude: editingPerchMount.value.longitude!,
+  })
+  fetchPerchMount()
+}
 </script>
