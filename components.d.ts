@@ -74,6 +74,7 @@ declare module 'vue' {
     MediumIDSpan: typeof import('./src/components/nameSpans/MediumIDSpan.vue')['default']
     MediumView: typeof import('./src/components/adminviews/MediumView.vue')['default']
     MemberNameWithPhoto: typeof import('./src/components/MemberNameWithPhoto.vue')['default']
+    MemberView: typeof import('./src/components/views/MemberView.vue')['default']
     Menu: typeof import('primevue/menu')['default']
     Message: typeof import('primevue/message')['default']
     MeterGroup: typeof import('primevue/metergroup')['default']
