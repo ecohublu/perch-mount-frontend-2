@@ -5,6 +5,9 @@
         <InfoItemCard title="Section ID">
           {{ section?.id }}
         </InfoItemCard>
+        <Button size="small" severity="info" variant="outlined">
+          <SectionSpan :id="id" :name="`${section?.swapped_date} in app`"></SectionSpan>
+        </Button>
       </div>
       <div>
         <InfoItemCard title="回收日期">
@@ -98,7 +101,7 @@ import { useSectionEdit } from '@/composables/sections/useSectionEdit'
 import { useSectionsByID } from '@/composables/sections/useSectionsByID'
 import { useToast } from 'primevue'
 import { onMounted, ref } from 'vue'
-
+import SectionSpan from '@/components/nameSpans/SectionSpan.vue'
 const toast = useToast()
 
 const props = defineProps<{

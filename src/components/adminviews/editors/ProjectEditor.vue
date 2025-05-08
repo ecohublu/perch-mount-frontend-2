@@ -6,6 +6,9 @@
       </div>
       <div>
         <InfoItemCard title="計畫 ID">{{ project?.id }}</InfoItemCard>
+        <Button size="small" severity="info" variant="outlined">
+          <ProjectSpan :id="id" :name="`${project?.name} in app`"></ProjectSpan>
+        </Button>
       </div>
       <div>
         <InfoItemCard title="計畫名稱">
@@ -26,6 +29,7 @@ import { onMounted, ref } from 'vue'
 import { useProjectByID } from '@/composables/projects/useProjectByID'
 import { useProjectEdit } from '@/composables/projects/useProjectEdit'
 import { useToast } from 'primevue'
+import ProjectSpan from '@/components/nameSpans/ProjectSpan.vue'
 
 const toast = useToast()
 const props = defineProps<{ id: string }>()

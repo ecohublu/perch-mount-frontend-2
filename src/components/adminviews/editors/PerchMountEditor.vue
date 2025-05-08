@@ -6,6 +6,12 @@
       </div>
       <div>
         <InfoItemCard title="棲架 ID">{{ perchMount?.id }}</InfoItemCard>
+        <Button size="small" severity="info" variant="outlined">
+          <PerchMountSpan
+            :id="id"
+            :name="`${perchMount?.perch_mount_name} in app`"
+          ></PerchMountSpan>
+        </Button>
       </div>
       <div>
         <InfoItemCard title="棲架名稱">
@@ -121,6 +127,7 @@ import type { SelectedOption } from '@/types/options'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import { usePerchMountEdit } from '@/composables/perchmounts/usePerchMountEdit'
 import { useToast } from 'primevue'
+import PerchMountSpan from '@/components/nameSpans/PerchMountSpan.vue'
 
 const toast = useToast()
 
