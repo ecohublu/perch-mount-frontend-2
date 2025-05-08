@@ -1,8 +1,13 @@
-import { shiftSectionTime, updateSectionByID } from '@/services/perchAI/sections'
+import {
+  shiftSectionTime,
+  updateSectionByID,
+  updateSectionSwappers,
+} from '@/services/perchAI/sections'
 import type { EditingSection, Section, SectionPatchPayload } from '@/types/sections'
+import { formatObjectToString } from '@/utils/pretty'
 import { ref } from 'vue'
 
-export function useSectionEdit() {
+export function useSectionEdit(toast: any = null) {
   const error = ref<Error | null>(null)
   const isUpdating = ref<boolean>(false)
   const editingSection = ref<EditingSection>({
@@ -37,22 +42,58 @@ export function useSectionEdit() {
     isUpdating.value = true
     try {
       await updateSectionByID(id, payload)
+      const message: string = formatObjectToString(payload)
+      toast.add(localSuccessToast(message))
     } catch (err) {
       error.value = err as Error
+      toast.add(localErrorToast(err as string))
     } finally {
       isUpdating.value = false
     }
   }
-  const fetchShiftTime = async (id: string, startTime: string) => {
+  const fetchShiftTime = async (id: string) => {
     error.value = null
     isUpdating.value = true
+    const startTime = editingSection.value.startTime?.toISOString()!
     try {
       await shiftSectionTime(id, startTime)
+      toast.add(localSuccessToast(`start_time: ${startTime}`))
     } catch (err) {
       error.value = err as Error
     } finally {
       isUpdating.value = false
     }
   }
-  return { error, isUpdating, editingSection, init, fetchShiftTime, updateByID }
+  const fetchUpdateSwappers = async (id: string) => {
+    error.value = null
+    isUpdating.value = true
+    const swapperIds = editingSection.value.selectedSwappers.map(
+      (selectedSwapper) => selectedSwapper.code,
+    )
+    try {
+      await updateSectionSwappers(id, swapperIds)
+      toast.add(localSuccessToast(`swapper_ids: ${swapperIds}`))
+    } catch (err) {
+      error.value = err as Error
+      toast.add(localErrorToast(err as string))
+    } finally {
+      isUpdating.value = false
+    }
+  }
+  return {
+    error,
+    isUpdating,
+    editingSection,
+    init,
+    fetchShiftTime,
+    fetchUpdateSwappers,
+    updateByID,
+  }
+}
+
+export function localErrorToast(message: string) {
+  return { severity: 'error', summary: 'Update Section Failed', detail: message, life: 10000 }
+}
+export function localSuccessToast(message: string) {
+  return { severity: 'success', summary: 'Update Section Successed', detail: message, life: 10000 }
 }

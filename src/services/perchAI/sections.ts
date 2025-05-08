@@ -42,7 +42,13 @@ export async function updateSectionByID(id: string, payload: SectionPatchPayload
 }
 
 export async function shiftSectionTime(id: string, start_time: string) {
-  return await perchAIApi.patch(`${ROOT_SECTIONS_PATH}${id}/time`, {
+  return await perchAIApi.patch(`${ROOT_SECTIONS_PATH}${id}/time/`, {
     body: { start_time: start_time },
+  })
+}
+
+export async function updateSectionSwappers(id: string, swapperIds: string[]) {
+  return await perchAIApi.put(`${ROOT_SECTIONS_PATH}${id}/swappers/`, {
+    body: { swapper_ids: swapperIds },
   })
 }

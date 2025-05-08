@@ -8,7 +8,11 @@
       </div>
       <div>
         <InfoItemCard title="回收日期">
-          <DatePicker v-model="editingSection.swappedDate" class="w-full" />
+          <DatePicker
+            v-model="editingSection.swappedDate"
+            class="w-full"
+            @blur="handleSwappedDateBlur"
+          />
         </InfoItemCard>
       </div>
       <div>
@@ -24,7 +28,7 @@
                 v-model="editingSection.startTime"
               />
             </div>
-            <div><Button label="確認變更" size="small"></Button></div>
+            <div><Button label="確認變更" size="small" @click="handleStartTimeClick"></Button></div>
           </div>
           <div class="text-sm opacity-50">此操作會改變 section 中所有影像拍攝時間，請三思！</div>
         </InfoItemCard>
@@ -49,6 +53,7 @@
             optionLabel="name"
             v-model="editingSection.selectedCamera"
             class="w-full"
+            @change="handleCameraChange"
           ></Select>
         </InfoItemCard>
       </div>
@@ -59,6 +64,7 @@
             :options="mountTypeOptions"
             optionLabel="name"
             class="w-full"
+            @change="handleMountTypeChange"
           ></Select>
         </InfoItemCard>
       </div>
@@ -71,12 +77,13 @@
             :options="memberOptions"
             optionLabel="name"
             display="chip"
+            @change="handleSwappersChange"
           ></MultiSelect>
         </InfoItemCard>
       </div>
       <div>
         <InfoItemCard title="Note">
-          <Textarea v-model="editingSection.note" class="w-full" rows="5" />
+          <Textarea v-model="editingSection.note" class="w-full" rows="5" @blur="handleNoteBlur" />
         </InfoItemCard>
       </div>
     </div>
@@ -89,7 +96,11 @@ import { useMemberOptions } from '@/composables/options/useMemberOptions'
 import { useMountTypeOptions } from '@/composables/options/useMountTypes'
 import { useSectionEdit } from '@/composables/sections/useSectionEdit'
 import { useSectionsByID } from '@/composables/sections/useSectionsByID'
+import { useToast } from 'primevue'
 import { onMounted, ref } from 'vue'
+
+const toast = useToast()
+
 const props = defineProps<{
   id: string
 }>()
@@ -109,8 +120,9 @@ const {
   editingSection,
   init: initEdit,
   fetchShiftTime,
+  fetchUpdateSwappers,
   updateByID,
-} = useSectionEdit()
+} = useSectionEdit(toast)
 
 const {
   data: memberOptions,
@@ -141,10 +153,36 @@ onMounted(async () => {
   initEdit(section.value!)
 })
 
-const handleSwappedDateBlue = async () => {}
-const handleStartTimeClick = async () => {}
-const handleCameraChange = async () => {}
-const handleMountTypeChange = async () => {}
-const handleSwappersChange = async () => {}
-const handleNoteBlur = async () => {}
+const handleSwappedDateBlur = async () => {
+  await updateByID(props.id, {
+    swapped_date: editingSection.value.swappedDate?.toISOString().split('T')[0],
+  })
+  await fetchSection()
+  initEdit(section.value!)
+}
+const handleStartTimeClick = async () => {
+  await fetchShiftTime(props.id)
+  await fetchSection()
+  initEdit(section.value!)
+}
+const handleCameraChange = async () => {
+  await updateByID(props.id, { camera_id: editingSection.value.selectedCamera?.code })
+  await fetchSection()
+  initEdit(section.value!)
+}
+const handleMountTypeChange = async () => {
+  await updateByID(props.id, { mount_type_id: editingSection.value.selectedMountType?.code })
+  await fetchSection()
+  initEdit(section.value!)
+}
+const handleSwappersChange = async () => {
+  await fetchUpdateSwappers(props.id)
+  await fetchSection()
+  initEdit(section.value!)
+}
+const handleNoteBlur = async () => {
+  await updateByID(props.id, { note: editingSection.value.note! })
+  await fetchSection()
+  initEdit(section.value!)
+}
 </script>
