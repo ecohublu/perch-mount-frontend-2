@@ -7,9 +7,6 @@
           <Badge :value="perchMounts.length" size="xlarge" severity="secondary"></Badge>
         </div>
       </template>
-      <template #icons>
-        <Button label="新增棲架" icon="pi pi-plus" rounded text />
-      </template>
       <div class="m-0">
         <div class="grid grid-cols-2 gap-4">
           <PerchMountCard v-for="perchMount in perchMounts" :info="perchMount"></PerchMountCard>

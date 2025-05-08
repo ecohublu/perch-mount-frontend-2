@@ -2,16 +2,15 @@
   <DataTable :value="sections">
     <Column field="id" header="ID">
       <template #body="slotProps">
-        <router-link :to="`/admin/sections/${slotProps.data.id}`">
-          {{ slotProps.data.id }}
-        </router-link>
+        <AdminSectionSpan :id="slotProps.data.id" :name="slotProps.data.id"></AdminSectionSpan>
       </template>
     </Column>
     <Column field="swapped_date" header="回收日期" sortable>
       <template #body="slotProps">
-        <router-link :to="`/admin/sections/${slotProps.data.id}`">
-          {{ slotProps.data.swapped_date }}
-        </router-link>
+        <AdminSectionSpan
+          :id="slotProps.data.id"
+          :name="slotProps.data.swapped_date"
+        ></AdminSectionSpan>
       </template>
     </Column>
     <Column field="start_time" header="工作開始時間" sortable></Column>
@@ -31,6 +30,7 @@
 <script setup lang="ts">
 import { useSectionsByFilter } from '@/composables/sections/useSectionsByQuery'
 import { onMounted } from 'vue'
+import AdminSectionSpan from '@/components/adminviews/linkSpans/AdminSectionSpan.vue'
 
 const props = defineProps<{ perchMountId: string }>()
 const {

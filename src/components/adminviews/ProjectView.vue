@@ -4,7 +4,10 @@
       <ProjectEditor :id="id"></ProjectEditor>
     </SplitterPanel>
     <SplitterPanel class="flex items-center justify-center" :size="75">
-      <PerchMountsOfProjectTable :projectId="id"></PerchMountsOfProjectTable>
+      <div>
+        <Button label="新增棲架" icon="pi pi-plus" rounded text />
+        <PerchMountsOfProjectTable :projectId="id"></PerchMountsOfProjectTable>
+      </div>
     </SplitterPanel>
   </Splitter>
 </template>

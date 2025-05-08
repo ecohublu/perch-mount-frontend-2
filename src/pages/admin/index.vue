@@ -13,6 +13,6 @@
 </template>
 <script setup lang="ts">
 import { useAuth } from '@/composables/useAuth'
-import AdminView from '@/components/views/AdminView.vue'
+import AdminView from '@/components/adminviews/AdminView.vue'
 const auth = useAuth()
 </script>

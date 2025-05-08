@@ -4,7 +4,10 @@
       <PerchMountEditor :id="id"></PerchMountEditor>
     </SplitterPanel>
     <SplitterPanel class="flex justify-center p-8" :size="65">
-      <SectionsOfPerchMountTable :perchMountId="id"></SectionsOfPerchMountTable>
+      <div>
+        <Button label="新增 Section" icon="pi pi-plus" rounded text />
+        <SectionsOfPerchMountTable :perchMountId="id"></SectionsOfPerchMountTable>
+      </div>
     </SplitterPanel>
   </Splitter>
 </template>

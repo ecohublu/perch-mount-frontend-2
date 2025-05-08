@@ -2,16 +2,18 @@
   <DataTable :value="perchMounts" size="small">
     <Column field="id" header="ID">
       <template #body="slotProps">
-        <router-link :to="`/admin/perchmounts/${slotProps.data.id}`">{{
-          slotProps.data.id
-        }}</router-link>
+        <AdminPerchMountSpan
+          :id="slotProps.data.id"
+          :name="slotProps.data.id"
+        ></AdminPerchMountSpan>
       </template>
     </Column>
     <Column field="perch_mount_name" header="棲架名稱">
       <template #body="slotProps">
-        <router-link :to="`/admin/perchmounts/${slotProps.data.id}`">{{
-          slotProps.data.perch_mount_name
-        }}</router-link>
+        <AdminPerchMountSpan
+          :id="slotProps.data.id"
+          :name="slotProps.data.perch_mount_name"
+        ></AdminPerchMountSpan>
       </template>
     </Column>
     <Column field="habitat" header="棲地" sortable></Column>
@@ -47,6 +49,8 @@
 <script setup lang="ts">
 import { usePerchMountsByQuery } from '@/composables/perchmounts/usePerchMountsByProjectID'
 import { onMounted } from 'vue'
+import PerchMountSpan from '@/components/nameSpans/PerchMountSpan.vue'
+import AdminPerchMountSpan from '@/components/adminviews/linkSpans/AdminPerchMountSpan.vue'
 
 const props = defineProps<{ projectId: string }>()
 const {
