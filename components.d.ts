@@ -79,6 +79,7 @@ declare module 'vue' {
     Message: typeof import('primevue/message')['default']
     MeterGroup: typeof import('primevue/metergroup')['default']
     MultiSelect: typeof import('primevue/multiselect')['default']
+    NewPerchMountEditor: typeof import('./src/components/adminviews/editors/NewPerchMountEditor.vue')['default']
     Panel: typeof import('primevue/panel')['default']
     PendingPerchMountsView: typeof import('./src/components/views/PendingPerchMountsView.vue')['default']
     PerchMountCard: typeof import('./src/components/cards/PerchMountCard.vue')['default']

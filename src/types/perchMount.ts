@@ -9,6 +9,7 @@ export interface GetPerchMountsParams {
   terminated?: boolean
 }
 
+export type MountLayer = 'lower' | 'middle' | 'high'
 export type Habitat = 'artificial' | 'natural' | 'solar_panel'
 
 export interface PerchMount {

@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import {
   convertAddingToNewPerchMount,
   type AddingPerchMount,
@@ -30,17 +30,29 @@ export function useAddingPerchMount() {
   const submitting = ref<boolean>(false)
   const addedPerchMount = ref<PerchMount | null>(null)
   const submitError = ref<Error | null>(null)
+  const submitted = ref<boolean>(false)
   const submit = async () => {
     submitting.value = true
     const newPerchMount = convertAddingToNewPerchMount(perchMount.value)
     try {
       addedPerchMount.value = await addPerchMount(newPerchMount)
       submitting.value = false
+      submitted.value = true
+      submitError.value = null
     } catch (err) {
       submitError.value = err as Error
       submitting.value = false
     }
   }
 
-  return { perchMount, valid, validate, submitting, addedPerchMount, submitError, submit }
+  return {
+    perchMount,
+    valid,
+    validate,
+    submitting,
+    submitted,
+    addedPerchMount,
+    submitError,
+    submit,
+  }
 }

@@ -49,7 +49,10 @@
           <MediaCountCard title="已完成" :count="section?.reviewed_count!"></MediaCountCard>
         </div>
         <div class="col-span-4 row-span-3">
-          <Point :point="[perchMount?.latitude!, perchMount?.longitude!]"></Point>
+          <Point
+            :point="[perchMount?.latitude!, perchMount?.longitude!]"
+            :center="[perchMount?.latitude!, perchMount?.longitude!]"
+          ></Point>
         </div>
         <div class="col-span-2">
           <InfoItemCard title="Section ID">{{ section?.id }}</InfoItemCard>
