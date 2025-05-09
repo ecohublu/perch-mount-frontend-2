@@ -117,7 +117,9 @@
         >
           <div class="flex items-center gap-2">
             <div v-if="auth.currentUser?.is_admin">
-              <Button icon="pi pi-pencil" label="編輯" severity="secondary" rounded text></Button>
+              <router-link :to="`/admin/perchmounts/${perchMount?.id}`">
+                <Button icon="pi pi-pencil" label="編輯" severity="secondary" rounded text></Button>
+              </router-link>
               <Button
                 v-if="!perchMount?.is_priority"
                 icon="pi pi-bookmark-fill"

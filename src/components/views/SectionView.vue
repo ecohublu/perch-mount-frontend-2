@@ -14,6 +14,7 @@
             severity="success"
             variant="outlined"
             rounded
+            @click="handleDownload"
           />
         </div>
       </template>
@@ -213,5 +214,53 @@ onMounted(fetchSection)
 
 const deleteClicked = () => {
   deleteFetch()
+}
+
+const downloadJsonObjectAsJsonFile = (data: object, filename: string = 'data.json'): void => {
+  try {
+    // 1. 將物件轉換為 JSON 字串 (美化格式，使用 2 個空格縮排)
+    const jsonString = JSON.stringify(data, null, 2)
+
+    // 2. 建立 Blob 物件
+    const blob = new Blob([jsonString], { type: 'application/json' })
+
+    // 3. 建立 Blob URL
+    const url = URL.createObjectURL(blob)
+
+    // 4. 建立 <a> 元素
+    const link = document.createElement('a')
+
+    // 5. 設定 href
+    link.href = url
+
+    // 6. 設定 download 屬性 (確保副檔名是 .json)
+    link.download = filename.endsWith('.json') ? filename : `${filename}.json`
+
+    // 7. 模擬點擊
+    document.body.appendChild(link) // Firefox 需要將連結附加到 DOM 才能正確觸發下載
+    link.click()
+
+    // 8. 清理：從 DOM 移除 <a> 元素
+    document.body.removeChild(link)
+
+    // 9. 清理：釋放 Blob URL
+    URL.revokeObjectURL(url)
+
+    console.log(`已觸發下載檔案: ${link.download}`)
+  } catch (error) {
+    console.error('下載 JSON 檔案時發生錯誤:', error)
+    // 在這裡你可以加入更友好的錯誤提示給使用者
+    alert('下載檔案失敗。')
+  }
+}
+
+const handleDownload = () => {
+  // 你可以傳遞任何 JavaScript 物件
+  downloadJsonObjectAsJsonFile(
+    section.value as Object,
+    `${perchMount.value?.perch_mount_name}_${section.value?.swapped_date}`,
+  )
+  // 如果想使用預設檔名 'data.json':
+  // downloadJsonObjectAsJsonFile(myDataObject.value);
 }
 </script>
