@@ -1,8 +1,8 @@
 import { ref } from 'vue'
-import type { CheckedMedium, Medium } from '@/types/media'
-
 import { delay } from '@/utils/timeOut'
 import { useAuth } from '@/composables/useAuth'
+import type { CheckedMedium, Medium } from '@/types/media'
+import { addCheckedMedia } from '@/services/perchAI/media'
 
 const auth = useAuth()
 
@@ -26,11 +26,10 @@ export function useEmptyCheckSubmission() {
   const submit = async (media: Medium[]) => {
     submitting.value = true
     const checkMedia = convertMediaToCheckedMedia(media, mediaAiMissedMarks.value)
+    await addCheckedMedia(checkMedia)
     await delay(1000)
     submitting.value = false
     submitted.value = true
-
-    console.log(checkMedia)
   }
 
   return {
