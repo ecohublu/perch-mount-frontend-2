@@ -1,7 +1,13 @@
 <template>
   <Message v-if="submitError" severity="error">{{ submitError }}</Message>
   <Message v-if="!valid" severity="warn">棲架資料還沒填完</Message>
-  <Message v-if="submitted" severity="success">棲架新增成功</Message>
+  <Message v-if="submitted" severity="success">
+    棲架新增成功，去
+    <Tag
+      ><PerchMountSpan :id="addedPerchMount?.id!" :name="addedPerchMount?.perch_mount_name!">
+      </PerchMountSpan> </Tag
+    >看看
+  </Message>
   <div v-else-if="submitting">棲架新增中...</div>
   <div v-else class="grid grid-cols-1 gap-4">
     <div>
@@ -84,6 +90,7 @@ import { useProjects } from '@/composables/projects/useProjects'
 import type { SelectedOption } from '@/types/options'
 import { parseGoogleMapPointURL } from '@/utils/googleMap'
 
+import PerchMountSpan from '@/components/nameSpans/PerchMountSpan.vue'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import { useHabitatOptions } from '@/composables/options/useHabitats'
 import { useMountLayerOptions } from '@/composables/options/useMountLayers'

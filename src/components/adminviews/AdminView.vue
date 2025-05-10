@@ -1,14 +1,23 @@
 <template>
-  <Loading v-if="useTreeNodesLoading"></Loading>
-  <Tree v-else :value="treeNodes" :filter="true" filterMode="lenient" class="w-full md:w-[30rem]">
-    <template #default="slotProps">
-      <router-link :to="slotProps.node.data.to">{{ slotProps.node.label }}</router-link>
-    </template>
-  </Tree>
-  <Button label="新增計畫" icon="pi pi-plus" class="mt-6" @click="addProjectVisiable = true" />
-  <Dialog v-model:visible="addProjectVisiable" modal header="新增計畫" :style="{ width: '25rem' }">
-    <AddProjectForm @added="handleProjectAdded"></AddProjectForm>
-  </Dialog>
+  <div>
+    <Loading v-if="useTreeNodesLoading"></Loading>
+
+    <Tree v-else :value="treeNodes" :filter="true" filterMode="lenient" class="w-full md:w-[30rem]">
+      <template #default="slotProps">
+        <router-link :to="slotProps.node.data.to">{{ slotProps.node.label }}</router-link>
+      </template>
+    </Tree>
+
+    <Button label="新增計畫" icon="pi pi-plus" class="mt-6" @click="addProjectVisiable = true" />
+    <Dialog
+      v-model:visible="addProjectVisiable"
+      modal
+      header="新增計畫"
+      :style="{ width: '25rem' }"
+    >
+      <AddProjectForm @added="handleProjectAdded"></AddProjectForm>
+    </Dialog>
+  </div>
 </template>
 <script setup lang="ts">
 import { useTreeNodes } from '@/composables/useProjectsPerchMountsTreeNodes'

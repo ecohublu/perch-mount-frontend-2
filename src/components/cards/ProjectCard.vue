@@ -8,7 +8,7 @@
         </div>
       </template>
       <div class="m-0">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-4 gap-4">
           <PerchMountCard v-for="perchMount in perchMounts" :info="perchMount"></PerchMountCard>
         </div>
       </div>
