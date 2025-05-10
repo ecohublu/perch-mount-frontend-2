@@ -84,7 +84,7 @@ export interface ReviewedIndividual {
   has_prey: boolean
   is_tagged: boolean
   has_ring: boolean
-  ring_number?: boolean | null // 注意這裡是 Boolean，不是 string
+  ring_number?: string | null
 }
 
 export function createEmptyAIMissedReviewingIndividual(
@@ -102,4 +102,45 @@ export function createEmptyAIMissedReviewingIndividual(
     ring_number: null,
     deleted: false,
   }
+}
+
+export function convertReviewingToReviewedIndividuals(
+  individuals: AIMissedReviewingIndividual[] | ReviewingIndividual[],
+): ReviewedIndividual[] {
+  return individuals
+    .filter((individual) => !individual.deleted)
+    .map((individual) => {
+      if (isReviewingIndividual(individual)) {
+        return {
+          id: individual.id,
+          taxon_order_by_human: individual.selected_species?.code!,
+          box_xmin: individual.box_xmin,
+          box_xmax: individual.box_xmax,
+          box_ymin: individual.box_ymax,
+          box_ymax: individual.box_ymax,
+          has_prey: individual.has_prey,
+          is_tagged: individual.is_tagged,
+          has_ring: individual.has_ring,
+          ring_number: individual.ring_number,
+        }
+      } else {
+        return {
+          taxon_order_by_human: individual.selected_species?.code!,
+          box_xmin: individual.box_xmin,
+          box_xmax: individual.box_xmax,
+          box_ymin: individual.box_ymax,
+          box_ymax: individual.box_ymax,
+          has_prey: individual.has_prey,
+          is_tagged: individual.is_tagged,
+          has_ring: individual.has_ring,
+          ring_number: individual.ring_number,
+        }
+      }
+    })
+}
+
+function isReviewingIndividual(
+  individual: AIMissedReviewingIndividual | ReviewingIndividual,
+): individual is ReviewingIndividual {
+  return 'id' in individual
 }

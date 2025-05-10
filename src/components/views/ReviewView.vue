@@ -20,7 +20,7 @@
     <div v-else><Loading></Loading></div>
   </div>
 
-  <Button class="my-8" label="送出" @click="handleSubmitClicked()" />
+  <Button class="my-8" label="送出" @click="handleValidateClicked()" />
 
   <Dialog v-model:visible="submitVisible" modal header="確認要送出嗎?" :style="{ width: '25rem' }">
     <div class="my-8">
@@ -42,12 +42,7 @@
         severity="secondary"
         @click="submitVisible = false"
       ></Button>
-      <Button
-        v-if="!anyUnvalidated"
-        type="button"
-        label="確認"
-        @click="submitVisible = false"
-      ></Button>
+      <Button v-if="!anyUnvalidated" type="button" label="確認" @click="handleSubmitClick"></Button>
     </div>
   </Dialog>
 
@@ -154,7 +149,7 @@ const featureEditorVisible = ref<boolean>(false)
 const editingIndex = ref<number>(0)
 const featrueingIndex = ref<number>(0)
 
-const handleSubmitClicked = () => {
+const handleValidateClicked = () => {
   validateReviewingMedia(reviewingMedia.value)
   refreshSelectingSpecies(reviewingMedia.value)
   submitVisible.value = true
@@ -229,5 +224,9 @@ const handleRingNumberRequested = (ringNumber: string | null) => {
 }
 const handleCancelRequested = () => {
   cancelAll()
+}
+
+const handleSubmitClick = async () => {
+  await submit(reviewingMedia.value)
 }
 </script>

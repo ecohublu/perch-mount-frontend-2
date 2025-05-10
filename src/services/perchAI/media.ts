@@ -1,8 +1,9 @@
-import type { CheckedMedium, MediaQuery, Medium } from '@/types/media'
+import type { CheckedMedium, MediaQuery, Medium, ReviewedMedium } from '@/types/media'
 import { perchAIApi } from '@/services/perchAI/api'
 
 const ROOT_MEDIA_PATH = '/api/perchai/media/'
 const ROOT_CHECK_PATH = '/api/perchai/checked_media/'
+const ROOT_REVIEW_PATH = '/api/perchai/reviewed_media/'
 
 export async function getMediaByFilter(params: MediaQuery): Promise<Array<Medium>> {
   const paramsURL = buildMediaQueryURL(params)
@@ -11,6 +12,10 @@ export async function getMediaByFilter(params: MediaQuery): Promise<Array<Medium
 
 export async function addCheckedMedia(media: CheckedMedium[]) {
   await perchAIApi.post(ROOT_CHECK_PATH, { body: media })
+}
+
+export async function addReviewedMedia(media: ReviewedMedium[]) {
+  await perchAIApi.post(ROOT_REVIEW_PATH, { body: media })
 }
 
 function buildMediaQueryURL(query: MediaQuery): URLSearchParams {

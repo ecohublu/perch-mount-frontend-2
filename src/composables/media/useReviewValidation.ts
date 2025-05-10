@@ -1,6 +1,12 @@
-import type { ReviewingMedium } from '@/types/media'
+import {
+  convertReviewingToReviewedMedia,
+  type ReviewedMedium,
+  type ReviewingMedium,
+} from '@/types/media'
 import { delay } from '@/utils/timeOut'
 import { ref } from 'vue'
+import { useAuth } from '../useAuth'
+import { addReviewedMedia } from '@/services/perchAI/media'
 
 export function useReviewValidation() {
   const failedMarks = ref<boolean[]>([])
@@ -37,9 +43,12 @@ export function useReviewValidation() {
     })
     selectingSpecies.value = [...species]
   }
-  const submit = async () => {
+  const submit = async (media: ReviewingMedium[]) => {
+    const reviewedMedia = convertReviewingToReviewedMedia(media)
+    console.log(reviewedMedia)
     submitting.value = true
-    await delay(1000)
+
+    await addReviewedMedia(reviewedMedia)
     submitting.value = false
   }
 

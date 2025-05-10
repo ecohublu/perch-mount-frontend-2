@@ -1,11 +1,15 @@
-import type {
-  Individual,
-  ReviewingIndividual,
-  AIMissedReviewingIndividual,
-  ReviewedIndividual,
+import { useAuth } from '@/composables/useAuth'
+import {
+  type Individual,
+  type ReviewingIndividual,
+  type AIMissedReviewingIndividual,
+  type ReviewedIndividual,
+  convertReviewingToReviewedIndividuals,
 } from '@/types/individuals'
 import type { Behavior, Event } from '@/types/options'
 import type { SelectedOption } from '@/types/options'
+
+const auth = useAuth()
 
 export type MediaQuery = {
   status: string // required
@@ -148,6 +152,25 @@ export function convertToReviewingMedia(media: Medium[]): ReviewingMedium[] {
       individuals,
       ai_missed_individuals: [],
       note: null,
+    }
+  })
+}
+
+export function convertReviewingToReviewedMedia(media: ReviewingMedium[]): ReviewedMedium[] {
+  const currentTime = new Date(Date.now())
+  const timeString = currentTime.toISOString()
+  return media.map((medium) => {
+    const individuals = []
+    individuals.push(...convertReviewingToReviewedIndividuals(medium.individuals))
+    individuals.push(...convertReviewingToReviewedIndividuals(medium.ai_missed_individuals))
+    return {
+      id: medium.id,
+      reviewed_at: timeString,
+      reviewer_id: auth.currentUser?.id!,
+      featured_by_id: medium.selected_behavior ? auth.currentUser?.id : null,
+      event_id: medium.selected_event?.code,
+      behavior_id: medium.selected_behavior?.code,
+      individuals: individuals,
     }
   })
 }
