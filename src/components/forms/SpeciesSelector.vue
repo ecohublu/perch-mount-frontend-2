@@ -3,7 +3,7 @@
     class="w-full"
     filter
     v-model="localSelected"
-    :options="speciesOptionsStore.options"
+    :options="options"
     optionLabel="chinese_common_name"
     size="small"
     :invalid="!isValidSpecies"
@@ -11,12 +11,15 @@
   ></Select>
 </template>
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useSpeciesOptionsStore } from '@/stores/speciesOptions'
 import { isSearchResult } from '@/types/species'
 import type { SearchResult } from '@/types/species'
+import { storeToRefs } from 'pinia'
 
 const speciesOptionsStore = useSpeciesOptionsStore()
+
+const { options, isLoading } = storeToRefs(speciesOptionsStore)
 
 const props = defineProps<{
   selected: SearchResult | null
@@ -48,4 +51,8 @@ watch(
     localSelected.value = newVal
   },
 )
+
+onMounted(() => {
+  speciesOptionsStore.fetch()
+})
 </script>

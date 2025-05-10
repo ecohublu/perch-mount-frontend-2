@@ -1,5 +1,5 @@
 import { perchAIApi } from '@/services/perchAI/api'
-import type { SearchResult } from '@/types/species'
+import type { SearchResult, Species } from '@/types/species'
 
 const ROOT_TAXA_PATH = '/api/taxa/predictions'
 
