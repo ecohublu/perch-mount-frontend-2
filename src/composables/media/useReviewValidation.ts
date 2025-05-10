@@ -45,7 +45,6 @@ export function useReviewValidation() {
   }
   const submit = async (media: ReviewingMedium[]) => {
     const reviewedMedia = convertReviewingToReviewedMedia(media)
-    console.log(reviewedMedia)
     submitting.value = true
 
     await addReviewedMedia(reviewedMedia)

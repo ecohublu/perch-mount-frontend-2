@@ -1,9 +1,12 @@
 <template>
-  <h1>{{ route.params.id }}</h1>
+  <MediumView :id="id"></MediumView>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import MediumView from '@/components/views/MediumView.vue'
+import { ref } from 'vue'
 
 const route = useRoute()
+const id = ref<string>(route.params.id as string)
 </script>

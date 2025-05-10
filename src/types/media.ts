@@ -41,11 +41,11 @@ export type Medium = {
   created_at: string // ISO 格式
 
   // 各內容狀態（nullable）
-  detected_contents?: MediaCheckedContents | null
+  detected_contents?: MediaDetectedContents | null
   unreviewued_contents?: UnreviewedMediaContents | null
   reviewed_contents?: ReviewedMediaContents | null
   unchecked_contents?: UncheckedMediaContents | null
-  checked_contents?: MediaDetectedContents | null
+  checked_contents?: MediaCheckedContents | null
 
   // 相關個體
   individuals: Individual[]

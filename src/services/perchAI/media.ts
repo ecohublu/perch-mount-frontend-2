@@ -18,6 +18,10 @@ export async function addReviewedMedia(media: ReviewedMedium[]) {
   await perchAIApi.post(ROOT_REVIEW_PATH, { body: media })
 }
 
+export async function getMediumByID(id: string): Promise<Medium> {
+  return await perchAIApi.get<Medium>(`${ROOT_MEDIA_PATH}${id}/`)
+}
+
 function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
   const params = new URLSearchParams()
 

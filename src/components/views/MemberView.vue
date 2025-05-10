@@ -4,7 +4,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useMemberByID } from '@/composables/members/useMemberByID'
+import { useMember } from '@/composables/members/useMemberByID'
 import { onMounted } from 'vue'
 
 const props = defineProps<{ id: string }>()
@@ -14,10 +14,10 @@ const {
   isLoading: isMemberLoading,
   error: memberError,
   fetch: fetchMember,
-} = useMemberByID(props.id)
+} = useMember()
 
 onMounted(async () => {
-  await fetchMember()
+  await fetchMember(props.id)
   console.log(member.value)
 })
 </script>
