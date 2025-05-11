@@ -3,7 +3,7 @@
     <Panel toggleable>
       <template #header>
         <div class="flex items-center gap-2">
-          <span class="font-bold text-2xl">{{ medium?.medium_datetime }}</span>
+          <CardHeader>{{ medium?.medium_datetime }}</CardHeader>
         </div>
       </template>
       <div class="grid grid-cols-2 gap-8">
@@ -92,10 +92,25 @@
           </div>
         </div>
       </div>
+      <template #footer>
+        <router-link :to="`/admin/media/${medium?.id}`">
+          <Button icon="pi pi-pencil" label="編輯" severity="secondary" rounded text></Button>
+        </router-link>
+      </template>
     </Panel>
   </div>
   <div class="card mt-8">
-    <Panel> </Panel>
+    <Panel toggleable>
+      <template #header>
+        <CardHeader>Individuals</CardHeader>
+      </template>
+      <div class="grid grid-cols-2 gap-4">
+        <IndividualCard
+          v-for="individual of medium?.individuals"
+          :individual="individual"
+        ></IndividualCard>
+      </div>
+    </Panel>
   </div>
 </template>
 <script setup lang="ts">
@@ -105,7 +120,8 @@ import S3Medium from '@/components/S3Medium.vue'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
 import { useMember } from '@/composables/members/useMemberByID'
 import MemberNameWithPhoto from '@/components/MemberNameWithPhoto.vue'
-
+import IndividualCard from '@/components/cards/IndividualCard.vue'
+import CardHeader from '@/components/CardHeader.vue'
 const props = defineProps<{ id: string }>()
 
 const {
@@ -136,12 +152,14 @@ const {
 
 onMounted(async () => {
   await fetchMedium()
-  if (medium.value?.checked_contents) {
+  if (medium.value?.checked_contents !== null) {
     await fetchEmptyChecker(medium.value?.checked_contents?.empty_checker_id!)
   }
-  if (medium.value?.reviewed_contents) {
+  if (medium.value?.reviewed_contents !== null) {
     await fetchReviewer(medium.value?.reviewed_contents?.reviewer_id!)
-    await fetchfeaturedBy(medium.value?.reviewed_contents?.featured_by_id!)
+    if (medium.value?.reviewed_contents?.featured_by_id) {
+      await fetchfeaturedBy(medium.value?.reviewed_contents?.featured_by_id!)
+    }
   }
 })
 </script>

@@ -2,7 +2,7 @@
   <div class="card">
     <Panel toggleable>
       <template #header>
-        <span class="font-bold text-2xl">Media</span>
+        <CardHeader>Media</CardHeader>
       </template>
       <Tabs value="0">
         <TabList>
@@ -37,7 +37,8 @@ import { useUnreviewedMediaBySectionID } from '@/composables/media/useUnreviewed
 import { useReviewedMediaBySectionID } from '@/composables/media/useReviewedMediaBySectionID'
 import { onMounted } from 'vue'
 
-import MediaTable from './tables/MediaTable.vue'
+import CardHeader from '@/components/CardHeader.vue'
+import MediaTable from '@/components/tables/MediaTable.vue'
 
 const props = defineProps<{
   id: string

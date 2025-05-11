@@ -104,6 +104,9 @@
       <template #footer>
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div class="flex items-center gap-2">
+            <router-link :to="`/admin/sections/${section?.id}`">
+              <Button icon="pi pi-pencil" label="編輯" severity="secondary" rounded text></Button>
+            </router-link>
             <div v-if="isNew">
               <Button
                 icon="pi pi-trash"
