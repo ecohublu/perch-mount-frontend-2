@@ -3,10 +3,15 @@
     <DataTable :value="data">
       <Column header="棲架">
         <template #body="slotProps">
-          <PerchMountSpan
-            :id="slotProps.data.id"
-            :name="slotProps.data.perch_mount_name"
-          ></PerchMountSpan>
+          <div class="flex">
+            <PerchMountSpan
+              :id="slotProps.data.id"
+              :name="slotProps.data.perch_mount_name"
+            ></PerchMountSpan>
+            <Tag class="mx-4" v-if="slotProps.data.is_priority" severity="danger" rounded
+              >優先處裡</Tag
+            >
+          </div>
         </template>
       </Column>
       <Column header="認領人">

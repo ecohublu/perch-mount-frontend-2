@@ -101,6 +101,7 @@ declare module 'vue' {
     PointPicker: typeof import('./src/components/forms/PointPicker.vue')['default']
     Popover: typeof import('primevue/popover')['default']
     PositionIndicator: typeof import('./src/components/BoxCanvas/PositionIndicator.vue')['default']
+    PriorityTag: typeof import('./src/components/tags/PriorityTag.vue')['default']
     ProjectCard: typeof import('./src/components/cards/ProjectCard.vue')['default']
     ProjectEditor: typeof import('./src/components/adminviews/editors/ProjectEditor.vue')['default']
     ProjectForm: typeof import('./src/components/forms/ProjectForm.vue')['default']

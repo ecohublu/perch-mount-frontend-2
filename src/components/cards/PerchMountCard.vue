@@ -6,11 +6,14 @@
           <div v-if="info.claimer != null">
             <Avatar :image="info.claimer.profile_picture_url" shape="circle" />
           </div>
-          <PerchMountSpan
-            :id="info.id"
-            :name="info.perch_mount_name"
-            class="font-semibold ms-2"
-          ></PerchMountSpan>
+          <div class="flex">
+            <PerchMountSpan
+              :id="info.id"
+              :name="info.perch_mount_name"
+              class="ms-2"
+              :class="{ 'opacity-50': info.terminated, 'font-semibold': !info.terminated }"
+            ></PerchMountSpan>
+          </div>
         </div>
         <router-link :to="`/app/projects/${info.project_id}`">
           <Badge severity="secondary">{{ info.project.name }}</Badge>
