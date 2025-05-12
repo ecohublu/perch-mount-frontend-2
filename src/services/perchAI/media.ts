@@ -22,6 +22,26 @@ export async function getMediumByID(id: string): Promise<Medium> {
   return await perchAIApi.get<Medium>(`${ROOT_MEDIA_PATH}${id}/`)
 }
 
+export async function rollbackReviewedMediumStatus(id: string): Promise<Medium> {
+  return await perchAIApi.patch<Medium>(`${ROOT_MEDIA_PATH}${id}/status/`, {
+    body: { status: 'unreviewed' },
+  })
+}
+
+export async function updateMediumEvent(mediumId: string, eventId: string | null) {
+  await perchAIApi.patch(`${ROOT_MEDIA_PATH}${mediumId}/`, { body: { event_id: eventId } })
+}
+
+export async function updateMediumFeature(
+  mediumId: string,
+  behaviorId: string | null,
+  featuredById: string | null,
+) {
+  await perchAIApi.patch(`${ROOT_MEDIA_PATH}${mediumId}/`, {
+    body: { behavior_id: behaviorId, featured_by_id: featuredById },
+  })
+}
+
 function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
   const params = new URLSearchParams()
 

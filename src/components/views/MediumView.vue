@@ -102,7 +102,10 @@
   <div class="card mt-8">
     <Panel toggleable>
       <template #header>
-        <CardHeader>Individuals</CardHeader>
+        <div class="flex gap-2">
+          <CardHeader>Individuals</CardHeader>
+          <Badge :value="medium?.individuals.length" size="xlarge" severity="secondary"></Badge>
+        </div>
       </template>
       <div class="grid grid-cols-2 gap-4">
         <IndividualCard
@@ -129,7 +132,7 @@ const {
   isLoading: isMediumLoading,
   error: mediumError,
   fetch: fetchMedium,
-} = useMedium(props.id)
+} = useMedium()
 const {
   data: emptyChecker,
   isLoading: isEmptyCheckerLoading,
@@ -151,7 +154,7 @@ const {
 } = useMember()
 
 onMounted(async () => {
-  await fetchMedium()
+  await fetchMedium(props.id)
   if (medium.value?.checked_contents !== null) {
     await fetchEmptyChecker(medium.value?.checked_contents?.empty_checker_id!)
   }

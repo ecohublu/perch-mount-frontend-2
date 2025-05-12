@@ -91,9 +91,9 @@ export function useSectionEdit(toast: any = null) {
   }
 }
 
-export function localErrorToast(message: string) {
+function localErrorToast(message: string) {
   return { severity: 'error', summary: 'Update Section Failed', detail: message, life: 10000 }
 }
-export function localSuccessToast(message: string) {
+function localSuccessToast(message: string) {
   return { severity: 'success', summary: 'Update Section Successed', detail: message, life: 10000 }
 }
