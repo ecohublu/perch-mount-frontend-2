@@ -10,3 +10,15 @@ export const getMembers = async (): Promise<Array<Member>> => {
 export const getMemberByID = async (id: string): Promise<Member> => {
   return await perchAIApi.get<Member>(`${ROOT_MEMBERS_PATH}${id}/`)
 }
+
+export const activateMember = async (id: string) => {
+  await perchAIApi.post(`${ROOT_MEMBERS_PATH}${id}/activation/`)
+}
+
+export const blockMember = async (id: string) => {
+  await perchAIApi.post(`${ROOT_MEMBERS_PATH}${id}/block/`)
+}
+
+export const unblockMember = async (id: string) => {
+  await perchAIApi.del(`${ROOT_MEMBERS_PATH}${id}/block/`)
+}

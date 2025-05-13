@@ -32,7 +32,8 @@ export const sidebarData: SidebarGroup[] = [
     name: 'ADMIN',
     items: [
       { name: 'Admin Area', icon: 'pi pi-graduation-cap', to: '/admin' },
-      { name: 'Options', icon: 'pi pi-ellipsis-v', to: '/admin/options' },
+      { name: '各種選項', icon: 'pi pi-ellipsis-v', to: '/admin/options' },
+      { name: '成員管理', icon: 'pi pi-users', to: '/admin/members' },
     ],
   },
 ]
