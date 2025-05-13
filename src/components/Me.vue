@@ -8,7 +8,6 @@
 import { useAuth } from '@/composables/useAuth'
 import MemberView from '@/components/views/MemberView.vue'
 import { ref } from 'vue'
-import type { Member } from '@/types/member'
 
 const auth = useAuth()
 const id = ref<string>(auth.currentUser?.id!)
