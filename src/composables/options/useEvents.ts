@@ -1,60 +1,56 @@
 import { ref } from 'vue'
-import { getBehaviors } from '@/services/perchAI/options'
-import {
-  convertOptionsToSelectedOptions,
-  type Behavior,
-  type SelectedOption,
-} from '@/types/options'
+import { getEvents } from '@/services/perchAI/options'
+import { convertOptionsToSelectedOptions, type Event, type SelectedOption } from '@/types/options'
 
-export function useBehaviors() {
-  const behaviors = ref<Behavior[]>([])
+export function useEvents() {
+  const events = ref<Event[]>([])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
   const fetch = async () => {
     isLoading.value = true
     error.value = null
     try {
-      behaviors.value = await getBehaviors()
+      events.value = await getEvents()
     } catch (err) {
       error.value = err as Error
-      behaviors.value = []
+      events.value = []
     } finally {
       isLoading.value = false
     }
   }
 
   return {
-    data: behaviors,
+    data: events,
     isLoading,
     error,
     fetch,
   }
 }
 
-export function useBehaviorOptions() {
-  const behaviorsOptions = ref<Array<SelectedOption>>([])
+export function useEventOptions() {
+  const eventsOptions = ref<Array<SelectedOption>>([])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
   const fetch = async () => {
     isLoading.value = true
     error.value = null
     try {
-      const behaviors = await getBehaviors()
-      behaviorsOptions.value = convertOptionsToSelectedOptions(behaviors)
+      const events = await getEvents()
+      eventsOptions.value = convertOptionsToSelectedOptions(events)
     } catch (err) {
       error.value = err as Error
-      behaviorsOptions.value = []
+      eventsOptions.value = []
     } finally {
       isLoading.value = false
     }
   }
 
   return {
-    data: behaviorsOptions,
+    data: eventsOptions,
     isLoading,
     error,
     fetch,
   }
 }
 
-export function useAddBehavior() {}
+export function useAddEvent() {}

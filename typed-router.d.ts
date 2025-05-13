@@ -24,6 +24,7 @@ declare module 'vue-router/auto-routes' {
     '/admin': RouteRecordInfo<'/admin', '/admin', Record<never, never>, Record<never, never>>,
     '/admin/': RouteRecordInfo<'/admin/', '/admin', Record<never, never>, Record<never, never>>,
     '/admin/media/[id]': RouteRecordInfo<'/admin/media/[id]', '/admin/media/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/admin/options': RouteRecordInfo<'/admin/options', '/admin/options', Record<never, never>, Record<never, never>>,
     '/admin/perchmounts/[id]': RouteRecordInfo<'/admin/perchmounts/[id]', '/admin/perchmounts/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/admin/projects/[id]': RouteRecordInfo<'/admin/projects/[id]', '/admin/projects/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/admin/sections/[id]': RouteRecordInfo<'/admin/sections/[id]', '/admin/sections/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
