@@ -22,7 +22,11 @@
             <div class="grid grid-cols-1 gap-8">
               <div>
                 <InfoItemCard title="行為">
-                  <InputText class="w-full"></InputText>
+                  <InputText
+                    v-model="editingBehavior"
+                    class="w-full"
+                    :invalid="!editingBehavior"
+                  ></InputText>
                 </InfoItemCard>
               </div>
               <div class="flex justify-end gap-2">
@@ -32,7 +36,12 @@
                   severity="secondary"
                   @click="addBehaviorVisible = false"
                 ></Button>
-                <Button type="button" label="確定" @click="handleAddBehaviorClick"></Button>
+                <Button
+                  type="button"
+                  label="確定"
+                  @click="handleAddBehaviorClick"
+                  :disabled="!editingBehavior"
+                ></Button>
               </div>
             </div>
           </Dialog>
@@ -61,7 +70,11 @@
             <div class="grid grid-cols-1 gap-8">
               <div>
                 <InfoItemCard title="型號">
-                  <InputText class="w-full"></InputText>
+                  <InputText
+                    v-model="editingCamera"
+                    class="w-full"
+                    :invalid="!editingCamera"
+                  ></InputText>
                 </InfoItemCard>
               </div>
               <div class="flex justify-end gap-2">
@@ -71,7 +84,12 @@
                   severity="secondary"
                   @click="addCameraVisible = false"
                 ></Button>
-                <Button type="button" label="確定" @click="handleAddCameraClick"></Button>
+                <Button
+                  type="button"
+                  label="確定"
+                  @click="handleAddCameraClick"
+                  :disabled="!editingCamera"
+                ></Button>
               </div>
             </div>
           </Dialog>
@@ -100,7 +118,11 @@
             <div class="grid grid-cols-1 gap-8">
               <div>
                 <InfoItemCard title="類型">
-                  <InputText class="w-full"></InputText>
+                  <InputText
+                    v-model="editingMountType"
+                    class="w-full"
+                    :invalid="!editingMountType"
+                  ></InputText>
                 </InfoItemCard>
               </div>
               <div class="flex justify-end gap-2">
@@ -110,7 +132,12 @@
                   severity="secondary"
                   @click="addMountTypeVisible = false"
                 ></Button>
-                <Button type="button" label="確定" @click="handleAddMountTypeClick"></Button>
+                <Button
+                  type="button"
+                  label="確定"
+                  @click="handleAddMountTypeClick"
+                  :disabled="!editingMountType"
+                ></Button>
               </div>
             </div>
           </Dialog>
@@ -138,8 +165,12 @@
           >
             <div class="grid grid-cols-1 gap-8">
               <div>
-                <InfoItemCard title="事件｀｀">
-                  <InputText class="w-full"></InputText>
+                <InfoItemCard title="事件">
+                  <InputText
+                    v-model="editingEvent"
+                    class="w-full"
+                    :invalid="!editingEvent"
+                  ></InputText>
                 </InfoItemCard>
               </div>
               <div class="flex justify-end gap-2">
@@ -149,7 +180,12 @@
                   severity="secondary"
                   @click="addEventVisible = false"
                 ></Button>
-                <Button type="button" label="確定" @click="handleAddEventClick"></Button>
+                <Button
+                  type="button"
+                  label="確定"
+                  @click="handleAddEventClick"
+                  :disabled="!editingEvent"
+                ></Button>
               </div>
             </div>
           </Dialog>
@@ -159,13 +195,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useBehaviorOptions } from '@/composables/options/useBehaviors'
-import { useCameraOptions } from '@/composables/options/useCameras'
-import { useMountTypeOptions } from '@/composables/options/useMountTypes'
+import { useAddBehavior, useBehaviorOptions } from '@/composables/options/useBehaviors'
+import { useAddCamera, useCameraOptions } from '@/composables/options/useCameras'
+import { useAddMountType, useMountTypeOptions } from '@/composables/options/useMountTypes'
 import { onMounted, ref } from 'vue'
 import CardHeader from '@/components/CardHeader.vue'
 import InfoItemCard from '@/components/cards/InfoItemCard.vue'
-import { useEventOptions } from '@/composables/options/useEvents'
+import { useAddEvent, useEventOptions } from '@/composables/options/useEvents'
+import { useToast } from 'primevue'
+
+const toast = useToast()
+
 const addBehaviorVisible = ref<boolean>(false)
 const addCameraVisible = ref<boolean>(false)
 const addMountTypeVisible = ref<boolean>(false)
@@ -191,12 +231,41 @@ const {
   error: mountTypesError,
   fetch: fetchMountTypes,
 } = useMountTypeOptions()
+
 const {
   data: eventOptions,
   isLoading: isEventsLoading,
   error: eventsError,
   fetch: fetchEvents,
 } = useEventOptions()
+
+const {
+  editingData: editingBehavior,
+  isAdding: isBehaviorAdding,
+  error: addBehaviorError,
+  fetchAdd: fetchAddBehavior,
+} = useAddBehavior(toast)
+
+const {
+  editingData: editingCamera,
+  isAdding: isCameraAdding,
+  error: addCameraError,
+  fetchAdd: fetchAddCamera,
+} = useAddCamera(toast)
+
+const {
+  editingData: editingMountType,
+  isAdding: isMountTypeAdding,
+  error: addMountTypeError,
+  fetchAdd: fetchAddMountType,
+} = useAddMountType(toast)
+
+const {
+  editingData: editingEvent,
+  isAdding: isEventAdding,
+  error: addingEventError,
+  fetchAdd: fetchAddEvent,
+} = useAddEvent(toast)
 
 onMounted(() => {
   fetchBehviors()
@@ -205,8 +274,20 @@ onMounted(() => {
   fetchEvents()
 })
 
-const handleAddBehaviorClick = () => {}
-const handleAddCameraClick = () => {}
-const handleAddMountTypeClick = () => {}
-const handleAddEventClick = () => {}
+const handleAddBehaviorClick = async () => {
+  await fetchAddBehavior()
+  await fetchBehviors()
+}
+const handleAddCameraClick = async () => {
+  await fetchAddCamera()
+  await fetchCameras()
+}
+const handleAddMountTypeClick = async () => {
+  await fetchAddMountType()
+  await fetchMountTypes()
+}
+const handleAddEventClick = async () => {
+  await fetchAddEvent()
+  await fetchEvents()
+}
 </script>

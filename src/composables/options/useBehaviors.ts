@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { getBehaviors } from '@/services/perchAI/options'
+import { addBehavior, getBehaviors } from '@/services/perchAI/options'
 import {
   convertOptionsToSelectedOptions,
   type Behavior,
@@ -57,4 +57,34 @@ export function useBehaviorOptions() {
   }
 }
 
-export function useAddBehavior() {}
+export function useAddBehavior(toast: any = null) {
+  const editingData = ref<string | null>(null)
+  const isAdding = ref<boolean>(false)
+  const error = ref<Error | null>(null)
+  const fetchAdd = async () => {
+    isAdding.value = true
+    error.value = null
+    try {
+      await addBehavior(editingData.value!)
+      if (toast) {
+        toast.add(localSuccessToast(editingData.value!))
+      }
+    } catch (err) {
+      error.value = err as Error
+      if (toast) {
+        toast.add(localErrorToast(err as string))
+      }
+    } finally {
+      isAdding.value = false
+    }
+  }
+
+  return { editingData, isAdding, error, fetchAdd }
+}
+
+function localErrorToast(message: string) {
+  return { severity: 'error', summary: 'Add Behavior Failed', detail: message, life: 10000 }
+}
+function localSuccessToast(message: string) {
+  return { severity: 'success', summary: 'Add Behavior Successed', detail: message, life: 10000 }
+}

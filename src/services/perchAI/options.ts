@@ -13,7 +13,7 @@ export const getBehaviors = async (): Promise<Array<Behavior>> => {
   return await perchAIApi.get<Array<Behavior>>(ROOT_BEHAVIORS_PATH)
 }
 export const addBehavior = async (name: string) => {
-  await perchAIApi.post<string>(ROOT_BEHAVIORS_PATH), { body: { name: name } }
+  await perchAIApi.post(ROOT_BEHAVIORS_PATH, { body: { name: name } })
 }
 
 export const getMountTypes = async (): Promise<Array<MountType>> => {
@@ -21,7 +21,7 @@ export const getMountTypes = async (): Promise<Array<MountType>> => {
 }
 
 export const addMountType = async (name: string) => {
-  await perchAIApi.post<string>(ROOT_MOUNT_TYPES_PATH), { body: { name: name } }
+  await perchAIApi.post(ROOT_MOUNT_TYPES_PATH, { body: { name: name } })
 }
 
 export const getCameras = async (): Promise<Array<Camera>> => {
@@ -29,7 +29,7 @@ export const getCameras = async (): Promise<Array<Camera>> => {
 }
 
 export const addCamera = async (model_name: string) => {
-  await perchAIApi.post<string>(ROOT_CAMERAS_PATH), { body: { model_name: model_name } }
+  await perchAIApi.post(ROOT_CAMERAS_PATH, { body: { model_name: model_name } })
 }
 
 export const getHabitats = async (): Promise<Array<Habitat>> => {

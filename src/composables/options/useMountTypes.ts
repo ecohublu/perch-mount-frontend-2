@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { getMountTypes } from '@/services/perchAI/options'
+import { addMountType, getMountTypes } from '@/services/perchAI/options'
 import {
   convertOptionsToSelectedOptions,
   type MountType,
@@ -56,4 +56,35 @@ export function useMountTypeOptions() {
     error,
     fetch,
   }
+}
+
+export function useAddMountType(toast: any = null) {
+  const editingData = ref<string | null>(null)
+  const isAdding = ref<boolean>(false)
+  const error = ref<Error | null>(null)
+  const fetchAdd = async () => {
+    isAdding.value = true
+    error.value = null
+    try {
+      await addMountType(editingData.value!)
+      if (toast) {
+        toast.add(localSuccessToast(editingData.value!))
+      }
+    } catch (err) {
+      error.value = err as Error
+      if (toast) {
+        toast.add(localErrorToast(err as string))
+      }
+      isAdding.value = false
+    }
+  }
+
+  return { editingData, isAdding, error, fetchAdd }
+}
+
+function localErrorToast(message: string) {
+  return { severity: 'error', summary: 'Add Mount Type Failed', detail: message, life: 10000 }
+}
+function localSuccessToast(message: string) {
+  return { severity: 'success', summary: 'Add Mount Type Successed', detail: message, life: 10000 }
 }
