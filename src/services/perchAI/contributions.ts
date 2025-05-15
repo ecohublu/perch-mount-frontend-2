@@ -4,9 +4,7 @@ import { perchAIApi } from './api'
 function serializeContributionsQueryParams(params: GetContributionsParams): string {
   const query = new URLSearchParams()
 
-  if (params.contributor_ids?.length) {
-    query.append('contributor_ids', params.contributor_ids.join(','))
-  }
+  query.append('contributor_ids', params.contributor_ids.join(','))
 
   if (params.contribution_type?.length) {
     query.append('contribution_type', params.contribution_type.join(','))
