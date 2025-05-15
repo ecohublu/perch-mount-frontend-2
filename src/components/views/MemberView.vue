@@ -18,6 +18,5 @@ const {
 
 onMounted(async () => {
   await fetchMember(props.id)
-  console.log(member.value)
 })
 </script>
