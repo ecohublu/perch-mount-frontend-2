@@ -25,7 +25,7 @@ export const getContributionsByQuery = async (
   params: GetContributionsParams,
 ): Promise<Contribution[]> => {
   const queryString = serializeContributionsQueryParams(params)
-  const url = `/api/contributions?${queryString}`
+  const url = `/api/perchai/contributions/?${queryString}`
 
   return await perchAIApi.get<Contribution[]>(url)
 }

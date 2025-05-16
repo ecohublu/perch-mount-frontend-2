@@ -1,22 +1,22 @@
 <template>
-  <div class="card">
-    {{ member }}
+  <div class="grid grid-cols-12 gap-8">
+    <div class="col-span-9">
+      <div>
+        <MemberClaimedPerchMounts :memberId="id"></MemberClaimedPerchMounts>
+      </div>
+      <div class="mt-8">
+        <MemberContributions :memberId="id"></MemberContributions>
+      </div>
+    </div>
+    <div class="col-span-3">
+      <MemberInfoView :id="id"></MemberInfoView>
+    </div>
   </div>
 </template>
+
 <script setup lang="ts">
-import { useMember } from '@/composables/members/useMemberByID'
-import { onMounted } from 'vue'
-
+import MemberInfoView from './MemberInfoView.vue'
+import MemberClaimedPerchMounts from './MemberClaimedPerchMounts.vue'
+import MemberContributions from './MemberContributions.vue'
 const props = defineProps<{ id: string }>()
-
-const {
-  data: member,
-  isLoading: isMemberLoading,
-  error: memberError,
-  fetch: fetchMember,
-} = useMember()
-
-onMounted(async () => {
-  await fetchMember(props.id)
-})
 </script>
