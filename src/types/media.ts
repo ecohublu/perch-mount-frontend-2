@@ -107,6 +107,14 @@ export interface CheckedMedium {
   has_individual: boolean
 }
 
+export interface HighlightFilter {
+  medium_datetime_from?: Date | null
+  medium_datetime_to?: Date | null
+  behavior_ids?: string[] | null
+  project_ids?: string[] | null
+  perch_mount_ids?: string[] | null
+  featured_by_id?: string | null
+}
 export function createMediaQuery(params: Partial<MediaQuery> & { status: string }): MediaQuery {
   return {
     status: params.status,

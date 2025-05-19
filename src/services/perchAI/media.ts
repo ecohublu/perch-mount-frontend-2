@@ -1,9 +1,16 @@
-import type { CheckedMedium, MediaQuery, Medium, ReviewedMedium } from '@/types/media'
+import type {
+  CheckedMedium,
+  HighlightFilter,
+  MediaQuery,
+  Medium,
+  ReviewedMedium,
+} from '@/types/media'
 import { perchAIApi } from '@/services/perchAI/api'
 
 const ROOT_MEDIA_PATH = '/api/perchai/media/'
 const ROOT_CHECK_PATH = '/api/perchai/checked_media/'
 const ROOT_REVIEW_PATH = '/api/perchai/reviewed_media/'
+const ROOT_FEATURES_PATH = '/api/features/features/'
 
 export async function getMediaByFilter(params: MediaQuery): Promise<Array<Medium>> {
   const paramsURL = buildMediaQueryURL(params)
@@ -40,6 +47,10 @@ export async function updateMediumFeature(
   await perchAIApi.patch(`${ROOT_MEDIA_PATH}${mediumId}/`, {
     body: { behavior_id: behaviorId, featured_by_id: featuredById },
   })
+}
+
+export async function getHighlightByFilter(params: HighlightFilter): Promise<Medium[]> {
+  return await perchAIApi.get<Medium[]>(ROOT_FEATURES_PATH, { body: params })
 }
 
 function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
