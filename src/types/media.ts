@@ -108,13 +108,23 @@ export interface CheckedMedium {
 }
 
 export interface HighlightFilter {
-  medium_datetime_from?: Date | null
-  medium_datetime_to?: Date | null
-  behavior_ids?: string[] | null
-  project_ids?: string[] | null
-  perch_mount_ids?: string[] | null
-  featured_by_id?: string | null
+  mediumDatetimeFrom: Date | null
+  mediumDatetimeTo: Date | null
+  selectedBehaviors: SelectedOption[] | null
+  selectedProjects: SelectedOption[] | null
+  selectedPerchMounts: SelectedOption[] | null
+  featuredById: string | null
 }
+
+export interface HighlightPramas {
+  medium_datetime_from?: Date
+  medium_datetime_to?: Date
+  behavior_ids?: string[]
+  project_ids?: string[]
+  perch_mount_ids?: string[]
+  feature_by_id?: string
+}
+
 export function createMediaQuery(params: Partial<MediaQuery> & { status: string }): MediaQuery {
   return {
     status: params.status,

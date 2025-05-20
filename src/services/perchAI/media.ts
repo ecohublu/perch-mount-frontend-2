@@ -1,6 +1,7 @@
 import type {
   CheckedMedium,
   HighlightFilter,
+  HighlightPramas,
   MediaQuery,
   Medium,
   ReviewedMedium,
@@ -49,8 +50,8 @@ export async function updateMediumFeature(
   })
 }
 
-export async function getHighlightByFilter(params: HighlightFilter): Promise<Medium[]> {
-  return await perchAIApi.get<Medium[]>(ROOT_FEATURES_PATH, { body: params })
+export async function getHighlightByFilter(params: URLSearchParams): Promise<Medium[]> {
+  return await perchAIApi.get<Medium[]>(`${ROOT_FEATURES_PATH}?${params.toString()}`)
 }
 
 function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
@@ -92,6 +93,39 @@ function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
 
   if (query.taxon_orders_by_ai?.length) {
     params.set('taxon_orders_by_ai', query.taxon_orders_by_ai.join(','))
+  }
+
+  return params
+}
+
+export function convertHighlightFilterToURLParams(filter: HighlightFilter): URLSearchParams {
+  const params = new URLSearchParams()
+
+  if (filter.mediumDatetimeFrom !== null) {
+    // 將 Date 物件轉換為 ISO 格式字串 (YYYY-MM-DDTHH:mm:ss.sssZ)
+    params.set('medium_datetime_from', filter.mediumDatetimeFrom.toISOString())
+  }
+
+  if (filter.mediumDatetimeTo !== null) {
+    // 將 Date 物件轉換為 ISO 格式字串
+    params.set('medium_datetime_to', filter.mediumDatetimeTo.toISOString())
+  }
+
+  if (filter.selectedBehaviors && filter.selectedBehaviors.length > 0) {
+    params.set('behavior_ids', filter.selectedBehaviors.map((option) => option.code).join(','))
+  }
+
+  if (filter.selectedProjects && filter.selectedProjects.length > 0) {
+    params.set('project_ids', filter.selectedProjects.map((option) => option.code).join(','))
+  }
+
+  if (filter.selectedPerchMounts && filter.selectedPerchMounts.length > 0) {
+    params.set('perch_mount_ids', filter.selectedPerchMounts.map((option) => option.code).join(','))
+  }
+
+  if (filter.featuredById !== null && filter.featuredById !== '') {
+    // 也檢查空字串
+    params.set('feature_by_id', filter.featuredById)
   }
 
   return params
