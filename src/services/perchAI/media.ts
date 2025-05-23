@@ -2,6 +2,7 @@ import type {
   CheckedMedium,
   HighlightFilter,
   HighlightPramas,
+  HightlightResponse,
   MediaQuery,
   Medium,
   ReviewedMedium,
@@ -50,8 +51,8 @@ export async function updateMediumFeature(
   })
 }
 
-export async function getHighlightByFilter(params: URLSearchParams): Promise<Medium[]> {
-  return await perchAIApi.get<Medium[]>(`${ROOT_FEATURES_PATH}?${params.toString()}`)
+export async function getHighlightByFilter(params: URLSearchParams): Promise<HightlightResponse> {
+  return await perchAIApi.get<HightlightResponse>(`${ROOT_FEATURES_PATH}?${params.toString()}`)
 }
 
 function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
@@ -98,7 +99,11 @@ function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
   return params
 }
 
-export function convertHighlightFilterToURLParams(filter: HighlightFilter): URLSearchParams {
+export function convertHighlightFilterToURLParams(
+  filter: HighlightFilter,
+  offset: number = 0,
+  limit: number = 50,
+): URLSearchParams {
   const params = new URLSearchParams()
 
   if (filter.mediumDatetimeFrom !== null) {
@@ -123,10 +128,17 @@ export function convertHighlightFilterToURLParams(filter: HighlightFilter): URLS
     params.set('perch_mount_ids', filter.selectedPerchMounts.map((option) => option.code).join(','))
   }
 
+  if (filter.selectedTaxonOrder) {
+    params.set('taxon_orders', String(filter.selectedTaxonOrder))
+  }
+
   if (filter.featuredById !== null && filter.featuredById !== '') {
     // 也檢查空字串
     params.set('feature_by_id', filter.featuredById)
   }
+
+  params.set('offset', String(offset))
+  params.set('limit', String(limit))
 
   return params
 }

@@ -16,11 +16,16 @@
         }"
       ></ReviewingMediumCard>
     </div>
-
+    <div v-else-if="data.length === 0">沒有需要 review 的資料~</div>
     <div v-else><Loading></Loading></div>
   </div>
 
-  <Button class="my-8" label="送出" @click="handleValidateClicked()" />
+  <Button
+    class="my-8"
+    label="送出"
+    @click="handleValidateClicked()"
+    :disabled="data.length === 0"
+  />
 
   <Dialog v-model:visible="submitVisible" modal header="確認要送出嗎?" :style="{ width: '25rem' }">
     <div class="my-8">

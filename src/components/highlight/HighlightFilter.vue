@@ -1,5 +1,8 @@
 <template>
   <div class="grid grid-cols-4 gap-6">
+    <div v-if="invalid" class="col-span-4">
+      <Message severity="warn">請至少填一個條件！</Message>
+    </div>
     <div>
       <InfoItemCard title="從">
         <DatePicker v-model="filter.mediumDatetimeFrom" showTime hourFormat="24" fluid />
@@ -48,6 +51,16 @@
         />
       </InfoItemCard>
     </div>
+
+    <div>
+      <InfoItemCard title="物種">
+        <SpeciesSelector v-model:selected="filter.selectedTaxonOrder"></SpeciesSelector>
+      </InfoItemCard>
+    </div>
+    <div></div>
+    <div>
+      <Button label="搜尋" icon="pi pi-search" @click="handleSearchButton"></Button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -58,6 +71,11 @@ import { useProjectOptions } from '@/composables/projects/useProjects'
 import { usePerchMountOptions } from '@/composables/perchmounts/usePerchMounts'
 
 import InfoItemCard from '../cards/InfoItemCard.vue'
+import SpeciesSelector from '../forms/SpeciesSelector.vue'
+
+const emit = defineEmits<{
+  (e: 'search', payload: typeof filter.value): void
+}>()
 
 const { invalid, filter } = useHighlightFilter()
 const {
@@ -86,4 +104,11 @@ onMounted(async () => {
   await fetchProjects()
   await fetchPerchMounts()
 })
+
+const handleSearchButton = () => {
+  if (invalid.value) {
+    return
+  }
+  emit('search', filter.value)
+}
 </script>

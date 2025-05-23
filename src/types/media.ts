@@ -8,6 +8,7 @@ import {
 } from '@/types/individuals'
 import type { Behavior, Event } from '@/types/options'
 import type { SelectedOption } from '@/types/options'
+import type { SearchResult } from './species'
 
 const auth = useAuth()
 
@@ -113,16 +114,23 @@ export interface HighlightFilter {
   selectedBehaviors: SelectedOption[] | null
   selectedProjects: SelectedOption[] | null
   selectedPerchMounts: SelectedOption[] | null
+  selectedTaxonOrder: SearchResult | null
   featuredById: string | null
 }
 
 export interface HighlightPramas {
   medium_datetime_from?: Date
   medium_datetime_to?: Date
+  taxon_order: number
   behavior_ids?: string[]
   project_ids?: string[]
   perch_mount_ids?: string[]
   feature_by_id?: string
+}
+
+export interface HightlightResponse {
+  media: Medium[]
+  total: number
 }
 
 export function createMediaQuery(params: Partial<MediaQuery> & { status: string }): MediaQuery {

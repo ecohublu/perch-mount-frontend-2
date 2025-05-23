@@ -11,6 +11,7 @@ export function useHighlightFilter() {
   const filter = ref<HighlightFilter>({
     mediumDatetimeFrom: null,
     mediumDatetimeTo: null,
+    selectedTaxonOrder: null,
     selectedBehaviors: [],
     selectedProjects: [],
     selectedPerchMounts: [],
@@ -24,6 +25,7 @@ export function useHighlightFilter() {
       const hasValue =
         newFilter.mediumDatetimeFrom !== null ||
         newFilter.mediumDatetimeTo !== null ||
+        newFilter.selectedTaxonOrder ||
         (newFilter.selectedBehaviors && newFilter.selectedBehaviors.length > 0) ||
         (newFilter.selectedProjects && newFilter.selectedProjects.length > 0) ||
         (newFilter.selectedPerchMounts && newFilter.selectedPerchMounts.length > 0) ||
@@ -37,21 +39,37 @@ export function useHighlightFilter() {
   return { invalid, filter }
 }
 
-export function useHighlightMedia() {
+export function useHighlightMedia(toast: any = null) {
   const media = ref<Medium[]>([])
+  const total = ref<number>(0)
   const isLoading = ref<boolean>(false)
   const error = ref<Error | null>(null)
-  const fetch = async (filter: HighlightFilter) => {
+  const fetch = async (filter: HighlightFilter, offset: number = 0, limit: number = 50) => {
     isLoading.value = true
     error.value = null
     try {
-      const params = convertHighlightFilterToURLParams(filter)
-      media.value = await getHighlightByFilter(params)
+      const params = convertHighlightFilterToURLParams(filter, offset, limit)
+      const reponseBody = await getHighlightByFilter(params)
+      media.value = reponseBody.media
+      total.value = reponseBody.total
+      if (media.value.length === 0 && toast) {
+        toast.add(localNoResultToast('No media found, please try other filter parameters.'))
+      }
     } catch (err) {
       error.value = err as Error
+      if (toast) {
+        toast.add(localErrorToast(err as string))
+      }
     } finally {
       isLoading.value = false
     }
   }
-  return { data: media, isLoading, error, fetch }
+  return { data: media, total, isLoading, error, fetch }
+}
+
+function localErrorToast(message: string) {
+  return { severity: 'error', summary: 'fetch Failed', detail: message, life: 10000 }
+}
+function localNoResultToast(message: string) {
+  return { severity: 'info', summary: 'No Media Found', detail: message, life: 10000 }
 }
