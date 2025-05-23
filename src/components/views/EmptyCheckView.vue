@@ -1,6 +1,7 @@
 <template>
   <div class="card">
-    <div v-if="!isLoading" class="grid grid-cols-4 gap-4">
+    <div v-if="data.length === 0">沒有需要檢查的資料</div>
+    <div v-else-if="!isLoading" class="grid grid-cols-4 gap-4">
       <EmptyCheckingMediaCard
         v-for="(medium, index) of data"
         :medium="medium"
@@ -11,7 +12,12 @@
     <div v-else><Loading></Loading></div>
   </div>
 
-  <Button class="mt-6 mb-12" label="送出" @click="handleSubmitClicked()" />
+  <Button
+    class="mt-6 mb-12"
+    label="送出"
+    @click="handleSubmitClicked()"
+    :disabled="data.length === 0"
+  />
 
   <Dialog v-model:visible="dialogVisible" modal header="確認要送出嗎?" :style="{ width: '25rem' }">
     <div v-if="error">
