@@ -17,6 +17,39 @@
               ></Button>
             </span>
           </div>
+          <div>
+            <ul class="list-none p-4 m-0">
+              <li>
+                <div
+                  v-ripple
+                  v-styleclass="{
+                    selector: '@next',
+                    enterFromClass: 'hidden',
+                    enterActiveClass: 'animate-slidedown',
+                    leaveToClass: 'hidden',
+                    leaveActiveClass: 'animate-slideup',
+                  }"
+                  class="p-4 flex items-center justify-between text-surface-500 dark:text-surface-400 cursor-pointer p-ripple"
+                >
+                  <span class="font-medium">Projects</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <ul class="list-none p-0 m-0 overflow-hidden">
+                  <li v-for="project of projects">
+                    <router-link :to="`/app/projects/${project.id}`">
+                      <a
+                        v-ripple
+                        class="flex items-center cursor-pointer p-4 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                      >
+                        <i class="pi pi-android mr-2"></i>
+                        <span class="font-medium">{{ project.name }}</span>
+                      </a>
+                    </router-link>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
           <div v-for="group in sidebarData">
             <ul class="list-none p-4 m-0">
               <li>
@@ -57,8 +90,8 @@
                 v-ripple
                 class="m-4 flex items-center cursor-pointer p-4 gap-2 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
               >
-                <Avatar :image="me.profile_picture_url" shape="circle" />
-                <span class="font-bold">{{ me.display_name }}</span>
+                <Avatar :image="auth.currentUser?.profile_picture_url" shape="circle" />
+                <span class="font-bold">{{ auth.currentUser?.display_name }}</span>
               </a>
             </router-link>
           </div>
@@ -70,25 +103,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { sidebarData } from '@/constants/sidebar'
+import { useAuthStore } from '@/stores/auth'
+import { useProjects } from '@/composables/projects/useProjects'
 
+const auth = useAuthStore()
 const visible = ref(false)
 
-const me = ref({
-  activated: true,
-  blocked: false,
-  display_name: 'Tatsutomo Chin',
-  first_name: 'Tatsutomo',
-  gmail: 'raymond96383@gmail.com',
-  id: '770b2f83-566d-4a27-ba11-591b39a64305',
-  is_admin: true,
-  is_super_admin: true,
-  last_name: 'Chin',
-  oidc_sub: '116890993280167161836',
-  position: 'part_time',
-  profile_picture_url:
-    'https://lh3.googleusercontent.com/a/ACg8ocKACCiK93mMtOZJ7d2ksCU9BMbv7pd1cOhVDi7UVwkDfoRot8qn=s96-c',
-  user_name: 'tatustomo',
-})
+const { data: projects, isLoading, error, fetch } = useProjects()
+onMounted(fetch)
 </script>
