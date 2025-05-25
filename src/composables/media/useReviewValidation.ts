@@ -31,12 +31,12 @@ export function useReviewValidation() {
     const species = new Set<string>()
     media.forEach((medium) => {
       medium.individuals.forEach((individual) => {
-        if (individual.selected_species) {
+        if (!individual.deleted && individual.selected_species) {
           species.add(individual.selected_species.chinese_common_name)
         }
       })
       medium.ai_missed_individuals.forEach((individual) => {
-        if (individual.selected_species) {
+        if (!individual.deleted && individual.selected_species) {
           species.add(individual.selected_species.chinese_common_name)
         }
       })
@@ -44,11 +44,17 @@ export function useReviewValidation() {
     selectingSpecies.value = [...species]
   }
   const submit = async (media: ReviewingMedium[]) => {
-    const reviewedMedia = convertReviewingToReviewedMedia(media)
+    const reviewedMedia = await convertReviewingToReviewedMedia(media)
     submitting.value = true
 
-    await addReviewedMedia(reviewedMedia)
-    submitting.value = false
+    try {
+      await addReviewedMedia(reviewedMedia)
+      submitted.value = true
+    } catch (err) {
+      error.value = err as Error
+    } finally {
+      submitting.value = false
+    }
   }
 
   return {

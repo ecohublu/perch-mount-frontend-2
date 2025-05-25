@@ -12,6 +12,7 @@ export function useReviewedMediaBySectionID(initSectionID: string) {
     isLoading.value = true
     error.value = null
     const mediaQuery = createMediaQuery({ status: 'reviewed', section_ids: [sectionID] })
+
     try {
       const result = await getMediaByFilter(mediaQuery)
       media.value = result

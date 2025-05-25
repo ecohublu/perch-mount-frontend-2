@@ -5,12 +5,12 @@
     </div>
     <div>
       <InfoItemCard title="AI 物種">
-        {{ individual.reviewed_contents?.species_by_human.chinese_common_name }}
+        {{ individual.unreviewed_contents?.species_by_ai.chinese_common_name }}
       </InfoItemCard>
     </div>
     <div>
       <InfoItemCard title="物種">
-        {{ individual.unreviewed_contents?.species_by_ai.chinese_common_name }}
+        {{ individual.reviewed_contents?.species_by_human.chinese_common_name }}
       </InfoItemCard>
     </div>
     <div>

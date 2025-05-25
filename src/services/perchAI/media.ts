@@ -96,6 +96,10 @@ function buildMediaQueryURL(query: MediaQuery): URLSearchParams {
     params.set('taxon_orders_by_ai', query.taxon_orders_by_ai.join(','))
   }
 
+  if (query.limit) {
+    params.set('limit', String(query.limit))
+  }
+
   return params
 }
 

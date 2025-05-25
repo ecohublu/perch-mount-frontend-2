@@ -25,6 +25,7 @@ export type MediaQuery = {
   prey_inaturalist_taxa_ids?: number[]
   taxon_orders_by_human?: number[]
   taxon_orders_by_ai?: number[]
+  limit?: number
 }
 
 export type UncheckedMediaQuery = {
@@ -188,9 +189,12 @@ export function convertToReviewingMedia(media: Medium[]): ReviewingMedium[] {
   })
 }
 
-export function convertReviewingToReviewedMedia(media: ReviewingMedium[]): ReviewedMedium[] {
+export async function convertReviewingToReviewedMedia(
+  media: ReviewingMedium[],
+): Promise<ReviewedMedium[]> {
   const currentTime = new Date(Date.now())
   const timeString = currentTime.toISOString()
+  await auth.checkLogin()
   return media.map((medium) => {
     const individuals = []
     individuals.push(...convertReviewingToReviewedIndividuals(medium.individuals))

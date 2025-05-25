@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import type { Medium } from '@/types/media'
 import { getMediaByFilter } from '@/services/perchAI/media'
 import { createMediaQuery } from '@/types/media'
+import { OPERATION_MEDIA_LIMIT } from '@/constants/media'
 
 export function useReviewingMediaBySectionIDsAndPerchMountIDs(
   status: 'unchecked' | 'unreviewed',
@@ -20,7 +21,7 @@ export function useReviewingMediaBySectionIDsAndPerchMountIDs(
     error.value = null
 
     const mediaQuery = createMediaQuery({ status: status })
-
+    mediaQuery.limit = OPERATION_MEDIA_LIMIT
     if (sectionIDs) {
       mediaQuery.section_ids = sectionIDs
     } else if (perchMountIDs) {

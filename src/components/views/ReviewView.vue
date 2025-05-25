@@ -29,25 +29,40 @@
 
   <Dialog v-model:visible="submitVisible" modal header="確認要送出嗎?" :style="{ width: '25rem' }">
     <div class="my-8">
-      <div v-if="validatetionError"></div>
+      <div v-if="validatetionError">
+        <Message severity="error">{{ validatetionError }}</Message>
+      </div>
       <div v-else-if="anyUnvalidated">Review 尚未完成，請繼續努力。</div>
-      <div v-else-if="submitted"></div>
+      <div v-else-if="submitted">
+        <Message severity="success">資料已成功送出</Message>
+        <div class="flex justify-end gap-2 mt-6">
+          <router-link to="/app">
+            <Button severity="secondary" label="回到首頁"></Button>
+          </router-link>
+          <Button label="繼續" @click="handleContinueClicked"></Button>
+        </div>
+      </div>
       <div v-else-if="submitting"></div>
       <div v-else>
         <span>你選了：</span>
         <ul>
           <li v-for="name in selectingSpecies" class="list-disc">{{ name }}</li>
         </ul>
+        <div class="flex justify-end gap-2">
+          <Button
+            type="button"
+            label="取消"
+            severity="secondary"
+            @click="submitVisible = false"
+          ></Button>
+          <Button
+            v-if="!anyUnvalidated || submitted || submitting"
+            type="button"
+            label="確認"
+            @click="handleSubmitClick"
+          ></Button>
+        </div>
       </div>
-    </div>
-    <div class="flex justify-end gap-2">
-      <Button
-        type="button"
-        label="取消"
-        severity="secondary"
-        @click="submitVisible = false"
-      ></Button>
-      <Button v-if="!anyUnvalidated" type="button" label="確認" @click="handleSubmitClick"></Button>
     </div>
   </Dialog>
 
@@ -104,6 +119,9 @@ import FeatureEditor from '@/components/forms/FeatureEditor.vue'
 import Loading from '@/components/Loading.vue'
 import ReviewBatchUpdatorPanel from '@/components/forms/ReviewBatchUpdatorPanel.vue'
 import type { SearchResult } from '@/types/species'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps<{
   query: UncheckedMediaQuery
@@ -233,5 +251,9 @@ const handleCancelRequested = () => {
 
 const handleSubmitClick = async () => {
   await submit(reviewingMedia.value)
+}
+
+const handleContinueClicked = () => {
+  router.go(0)
 }
 </script>
