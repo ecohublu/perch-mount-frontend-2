@@ -106,6 +106,7 @@ declare module 'vue' {
     PerchMountDetail: typeof import('./src/components/PerchMountDetail.vue')['default']
     PerchMountEditor: typeof import('./src/components/adminviews/editors/PerchMountEditor.vue')['default']
     PerchMountInfo: typeof import('./src/components/PerchMountInfo.vue')['default']
+    PerchMountMonthlyCounts: typeof import('./src/components/PerchMountMonthlyCounts.vue')['default']
     PerchMountOfProjectTable: typeof import('./src/components/adminviews/tables/PerchMountOfProjectTable.vue')['default']
     PerchMountsOfProjectTable: typeof import('./src/components/adminviews/tables/PerchMountsOfProjectTable.vue')['default']
     PerchMountSpan: typeof import('./src/components/nameSpans/PerchMountSpan.vue')['default']

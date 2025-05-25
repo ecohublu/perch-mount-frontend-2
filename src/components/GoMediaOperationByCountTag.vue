@@ -14,14 +14,20 @@ const props = defineProps<{
   operation: 'emptycheck' | 'review'
   sectionID?: string
   perchMountID?: string
+  from?: Date
+  to?: Date
 }>()
 
 const getRouterTo = (): string => {
+  let to: string = ''
   if (props.sectionID) {
-    return `/app/${props.operation}?section_ids=${props.sectionID}`
+    to = `/app/${props.operation}?section_ids=${props.sectionID}`
   } else if (props.perchMountID) {
-    return `/app/${props.operation}?perch_mount_ids=${props.perchMountID}`
+    to = `/app/${props.operation}?perch_mount_ids=${props.perchMountID}`
   }
-  return ''
+  if (props.from) {
+    to = `${to}&`
+  }
+  return to
 }
 </script>

@@ -2,6 +2,7 @@ import type {
   NewPerchMount,
   PerchMount,
   PerchMountCount,
+  PerchMountMonthlyCount,
   PerchMountPatchPayload,
 } from '@/types/perchMount'
 import type { GetPerchMountsParams } from '@/types/perchMount'
@@ -85,4 +86,10 @@ export async function addPerchMount(perchMount: NewPerchMount) {
 
 export const updatePerchMountByID = async (id: string, payload: PerchMountPatchPayload) => {
   return await perchAIApi.patch<PerchMount>(`${ROOT_PERCH_MOUNT_PATH}${id}/`, { body: payload })
+}
+
+export const getPerchMountMonthlyCounts = async (id: string): Promise<PerchMountMonthlyCount[]> => {
+  return await perchAIApi.get<PerchMountMonthlyCount[]>(
+    `${ROOT_PERCH_MOUNT_PATH}${id}/monthly_counts/`,
+  )
 }

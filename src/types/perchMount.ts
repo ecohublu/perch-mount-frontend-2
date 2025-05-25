@@ -98,6 +98,15 @@ export interface PerchMountPatchPayload {
   note?: string | null
 }
 
+export interface PerchMountMonthlyCount {
+  year_month: string
+  undetected: number
+  unchecked: number
+  unreviewed: number
+  reviewed: number
+  accidental: number
+}
+
 export function convertToProportion(input: PerchMountCount): PerchMountCountProportion {
   const {
     id,
