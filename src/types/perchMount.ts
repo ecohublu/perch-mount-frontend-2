@@ -100,6 +100,8 @@ export interface PerchMountPatchPayload {
 
 export interface PerchMountMonthlyCount {
   year_month: string
+  year: number
+  month: number
   undetected: number
   unchecked: number
   unreviewed: number

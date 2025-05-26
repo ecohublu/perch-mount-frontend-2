@@ -41,5 +41,12 @@ export function useMediaOperationQuery(route: RouteLocationNormalizedLoaded): Un
   } else {
     result.section_ids = []
   }
+
+  if (typeof query.year === 'number') {
+    result.year = query.year
+  }
+  if (typeof query.month === 'number') {
+    result.month = query.month
+  }
   return result
 }

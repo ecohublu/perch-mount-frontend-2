@@ -14,8 +14,8 @@ const props = defineProps<{
   operation: 'emptycheck' | 'review'
   sectionID?: string
   perchMountID?: string
-  from?: Date
-  to?: Date
+  year?: number
+  month?: number
 }>()
 
 const getRouterTo = (): string => {
@@ -25,8 +25,11 @@ const getRouterTo = (): string => {
   } else if (props.perchMountID) {
     to = `/app/${props.operation}?perch_mount_ids=${props.perchMountID}`
   }
-  if (props.from) {
-    to = `${to}&`
+  if (props.year) {
+    to = `${to}&year=${props.year}`
+  }
+  if (props.month) {
+    to = `${to}&month=${props.month}`
   }
   return to
 }

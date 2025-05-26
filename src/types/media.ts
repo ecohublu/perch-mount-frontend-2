@@ -26,11 +26,15 @@ export type MediaQuery = {
   taxon_orders_by_human?: number[]
   taxon_orders_by_ai?: number[]
   limit?: number
+  year?: number
+  month?: number
 }
 
 export type UncheckedMediaQuery = {
   perch_mount_ids?: string[] // UUID[]
   section_ids?: string[] // UUID[]
+  year?: number
+  month?: number
 }
 
 export type Medium = {
