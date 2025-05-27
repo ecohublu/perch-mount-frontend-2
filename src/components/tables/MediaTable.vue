@@ -31,9 +31,7 @@
 <script setup lang="ts">
 import type { Medium } from '@/types/media'
 import { ref } from 'vue'
-import type { Individual } from '@/types/individuals'
-import type { Species } from '@/types/species'
-
+import { joinIndividualsfield } from '@/utils/species'
 import MediumIDSpan from '@/components/nameSpans/MediumIDSpan.vue'
 
 const props = defineProps<{
@@ -45,19 +43,4 @@ const undetected = ref<boolean>(props.media_status == 'undetected')
 const unchecked = ref<boolean>(props.media_status == 'unchecked')
 const unreviewed = ref<boolean>(props.media_status == 'unreviewed')
 const reviewed = ref<boolean>(props.media_status == 'reviewed')
-
-const joinIndividualsfield = (
-  individuals: Array<Individual>,
-  by: 'human' | 'ai',
-  sep: string,
-  field: keyof Species,
-) => {
-  const values = []
-  for (const individual of individuals) {
-    if (by == 'ai') {
-      values.push(individual.unreviewed_contents?.species_by_ai[field])
-    }
-  }
-  return values.join(sep)
-}
 </script>
