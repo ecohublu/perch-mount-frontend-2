@@ -3,8 +3,10 @@
     <template #header>
       <S3Medium :id="medium.id" :isImage="medium.medium_type == 'image'"></S3Medium>
     </template>
-    <template #title></template>
-    <template #subtitle>Card subtitle</template>
+    <template #title>
+      {{ joinIndividualsfield(medium.individuals, 'human', ', ', 'chinese_common_name') }}
+    </template>
+    <template #subtitle>{{ medium.reviewed_contents?.behavior?.name }}</template>
     <template #content>
       <p class="m-0">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error
@@ -23,6 +25,7 @@
 <script setup lang="ts">
 import type { Medium } from '@/types/media'
 
+import { joinIndividualsfield } from '@/utils/species'
 import S3Medium from '../S3Medium.vue'
 
 const props = defineProps<{ medium: Medium }>()

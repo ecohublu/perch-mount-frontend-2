@@ -1,1 +1,1 @@
-export const OPERATION_MEDIA_LIMIT = 1
+export const OPERATION_MEDIA_LIMIT = 50

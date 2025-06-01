@@ -133,7 +133,7 @@ export function convertHighlightFilterToURLParams(
   }
 
   if (filter.selectedTaxonOrder) {
-    params.set('taxon_orders', String(filter.selectedTaxonOrder))
+    params.set('taxon_orders', String(filter.selectedTaxonOrder.code))
   }
 
   if (filter.featuredById !== null && filter.featuredById !== '') {
