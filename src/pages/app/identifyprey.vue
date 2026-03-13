@@ -1,6 +1,6 @@
 <template>
   <DeveloperIsWorking></DeveloperIsWorking>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import DeveloperIsWorking from '@/components/DeveloperIsWorking.vue'
 </script>
