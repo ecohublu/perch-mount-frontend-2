@@ -6,7 +6,7 @@
           <div class="relative inline-block">
             <Image
               imageClass="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg object-cover"
-              src="/src/assets/images/black_winged_kite.jpg"
+              :src="blackWingedKiteImage"
               alt="Image"
             />
             <div class="absolute inset-0 flex items-center justify-center">
@@ -22,7 +22,7 @@
           <div class="relative inline-block">
             <Image
               imageClass="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg object-cover"
-              src="/src/assets/images/grass_owl.jpg"
+              :src="grassOwlImage"
               alt="Image"
             />
             <div class="absolute inset-0 flex items-center justify-center">
@@ -36,4 +36,7 @@
     </div>
   </main>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import blackWingedKiteImage from '@/assets/images/black_winged_kite.jpg'
+import grassOwlImage from '@/assets/images/grass_owl.jpg'
+</script>
