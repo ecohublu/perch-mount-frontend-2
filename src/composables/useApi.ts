@@ -10,6 +10,7 @@ interface ApiOptions {
 type ErrorHandler = (error: unknown) => void
 
 let globalErrorHandler: ErrorHandler | null = null
+const authBypassed = () => window.__APP_ENV__?.DISABLE_AUTH === true
 
 export function setApiErrorHandler(handler: ErrorHandler) {
   globalErrorHandler = handler
@@ -35,7 +36,7 @@ async function apiFetch<T>(
       body: options.body ? JSON.stringify(options.body) : undefined,
     })
 
-    if (response.status === 401 && options.redirectOnUnauthorized !== false) {
+    if (response.status === 401 && options.redirectOnUnauthorized !== false && !authBypassed()) {
       window.location.href = '/login'
       throw new Error('Unauthorized')
     }

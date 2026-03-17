@@ -36,9 +36,10 @@ app.use(PrimeVue, {
 })
 app.use(ConfirmationService)
 app.use(ToastService)
-app.use(googleAuth, {
-  // clientId: '1003682943383-bauokm6jh77cq8l23qgf9fj5js0mgh0h.apps.googleusercontent.com',
-  clientId: env.GOOGLE_CLIENT_ID,
-})
+if (!env.DISABLE_AUTH) {
+  app.use(googleAuth, {
+    clientId: env.GOOGLE_CLIENT_ID,
+  })
+}
 
 app.mount('#app')
